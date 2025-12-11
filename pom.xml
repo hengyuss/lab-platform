@@ -24,7 +24,24 @@
     <knife4j.version>4.5.0</knife4j.version>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+
+
+
   <dependencyManagement>
+
     <dependencies>
       <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -57,6 +74,8 @@
         <artifactId>hutool-all</artifactId>
         <version>${hutool.version}</version>
       </dependency>
+
+
     </dependencies>
   </dependencyManagement>
 

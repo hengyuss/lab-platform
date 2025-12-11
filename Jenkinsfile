@@ -66,8 +66,8 @@ pipeline {
                 sh """
                     ./mvnw -pl lab-start compile flyway:migrate \
                     -Dflyway.url=${DB_URL} \
-                    -Dflyway.user=${DB_CREDS_USR} \
-                    -Dflyway.password=${DB_CREDS_PSW} \
+                    -Dflyway.user=\$DB_CREDS_USR \
+                    -Dflyway.password=\$DB_CREDS_PSW \
                     -Dflyway.locations=classpath:db/migration \
                     -Dflyway.baselineOnMigrate=true
                 """

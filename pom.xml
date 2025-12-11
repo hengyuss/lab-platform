@@ -8,6 +8,7 @@
   <modules>
     <module>lab-common</module>
     <module>lab-system</module>
+    <module>lab-start</module>
   </modules>
 
 

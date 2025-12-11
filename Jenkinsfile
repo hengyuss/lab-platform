@@ -37,7 +37,7 @@ pipeline {
                 }
                 // --- ⚠️ 修改点 3: 递归收集测试报告 ---
                 // 单模块是 target/*.xml，多模块必须加 **/ 才能找到子文件夹里的报告
-                junit '**/target/surefire-reports/*.xml', allowEmptyResults: true
+                junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true
             }
         }
         stage('SonarQube Analysis'){

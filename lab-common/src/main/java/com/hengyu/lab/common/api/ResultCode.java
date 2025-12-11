@@ -1,10 +1,12 @@
 package com.hengyu.lab.common.api;
 
 import lombok.AllArgsConstructor;
+import lombok.Generated;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@Generated
 public enum ResultCode implements IResultCode {
   SUCCESS(200, "操作成功"),
   FAILURE(500, "业务异常"),

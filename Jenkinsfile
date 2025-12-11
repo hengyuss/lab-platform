@@ -3,8 +3,8 @@ pipeline {
     environment {
         DB_CREDS = credentials('my-db-credentials-id')
 
-        DB_URL_MAIN = "jdbc:mysql://10.33.9.41:3306/lab-platform_prod"  // 主库
-        DB_URL_DEV  = "jdbc:mysql://10.33.9.41:3306/lab-platform_dev"   // 开发库
+        DB_URL_MAIN = "jdbc:mysql://10.33.9.41:3306/lab_platform_prod"  // 主库
+        DB_URL_DEV  = "jdbc:mysql://10.33.9.41:3306/lab_platform_dev"   // 开发库
 
         // SonarQube 配置
         SONAR_URL = 'http://10.33.9.41:9000'

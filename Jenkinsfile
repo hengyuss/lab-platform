@@ -3,7 +3,8 @@ pipeline {
     environment {
         DB_CREDS = credentials('my-db-credentials-id')
 
-        DB_URL = "jdbc:mysql://10.33.9.41:3306/mybatisPlus"
+        DB_URL_MAIN = "jdbc:mysql://10.33.9.41:3306/lab_platform_prod"  // 主库
+        DB_URL_DEV  = "jdbc:mysql://10.33.9.41:3306/lab_platform_dev"   // 开发库
 
         // SonarQube 配置
         SONAR_URL = 'http://10.33.9.41:9000'
@@ -19,15 +20,12 @@ pipeline {
     stages {
         stage('Pull Code') {
             steps {
-                git(
-                    url: 'http://git@10.33.9.41:3000/hengyuTeam/lab-platform.git',
-                    credentialsId: 'jenkins-gitea-token',
-                    branch: 'main'
-                )
+               checkout scm
             }
         }
         stage('Test & Build') {
             steps {
+
                 script {
                     sh 'chmod +x mvnw'
                     // --- ⚠️ 修改点 2: 确保所有模块都编译 ---
@@ -56,21 +54,44 @@ pipeline {
             }
         }
         stage('DB Migration') {
+            when {
+                        anyOf {
+                            branch 'main'
+                            branch pattern: 'dev*', comparator: 'GLOB'
+                            branch pattern: 'feature/*', comparator: 'GLOB'
+                        }
+                    }
             steps {
-                echo '正在执行数据库迁移'
-                // --- ⚠️ 修改点 5: Flyway 改为 classpath 加载 ---
-                // 1. -pl lab-start: 只运行启动模块的插件
-                // 2. compile: 必须先编译，把 resources 复制到 target 目录，Flyway 才能读到
-                // 3. locations: 改为 classpath。因为 SQL 散落在各个 jar 包里，filesystem 读不到 jar 包内的文件
-                sh """
-                    ./mvnw -pl lab-start compile flyway:migrate \
-                    -Dflyway.url=${DB_URL} \
-                    -Dflyway.user=\$DB_CREDS_USR \
-                    -Dflyway.password=\$DB_CREDS_PSW \
-                    -Dflyway.locations=classpath:db/migration \
-                    -Dflyway.baselineOnMigrate=true
-                """
-            }
+              script {
+                    // === 2. 动态决定使用哪个数据库 ===
+                    def targetDbUrl = ""
+                    def envName = ""
+
+                    if (env.BRANCH_NAME == 'main') {
+                        targetDbUrl = env.DB_URL_MAIN
+                        envName = "生产/主测试环境 (Main)"
+                    } else {
+                        // 任何非 main 分支 (dev, feature/xxx) 都去开发库
+                        targetDbUrl = env.DB_URL_DEV
+                        envName = "开发环境 (Dev)"
+                    }
+
+                    echo ">>> 当前分支: ${env.BRANCH_NAME}"
+                    echo ">>> 目标环境: ${envName}"
+                    echo ">>> 数据库地址: ${targetDbUrl}"
+
+                    // === 3. 执行 Flyway (注意使用 targetDbUrl 变量) ===
+                    // 加上 flyway:repair 是为了开发方便，允许修改 checksum
+                    sh """
+                        ./mvnw -pl lab-start compile flyway:repair flyway:migrate \
+                        -Dflyway.url=${targetDbUrl} \
+                        -Dflyway.user=\$DB_CREDS_USR \
+                        -Dflyway.password=\$DB_CREDS_PSW \
+                        -Dflyway.locations=classpath:db/migration \
+                        -Dflyway.baselineOnMigrate=true
+                    """
+                }
         }
     }
+}
 }

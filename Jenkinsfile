@@ -11,7 +11,6 @@ pipeline {
         SONAR_PROJECT_NAME = 'lab-platform'
         SONAR_PROJECT_VERSION = "0.0.1-build-${BUILD_NUMBER}" // 使用双引号解析变量
 
-
         SONAR_JAVA_SOURCE = '21'
         // 排除规则保持不变
         SONAR_EXCLUSIONS = '**/src/test/**,**/target/**,**/*.xml'

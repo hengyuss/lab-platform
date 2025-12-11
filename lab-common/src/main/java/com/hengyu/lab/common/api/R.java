@@ -1,13 +1,11 @@
 package com.hengyu.lab.common.api;
 
-import com.hengyu.lab.common.Generated;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Generated
 public class R<T> implements Serializable {
   private static final long serialVersionUID = 1L;
 

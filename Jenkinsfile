@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         DB_CREDS = credentials('my-db-credentials-id')
-        DB_HOST_DEV = credentials('DB_HOST_DEV')
+        DB_HOST_DEV = credentials('db_host_dev')
         DB_HOST_PROD = credentials('DB_HOST_PROD')
 
         DB_URL_MAIN = "jdbc:mysql://10.33.9.41:3306/lab_platform_prod"  // 主库

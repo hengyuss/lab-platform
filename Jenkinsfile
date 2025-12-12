@@ -73,14 +73,13 @@ pipeline {
 
                     if (env.BRANCH_NAME == 'main') {
                         targetDbUrl = env.DB_URL_MAIN
-                        echo ">>>>1"
-                        db_host = env.DB_HOST_DEV
+                        db_host = env.DB_HOST_PROD
                         envName = "生产/开发环境 (Main)"
                     } else {
                         // 任何非 main 分支 (dev, feature/xxx) 都去开发库
                         targetDbUrl = env.DB_URL_DEV
-                        echo ">>>2"
-                        db_host = env.DB_HOST_PROD
+                        db_host = env.DB_HOST_DEV
+                        echo ">>> ${env.DB_HOST_DEV}"
                         envName = "开发环境 (Dev)"
                     }
 

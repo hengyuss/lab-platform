@@ -5,8 +5,11 @@ pipeline {
         DB_HOST_DEV = credentials('db_host_dev')
         DB_HOST_PROD = credentials('db_host_prod')
 
-        DB_URL_MAIN = "jdbc:mysql://10.33.9.41:3306/lab_platform_prod"  // 主库
-        DB_URL_DEV  = "jdbc:mysql://10.33.9.41:3306/lab_platform_dev"   // 开发库
+        DB_NAME_DEV = credentials('db_name_dev')
+        DB_NAME_PROD = credentials("db_name_prod")
+
+        DB_URL_MAIN = "jdbc:mysql://${DB_HOST_PROD}/${DB_NAME_PROD}"  // 主库
+        DB_URL_DEV  = "jdbc:mysql://${DB_HOST_DEV}/${DB_NAME_DEV}"   // 开发库
 
         // SonarQube 配置
         SONAR_URL = 'http://10.33.9.41:9000'
@@ -69,23 +72,18 @@ pipeline {
                     // === 2. 动态决定使用哪个数据库 ===
                     def targetDbUrl = ""
                     def envName = ""
-                    def db_host = ""
 
                     if (env.BRANCH_NAME == 'main') {
                         targetDbUrl = env.DB_URL_MAIN
-                        db_host = env.DB_HOST_PROD
                         envName = "生产/开发环境 (Main)"
                     } else {
                         // 任何非 main 分支 (dev, feature/xxx) 都去开发库
                         targetDbUrl = env.DB_URL_DEV
-                        db_host = env.DB_HOST_DEV
-                        echo ">>> ${env.DB_HOST_DEV}"
                         envName = "开发环境 (Dev)"
                     }
 
                     echo ">>> 当前分支: ${env.BRANCH_NAME}"
                     echo ">>> 目标环境: ${envName}"
-                    echo ">>> 目标主机: ${db_host}"
                     echo ">>> 数据库地址: ${targetDbUrl}"
 
                     // === 3. 执行 Flyway (注意使用 targetDbUrl 变量) ===

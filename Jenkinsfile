@@ -9,7 +9,7 @@ pipeline {
         DB_NAME_PROD = credentials("db_name_prod")
 
         DB_URL_MAIN = "jdbc:mysql://${DB_HOST_PROD}/${DB_NAME_PROD}"  // 主库
-        DB_URL_DEV  = "jdbc:mysql://10.44.2.5:3306/${DB_NAME_DEV}"   // 开发库
+        DB_URL_DEV  = "jdbc:mysql://${DB_HOST_DEV}/${DB_NAME_DEV}"   // 开发库
 
         // SonarQube 配置
         SONAR_URL = 'http://10.33.9.41:9000'

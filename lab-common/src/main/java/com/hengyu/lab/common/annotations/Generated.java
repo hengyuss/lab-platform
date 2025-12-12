@@ -1,4 +1,4 @@
-package com.hengyu.lab.common;
+package com.hengyu.lab.common.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

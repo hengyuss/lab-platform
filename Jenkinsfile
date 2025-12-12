@@ -17,6 +17,7 @@ pipeline {
         SONAR_JAVA_SOURCE = '21'
         // 排除规则保持不变
         SONAR_EXCLUSIONS = '**/src/test/**,**/target/**,**/*.xml'
+
     }
 
     stages {

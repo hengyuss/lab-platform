@@ -1,0 +1,23 @@
+# src/main/resources/application-prod.yml
+
+server:
+  port: 8083
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 必须使用环境变量，防止密码泄露到 Git
+    url: "jdbc:mysql://${DB_HOST}:${DB_PORT:3306}/${DB_NAME}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true"
+    username: ${DB_USER}
+    password: ${DB_PASS}
+
+  flyway:
+    enabled: false # 或者 false，取决于你们是否允许应用启动时改库
+
+mybatis-plus:
+  configuration:
+    # 🚫 生产环境关闭 SQL 打印，提升性能
+    log-impl: org.apache.ibatis.logging.nologging
+
+usr:
+  env: "prod"

@@ -2,6 +2,8 @@ pipeline {
     agent any
     environment {
         DB_CREDS = credentials('my-db-credentials-id')
+        DB_HOST_DEV = credentials('DB_HOST_DEV')
+        DB_HOST_PROD = credentials('DB_HOST_PROD')
 
         DB_URL_MAIN = "jdbc:mysql://10.33.9.41:3306/lab_platform_prod"  // 主库
         DB_URL_DEV  = "jdbc:mysql://10.33.9.41:3306/lab_platform_dev"   // 开发库
@@ -66,18 +68,22 @@ pipeline {
                     // === 2. 动态决定使用哪个数据库 ===
                     def targetDbUrl = ""
                     def envName = ""
+                    def db_host = ""
 
                     if (env.BRANCH_NAME == 'main') {
                         targetDbUrl = env.DB_URL_MAIN
-                        envName = "生产/主测试环境 (Main)"
+                        db_host = env.DB_HOST_PROD
+                        envName = "生产/开发环境 (Main)"
                     } else {
                         // 任何非 main 分支 (dev, feature/xxx) 都去开发库
                         targetDbUrl = env.DB_URL_DEV
+                        db_host = env.DB_HOST_DEV
                         envName = "开发环境 (Dev)"
                     }
 
                     echo ">>> 当前分支: ${env.BRANCH_NAME}"
                     echo ">>> 目标环境: ${envName}"
+                    echo ">>> 目标主机: ${db_host}"
                     echo ">>> 数据库地址: ${targetDbUrl}"
 
                     // === 3. 执行 Flyway (注意使用 targetDbUrl 变量) ===

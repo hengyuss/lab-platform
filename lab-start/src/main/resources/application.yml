@@ -2,17 +2,11 @@ spring:
   application:
     name: lab-plarform
   flyway:
-    enabled: true
     locations: classpath:db/migration
     clean-disabled: true
     baseline-on-migrate: true
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://10.33.9.41:3306/lab_platform_local?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true"
-    username: root
-    password: zZ15903750100.
-server:
-  port: 8081
+  profiles:
+    active: dev
 
 # Knife4j ??
 springdoc:
@@ -31,20 +25,18 @@ knife4j:
   setting:
     language: zh_cn
 
+# --- MyBatis-Plus ???? ---
 mybatis-plus:
-  # ?? SQL ?? (?????????????)
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  # ????????
+  # ????
   map-underscore-to-camel-case: true
-  # ?? classpath ?? mapper ???
+  # Mapper XML ??
   mapper-locations: classpath*:mapper/**/*.xml
+  # ?????
   type-enums-package: com.hengyu.**.domain.**.constant
   global-config:
     db-config:
-      # ?????? (0-??, 1-??)
+      # ???? & ???? (????)
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
-      # ????????????
       id-type: assign_id

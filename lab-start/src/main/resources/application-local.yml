@@ -1,0 +1,23 @@
+# src/main/resources/application-local.yml
+
+server:
+  port: 8081
+
+spring:
+  datasource:
+    # 直接写死你开发用的数据库 (也就是你提供的那个配置)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://10.33.9.41:3306/lab_platform_local?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true"
+    username: root
+    password: zZ15903750100.
+
+  flyway:
+    enabled: true # 本地启动时自动跑 SQL
+
+mybatis-plus:
+  configuration:
+    # ✅ 开启 SQL 打印
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+usr:
+  env: "local"

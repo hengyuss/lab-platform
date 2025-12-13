@@ -12,13 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "测试接口")
 public class TempController {
 
-  @Value("${usr.env}")
-  String usrEnv;
 
   @GetMapping("/hello")
   @Operation(summary = "测试接口") // 对应接口的描述
   public String hello() {
-    return usrEnv;
+    return "hello";
   }
 
 }

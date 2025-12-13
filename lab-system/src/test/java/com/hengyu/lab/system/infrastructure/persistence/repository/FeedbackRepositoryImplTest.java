@@ -52,7 +52,7 @@ class FeedbackRepositoryImplTest {
 
     try(MockedStatic<DomainUtil> domainUtilStatic = Mockito.mockStatic(DomainUtil.class)) {
       feedbackRepository.save(feedback);
-      Assertions.assertEquals(feedback.getId(), feedbackPO.getId());
+      Assertions.assertEquals(1L, feedbackPO.getId());
       Mockito.verify(feedbackConverter).toPo(feedback);
       Mockito.verify(feedbackMapper).insert((FeedbackPO) Mockito.any());
       domainUtilStatic.verify(() -> DomainUtil.setIdToEntity(feedback, feedbackPO.getId()));

@@ -1,7 +1,6 @@
 package com.hengyu.lab.system.infrastructure.persistence.repository;
 
 import com.hengyu.lab.common.utils.DomainUtil;
-import com.hengyu.lab.system.api.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.domain.feedback.Feedback;
 import com.hengyu.lab.system.domain.feedback.repository.FeedbackRepository;
 import com.hengyu.lab.system.infrastructure.persistence.convert.FeedbackConverter;
@@ -21,7 +20,7 @@ public class FeedbackRepositoryImpl implements FeedbackRepository {
   @Override
   public void save(Feedback feedback) {
     FeedbackPO feedbackPO = feedbackConverter.toPo(feedback);
-    if (feedbackPO == null) {
+    if (feedbackPO.getId() == null) {
       feedbackMapper.insert(feedbackPO);
       DomainUtil.setIdToEntity(feedback, feedbackPO.getId());
     } else {

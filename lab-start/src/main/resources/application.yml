@@ -6,7 +6,7 @@ spring:
     clean-disabled: true
     baseline-on-migrate: true
   profiles:
-    active: dev
+    active: local
 
 # Knife4j ??
 springdoc:

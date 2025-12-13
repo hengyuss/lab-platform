@@ -21,11 +21,11 @@ public enum ResultCode implements IResultCode {
 
   @Override
   public Integer getCode() {
-    return 0;
+    return this.code;
   }
 
   @Override
   public String getMsg() {
-    return "";
+    return this.msg;
   }
 }

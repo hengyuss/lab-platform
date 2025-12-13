@@ -8,6 +8,7 @@ import com.hengyu.lab.system.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.application.service.FeedbackAppService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +28,9 @@ public class FeedbackController {
 
   @GetMapping
   @Operation(summary = "获取feedback分页数据")
-  public R<IPage<FeedbackCO>> getFeedbackPage(FeedbackQry feedbackQry){
+  public R<IPage<FeedbackCO>> getFeedbackPage(@ParameterObject FeedbackQry feedbackQry){
     IPage<FeedbackCO> feedbackPage = feedbackAppService.getFeedbackPage(feedbackQry);
+
     return R.ok(feedbackPage);
   }
 

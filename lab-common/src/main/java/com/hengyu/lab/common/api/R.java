@@ -17,15 +17,15 @@ public class R<T> implements Serializable {
   private T data;         // 承载数据
 
   private R(IResultCode resultCode) {
-    this(resultCode, null, resultCode.getMsg());
+    this(resultCode.getCode(), null, resultCode.getMsg());
   }
 
   private R(IResultCode resultCode, String msg) {
-    this(resultCode, null, msg);
+    this(resultCode.getCode(), null, msg);
   }
 
   private R(IResultCode resultCode, T data) {
-    this(resultCode, data, resultCode.getMsg());
+    this(resultCode.getCode(), data, resultCode.getMsg());
   }
 
   private R(IResultCode resultCode, T data, String msg) {

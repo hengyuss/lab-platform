@@ -7,3 +7,4 @@ spring:
     password:
   flyway:
     enabled: true # 让 Flyway 在 H2 里自动建
+    clean-on-validation-error: true # 加上这个更保险，遇到冲突自动重置

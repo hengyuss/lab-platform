@@ -4,6 +4,7 @@ import static org.mockito.Mockito.when;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hengyu.lab.system.application.dto.command.CreateFeedbackCmd;
+import com.hengyu.lab.system.application.dto.command.DeleteFeedbackCmd;
 import com.hengyu.lab.system.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.application.service.FeedbackAppService;
 import com.hengyu.lab.system.domain.feedback.repository.FeedbackRepository;
@@ -55,6 +56,16 @@ class FeedbackAppServiceTest {
     feedBackAppService.getFeedbackPage(feedbackQry);
     Mockito.verify(feedbackMapper).selectPage(Mockito.any(), Mockito.any());
     Mockito.verify(feedbackConverter).toCO(Mockito.any());
+  }
+
+  @Test
+  void delete_feedback_exist_by_id(){
+    DeleteFeedbackCmd delCmd = new DeleteFeedbackCmd();
+    delCmd.setId(123L);
+
+    feedBackAppService.delete(delCmd);
+
+    Mockito.verify(feedBackRepository).removeById(Mockito.any(Long.class));
   }
 
 }

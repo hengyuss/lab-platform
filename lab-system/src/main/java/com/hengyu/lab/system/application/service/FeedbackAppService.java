@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hengyu.lab.system.application.dto.clientobject.FeedbackCO;
 import com.hengyu.lab.system.application.dto.command.CreateFeedbackCmd;
+import com.hengyu.lab.system.application.dto.command.DeleteFeedbackCmd;
 import com.hengyu.lab.system.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.domain.feedback.Feedback;
 import com.hengyu.lab.system.domain.feedback.repository.FeedbackRepository;
@@ -35,5 +36,11 @@ public class FeedbackAppService {
     Page<FeedbackPO> feedbackPOPage = feedbackMapper.selectPage(page, queryWrapper);
     IPage<FeedbackCO> result = feedbackPOPage.convert(feedbackConverter::toCO);
     return result;
+  }
+
+
+  public Boolean delete(DeleteFeedbackCmd delCmd) {
+    int i = feedbackRepository.removeById(delCmd.getId());
+    return i > 0;
   }
 }

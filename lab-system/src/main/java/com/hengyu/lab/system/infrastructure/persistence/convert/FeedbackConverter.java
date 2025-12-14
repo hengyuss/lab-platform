@@ -13,4 +13,6 @@ public interface FeedbackConverter {
   FeedbackPO toPo(Feedback feedback);
 
   FeedbackCO toCO(FeedbackPO feedbackPo);
+
+  Feedback toDomain(FeedbackPO feedbackPO);
 }

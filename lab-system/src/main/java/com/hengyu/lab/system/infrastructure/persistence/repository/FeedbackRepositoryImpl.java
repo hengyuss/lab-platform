@@ -6,6 +6,7 @@ import com.hengyu.lab.system.domain.feedback.repository.FeedbackRepository;
 import com.hengyu.lab.system.infrastructure.persistence.convert.FeedbackConverter;
 import com.hengyu.lab.system.infrastructure.persistence.mapper.FeedbackMapper;
 import com.hengyu.lab.system.infrastructure.persistence.po.FeedbackPO;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -26,5 +27,17 @@ public class FeedbackRepositoryImpl implements FeedbackRepository {
     } else {
       feedbackMapper.updateById(feedbackPO);
     }
+  }
+
+  @Override
+  public Optional<Feedback> find(Long l) {
+    FeedbackPO feedbackPO = feedbackMapper.selectById(l);
+    return Optional.ofNullable(feedbackPO)
+        .map(feedbackConverter::toDomain);
+  }
+
+  @Override
+  public Integer removeById(Long l) {
+    return feedbackMapper.deleteById(l);
   }
 }

@@ -12,6 +12,8 @@ import com.hengyu.lab.system.infrastructure.persistence.convert.FeedbackConverte
 import com.hengyu.lab.system.infrastructure.persistence.mapper.FeedbackMapper;
 import com.hengyu.lab.system.infrastructure.persistence.po.FeedbackPO;
 import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -63,9 +65,24 @@ class FeedbackAppServiceTest {
     DeleteFeedbackCmd delCmd = new DeleteFeedbackCmd();
     delCmd.setId(123L);
 
-    feedBackAppService.delete(delCmd);
+    when(feedBackRepository.removeById(Mockito.any(Long.class))).thenReturn(1);
+    Boolean delete = feedBackAppService.delete(delCmd);
 
     Mockito.verify(feedBackRepository).removeById(Mockito.any(Long.class));
+    Assertions.assertTrue(delete);
   }
+
+  @Test
+  void delete_feedback_no_exist_by_id(){
+    DeleteFeedbackCmd delCmd = new DeleteFeedbackCmd();
+    delCmd.setId(123L);
+    when(feedBackRepository.removeById(Mockito.any(Long.class))).thenReturn(0);
+    Boolean delete = feedBackAppService.delete(delCmd);
+
+    Mockito.verify(feedBackRepository).removeById(Mockito.any(Long.class));
+    Assertions.assertFalse(delete);
+
+  }
+
 
 }

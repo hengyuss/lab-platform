@@ -1,8 +1,10 @@
 package com.hengyu.lab.common.utils;
 
+import com.hengyu.lab.common.annotations.TestIgnore;
 import java.lang.reflect.Field;
 import org.springframework.util.ReflectionUtils;
 
+@TestIgnore
 public class DomainUtil {
 
   public static <T> void setIdToEntity(T entity, Long id) {

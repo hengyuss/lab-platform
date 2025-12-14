@@ -1,11 +1,11 @@
 package com.hengyu.lab.system.domain.feedback;
 
-import com.hengyu.lab.common.annotations.Generated;
+import com.hengyu.lab.common.annotations.TestIgnore;
 import com.hengyu.lab.system.domain.feedback.constant.FeedbackStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Generated
+@TestIgnore
 @Getter
 @NoArgsConstructor
 public class Feedback {

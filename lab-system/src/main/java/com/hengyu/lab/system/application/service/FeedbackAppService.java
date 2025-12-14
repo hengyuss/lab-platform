@@ -34,6 +34,7 @@ public class FeedbackAppService {
         feedbackQry.getPageSize());
     LambdaQueryWrapper<FeedbackPO> queryWrapper = new LambdaQueryWrapper<>();
     Page<FeedbackPO> feedbackPOPage = feedbackMapper.selectPage(page, queryWrapper);
+    System.out.println(feedbackPOPage.getTotal());
     IPage<FeedbackCO> result = feedbackPOPage.convert(feedbackConverter::toCO);
     return result;
   }

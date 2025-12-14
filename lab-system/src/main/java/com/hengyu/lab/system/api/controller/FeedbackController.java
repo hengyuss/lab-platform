@@ -34,15 +34,14 @@ public class FeedbackController {
   }
 
   @GetMapping
-  @Operation(summary = "获取feedback分页数据")
+  @Operation(summary = "获取需求分页数据")
   public R<IPage<FeedbackCO>> getFeedbackPage(@ParameterObject FeedbackQry feedbackQry){
     IPage<FeedbackCO> feedbackPage = feedbackAppService.getFeedbackPage(feedbackQry);
-
     return R.ok(feedbackPage);
   }
 
   @DeleteMapping("/{id}")
-  @Operation(summary = "根据ID 删除对应反馈")
+  @Operation(summary = "根据ID 删除对应需求")
   public R<Boolean> delete(@PathVariable("id") Long id){
     DeleteFeedbackCmd deleteFeedbackCmd = new DeleteFeedbackCmd();
     deleteFeedbackCmd.setId(id);

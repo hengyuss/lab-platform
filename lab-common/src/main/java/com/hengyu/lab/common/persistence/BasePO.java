@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.hengyu.lab.common.annotations.TestIgnore;
 import java.time.LocalDateTime;
 import lombok.Data;
-import lombok.Generated;
 
 @Data
 @TestIgnore

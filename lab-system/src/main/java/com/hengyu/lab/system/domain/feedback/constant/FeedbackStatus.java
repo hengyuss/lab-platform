@@ -9,12 +9,13 @@ import lombok.Getter;
 @Getter
 public enum FeedbackStatus {
   PENDING(0, "待处理"),
-  ADOPTED(1, "已采纳"),
-  REJECTED(2, "已拒绝");
+  REJECTED(1, "已拒绝"),
+  SOLVING(2, "处理中"),
+  SOLVED(3, "已解决");
 
   @EnumValue
+  @JsonValue
   private final Integer code;
 
-  @JsonValue
   private final String desc;
 }

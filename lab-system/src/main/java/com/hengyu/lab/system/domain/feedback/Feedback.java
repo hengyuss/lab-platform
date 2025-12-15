@@ -2,12 +2,14 @@ package com.hengyu.lab.system.domain.feedback;
 
 import com.hengyu.lab.common.annotations.TestIgnore;
 import com.hengyu.lab.system.domain.feedback.constant.FeedbackStatus;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @TestIgnore
-@Getter
 @NoArgsConstructor
+@ToString
+@Data
 public class Feedback {
   private Long id;
   private String title;
@@ -24,6 +26,10 @@ public class Feedback {
     this.title = title;
     this.content = content;
     this.status = FeedbackStatus.PENDING;
+  }
+
+  public void updateStatus(FeedbackStatus status) {
+    this.status = status;
   }
 
 }

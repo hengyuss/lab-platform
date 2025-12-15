@@ -1,9 +1,11 @@
 package com.hengyu.lab.system.api.controller;
 
+import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -14,8 +16,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hengyu.lab.system.application.dto.clientobject.FeedbackCO;
 import com.hengyu.lab.system.application.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.DeleteFeedbackCmd;
+import com.hengyu.lab.system.application.dto.command.UpdateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.application.service.FeedbackAppService;
+import com.hengyu.lab.system.domain.feedback.Feedback;
+import com.hengyu.lab.system.domain.feedback.constant.FeedbackStatus;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -78,13 +83,13 @@ class FeedbackControllerTest {
 
     when(feedbackAppService.delete(Mockito.any(DeleteFeedbackCmd.class))).thenReturn(true);
 
-    mockMvc.perform(delete("/api/v1/feedbacks/{id}", 1L))
+    mockMvc.perform(delete("/api/v1/feedbacks/{id}", "1"))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data").value(true));
 
     Mockito.verify(feedbackAppService).delete(Mockito.argThat(cmd ->
-        cmd.getId().equals(1L) // 验证 Service 收到的命令里，ID 确实是 1
+        cmd.getId().equals("1") // 验证 Service 收到的命令里，ID 确实是 1
     ));
   }
 
@@ -93,14 +98,28 @@ class FeedbackControllerTest {
 
     when(feedbackAppService.delete(Mockito.any(DeleteFeedbackCmd.class))).thenReturn(false);
 
-    mockMvc.perform(delete("/api/v1/feedbacks/{id}", 1L))
+    mockMvc.perform(delete("/api/v1/feedbacks/{id}", "1"))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data").value(false));
 
     Mockito.verify(feedbackAppService).delete(Mockito.argThat(cmd ->
-        cmd.getId().equals(1L) // 验证 Service 收到的命令里，ID 确实是 1
+        cmd.getId().equals("1") // 验证 Service 收到的命令里，ID 确实是 1
     ));
+  }
+
+  @Test
+  void update_success() throws Exception {
+    UpdateFeedbackCmd cmd = new UpdateFeedbackCmd();
+    cmd.setId("1");
+    cmd.setStatus(FeedbackStatus.SOLVING);
+    mockMvc.perform(put("/api/v1/feedbacks")
+        .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(cmd)))
+            .andDo(print());
+
+
+    Mockito.verify(feedbackAppService).updateStatus(refEq(cmd));
   }
 
 }

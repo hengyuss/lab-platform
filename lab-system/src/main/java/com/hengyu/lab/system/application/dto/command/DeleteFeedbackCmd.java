@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class DeleteFeedbackCmd {
-  private Long id;
+  private String id;
 
 }

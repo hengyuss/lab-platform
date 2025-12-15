@@ -5,13 +5,17 @@ import static org.mockito.Mockito.when;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hengyu.lab.system.application.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.DeleteFeedbackCmd;
+import com.hengyu.lab.system.application.dto.command.UpdateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.application.service.FeedbackAppService;
+import com.hengyu.lab.system.domain.feedback.Feedback;
+import com.hengyu.lab.system.domain.feedback.constant.FeedbackStatus;
 import com.hengyu.lab.system.domain.feedback.repository.FeedbackRepository;
 import com.hengyu.lab.system.infrastructure.persistence.convert.FeedbackConverter;
 import com.hengyu.lab.system.infrastructure.persistence.mapper.FeedbackMapper;
 import com.hengyu.lab.system.infrastructure.persistence.po.FeedbackPO;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,7 +66,7 @@ class FeedbackAppServiceTest {
   @Test
   void delete_feedback_exist_by_id(){
     DeleteFeedbackCmd delCmd = new DeleteFeedbackCmd();
-    delCmd.setId(123L);
+    delCmd.setId("123");
 
     when(feedBackRepository.removeById(Mockito.any(Long.class))).thenReturn(1);
     Boolean delete = feedBackAppService.delete(delCmd);
@@ -74,13 +78,27 @@ class FeedbackAppServiceTest {
   @Test
   void delete_feedback_no_exist_by_id(){
     DeleteFeedbackCmd delCmd = new DeleteFeedbackCmd();
-    delCmd.setId(123L);
+    delCmd.setId("123");
     when(feedBackRepository.removeById(Mockito.any(Long.class))).thenReturn(0);
     Boolean delete = feedBackAppService.delete(delCmd);
 
     Mockito.verify(feedBackRepository).removeById(Mockito.any(Long.class));
     Assertions.assertFalse(delete);
 
+  }
+
+  @Test
+  void update_feedback_status(){
+    Feedback feedback = new Feedback(1L, "title", "content");
+    FeedbackPO feedbackPO = new FeedbackPO();
+    feedbackPO.setId(1L);
+    when(feedBackRepository.find(1L)).thenReturn(Optional.of(feedback));
+    Assertions.assertEquals(FeedbackStatus.PENDING, feedback.getStatus());
+    UpdateFeedbackCmd cmd = new UpdateFeedbackCmd();
+    cmd.setId("1");
+    cmd.setStatus(FeedbackStatus.SOLVING);
+    feedBackAppService.updateStatus(cmd);
+    Mockito.verify(feedBackRepository).save(feedback);
   }
 
 

@@ -24,7 +24,8 @@
     <knife4j.version>4.5.0</knife4j.version>
     <mockito.version>5.11.0</mockito.version>
     <sonar.coverage.exclusions>
-     **/com/hengyu/lab/common/exception/**
+      **/com/hengyu/lab/common/exception/**,
+      **/com/hengyu/lab/LabStartApplication.java
     </sonar.coverage.exclusions>
 
   </properties>

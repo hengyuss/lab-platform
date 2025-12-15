@@ -23,7 +23,9 @@
     <hutool.version>5.8.26</hutool.version>
     <knife4j.version>4.5.0</knife4j.version>
     <mockito.version>5.11.0</mockito.version>
-
+    <sonar.coverage.exclusions>
+     **/com/hengyu/lab/common/exception/**
+    </sonar.coverage.exclusions>
 
   </properties>
 

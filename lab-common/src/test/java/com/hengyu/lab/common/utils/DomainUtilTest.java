@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.springframework.util.ReflectionUtils;
 
 class DomainUtilTest {
 
@@ -35,7 +38,14 @@ class DomainUtilTest {
     Assertions.assertThrows(RuntimeException.class, () -> {
       DomainUtil.setIdToEntity(entity, 1L);
     });
+  }
 
+  @Test
+  void testDomainUtil_entity_is_null() {
+    DomainUtil.setIdToEntity(null, 1L);
+    try(MockedStatic<ReflectionUtils> reflectionUtilsStatic = Mockito.mockStatic(ReflectionUtils.class)) {
+      reflectionUtilsStatic.verifyNoInteractions();
+    }
   }
 
 }

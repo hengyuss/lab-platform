@@ -13,12 +13,13 @@ import com.hengyu.lab.system.domain.feedback.repository.FeedbackRepository;
 import com.hengyu.lab.system.infrastructure.persistence.convert.FeedbackConverter;
 import com.hengyu.lab.system.infrastructure.persistence.mapper.FeedbackMapper;
 import com.hengyu.lab.system.infrastructure.persistence.po.FeedbackPO;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class FeedbackAppService {
   private final FeedbackRepository feedbackRepository;
@@ -52,9 +53,10 @@ public class FeedbackAppService {
   public void updateStatus(UpdateFeedbackCmd cmd) {
     Long id = Long.parseLong(cmd.getId());
     //TODO 要定义统一异常处理了
-    Feedback feedback = feedbackRepository.find(id).orElseThrow(() -> new RuntimeException());
+    Feedback feedback = feedbackRepository.find(id).orElseThrow(RuntimeException::new);
     feedback.updateStatus(cmd.getStatus());
-    System.out.println(feedback.toString());
+    log.info("执行反馈状态变更: feedbackId={}, oldStatus={}, newStatus={}",
+            id, feedback.getStatus(), cmd.getStatus());
     feedbackRepository.save(feedback);
   }
 }

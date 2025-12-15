@@ -35,7 +35,7 @@ class FeedbackRepositoryImplTest {
 
 
   @Test
-  void save_success() {
+  void save_feedback_not_exist() {
     Feedback feedback = new Feedback("testTitle", "testContent");
     FeedbackPO feedbackPO = new FeedbackPO();
     feedbackPO.setTitle("testTitle");
@@ -56,6 +56,22 @@ class FeedbackRepositoryImplTest {
       Mockito.verify(feedbackMapper).insert((FeedbackPO) Mockito.any());
       domainUtilStatic.verify(() -> DomainUtil.setIdToEntity(feedback, feedbackPO.getId()));
     }
+  }
+
+  @Test
+  void save_feedback_exist() {
+    Feedback feedback = new Feedback("testTitle", "testContent");
+    FeedbackPO feedbackPO = new FeedbackPO();
+    feedbackPO.setTitle("testTitle");
+    feedbackPO.setContent("testContent");
+    feedbackPO.setId(1L);
+
+    Mockito.when(feedbackConverter.toPo(feedback)).thenReturn(feedbackPO);
+
+    feedbackRepository.save(feedback);
+    Mockito.verify(feedbackMapper).updateById(Mockito.any(FeedbackPO.class));
+    Mockito.verify(feedbackMapper, Mockito.never()).insert(Mockito.any(FeedbackPO.class));
+
   }
 
   @Test

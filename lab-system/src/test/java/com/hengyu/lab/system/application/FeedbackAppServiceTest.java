@@ -90,7 +90,7 @@ class FeedbackAppServiceTest {
 
   @Test
   void update_feedback_status(){
-    Feedback feedback = new Feedback(1L, "title", "content");
+    Feedback feedback = new Feedback( "title", "content");
     FeedbackPO feedbackPO = new FeedbackPO();
     feedbackPO.setId(1L);
     when(feedBackRepository.find(1L)).thenReturn(Optional.of(feedback));

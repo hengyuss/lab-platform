@@ -3,6 +3,8 @@ package com.hengyu.lab.system.application.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hengyu.lab.common.api.ResultCode;
+import com.hengyu.lab.common.exception.FeedbackException;
 import com.hengyu.lab.system.application.dto.clientobject.FeedbackCO;
 import com.hengyu.lab.system.application.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.DeleteFeedbackCmd;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 public class FeedbackAppService {
+
   private final FeedbackRepository feedbackRepository;
   private final FeedbackMapper feedbackMapper;
   private final FeedbackConverter feedbackConverter;
@@ -52,11 +55,11 @@ public class FeedbackAppService {
   @Transactional(rollbackFor = Exception.class)
   public void updateStatus(UpdateFeedbackCmd cmd) {
     Long id = Long.parseLong(cmd.getId());
-    //TODO 要定义统一异常处理了
-    Feedback feedback = feedbackRepository.find(id).orElseThrow(RuntimeException::new);
+    Feedback feedback = feedbackRepository.find(id).orElseThrow(() -> new FeedbackException(
+        ResultCode.FAILURE));
     feedback.updateStatus(cmd.getStatus());
     log.info("执行反馈状态变更: feedbackId={}, oldStatus={}, newStatus={}",
-            id, feedback.getStatus(), cmd.getStatus());
+        id, feedback.getStatus(), cmd.getStatus());
     feedbackRepository.save(feedback);
   }
 }

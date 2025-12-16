@@ -77,7 +77,7 @@ class FeedbackRepositoryImplTest {
 
   @Test
   void findById_success() {
-    Feedback feedback = new Feedback(1L, "testTitle", "testContent");
+    Feedback feedback = new Feedback( "testTitle", "testContent");
     FeedbackPO feedbackPO = new FeedbackPO();
     BeanUtils.copyProperties(feedback, feedbackPO);
     Mockito.when(feedbackMapper.selectById(1L)).thenReturn(feedbackPO);
@@ -85,7 +85,6 @@ class FeedbackRepositoryImplTest {
 
     Optional<Feedback> findFeedback = feedbackRepository.find(1L);
 
-    Assertions.assertEquals(1L, findFeedback.get().getId());
     Assertions.assertEquals("testTitle", findFeedback.get().getTitle());
     Assertions.assertEquals("testContent", findFeedback.get().getContent());
     Mockito.verify(feedbackMapper).selectById(1L);

@@ -113,3 +113,51 @@ Identify and stop the process that's listening on port 8081 or configure this ap
 2025-12-15 23:53:29.069 [http-nio-8081-exec-5] INFO  c.h.l.s.application.service.FeedbackAppService [N/A] - 执行反馈状态变更: feedbackId=1999770760551510018, oldStatus=SOLVING, newStatus=SOLVING
 2025-12-15 23:53:59.612 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Shutdown initiated...
 2025-12-15 23:53:59.617 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Shutdown completed.
+2025-12-16 13:27:23.245 [main] INFO  com.hengyu.lab.LabStartApplication [N/A] - Starting LabStartApplication using Java 21.0.9 with PID 2321772 (/home/hengyu/tmp/java/lab-platform/lab-start/target/classes started by hengyu in /home/hengyu/tmp/java/lab-platform)
+2025-12-16 13:27:23.246 [main] INFO  com.hengyu.lab.LabStartApplication [N/A] - The following 1 profile is active: "local"
+2025-12-16 13:27:23.773 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer [N/A] - Tomcat initialized with port 8081 (http)
+2025-12-16 13:27:23.778 [main] INFO  org.apache.coyote.http11.Http11NioProtocol [N/A] - Initializing ProtocolHandler ["http-nio-8081"]
+2025-12-16 13:27:23.781 [main] INFO  org.apache.catalina.core.StandardService [N/A] - Starting service [Tomcat]
+2025-12-16 13:27:23.781 [main] INFO  org.apache.catalina.core.StandardEngine [N/A] - Starting Servlet engine: [Apache Tomcat/10.1.24]
+2025-12-16 13:27:23.810 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] [N/A] - Initializing Spring embedded WebApplicationContext
+2025-12-16 13:27:23.811 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext [N/A] - Root WebApplicationContext: initialization completed in 546 ms
+2025-12-16 13:27:23.961 [main] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Starting...
+2025-12-16 13:27:24.047 [main] INFO  com.zaxxer.hikari.pool.HikariPool [N/A] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@bfb93cf
+2025-12-16 13:27:24.048 [main] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Start completed.
+2025-12-16 13:27:24.089 [main] INFO  org.flywaydb.core.FlywayExecutor [N/A] - Database: jdbc:mysql://10.33.9.41:3306/lab_platform_local (MySQL 8.0)
+2025-12-16 13:27:24.123 [main] INFO  org.flywaydb.core.internal.command.DbValidate [N/A] - Successfully validated 1 migration (execution time 00:00.018s)
+2025-12-16 13:27:24.130 [main] INFO  org.flywaydb.core.internal.command.DbMigrate [N/A] - Current version of schema `lab_platform_local`: 2025.12.12.001
+2025-12-16 13:27:24.132 [main] INFO  org.flywaydb.core.internal.command.DbMigrate [N/A] - Schema `lab_platform_local` is up to date. No migration necessary.
+2025-12-16 13:27:24.467 [main] INFO  org.apache.coyote.http11.Http11NioProtocol [N/A] - Starting ProtocolHandler ["http-nio-8081"]
+2025-12-16 13:27:24.471 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer [N/A] - Tomcat started on port 8081 (http) with context path '/'
+2025-12-16 13:27:24.477 [main] INFO  com.hengyu.lab.LabStartApplication [N/A] - Started LabStartApplication in 1.5 seconds (process running for 1.799)
+2025-12-16 13:27:39.508 [http-nio-8081-exec-2] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] [N/A] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-16 13:27:39.508 [http-nio-8081-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet [N/A] - Initializing Servlet 'dispatcherServlet'
+2025-12-16 13:27:39.509 [http-nio-8081-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet [N/A] - Completed initialization in 1 ms
+2025-12-16 13:27:54.653 [http-nio-8081-exec-5] INFO  org.springdoc.api.AbstractOpenApiResource [N/A] - Init duration for springdoc-openapi is: 113 ms
+2025-12-16 14:12:49.650 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Shutdown initiated...
+2025-12-16 14:12:49.652 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Shutdown completed.
+2025-12-16 14:12:51.562 [background-preinit] INFO  org.hibernate.validator.internal.util.Version [N/A] - HV000001: Hibernate Validator 8.0.1.Final
+2025-12-16 14:12:51.575 [main] INFO  com.hengyu.lab.LabStartApplication [N/A] - Starting LabStartApplication using Java 21.0.9 with PID 2400790 (/home/hengyu/tmp/java/lab-platform/lab-start/target/classes started by hengyu in /home/hengyu/tmp/java/lab-platform)
+2025-12-16 14:12:51.575 [main] INFO  com.hengyu.lab.LabStartApplication [N/A] - The following 1 profile is active: "local"
+2025-12-16 14:12:52.081 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer [N/A] - Tomcat initialized with port 8081 (http)
+2025-12-16 14:12:52.087 [main] INFO  org.apache.coyote.http11.Http11NioProtocol [N/A] - Initializing ProtocolHandler ["http-nio-8081"]
+2025-12-16 14:12:52.088 [main] INFO  org.apache.catalina.core.StandardService [N/A] - Starting service [Tomcat]
+2025-12-16 14:12:52.088 [main] INFO  org.apache.catalina.core.StandardEngine [N/A] - Starting Servlet engine: [Apache Tomcat/10.1.24]
+2025-12-16 14:12:52.111 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] [N/A] - Initializing Spring embedded WebApplicationContext
+2025-12-16 14:12:52.111 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext [N/A] - Root WebApplicationContext: initialization completed in 513 ms
+2025-12-16 14:12:52.260 [main] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Starting...
+2025-12-16 14:12:52.348 [main] INFO  com.zaxxer.hikari.pool.HikariPool [N/A] - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@559d19c
+2025-12-16 14:12:52.349 [main] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Start completed.
+2025-12-16 14:12:52.387 [main] INFO  org.flywaydb.core.FlywayExecutor [N/A] - Database: jdbc:mysql://10.33.9.41:3306/lab_platform_local (MySQL 8.0)
+2025-12-16 14:12:52.421 [main] INFO  org.flywaydb.core.internal.command.DbValidate [N/A] - Successfully validated 1 migration (execution time 00:00.017s)
+2025-12-16 14:12:52.429 [main] INFO  org.flywaydb.core.internal.command.DbMigrate [N/A] - Current version of schema `lab_platform_local`: 2025.12.12.001
+2025-12-16 14:12:52.430 [main] INFO  org.flywaydb.core.internal.command.DbMigrate [N/A] - Schema `lab_platform_local` is up to date. No migration necessary.
+2025-12-16 14:12:52.733 [main] INFO  org.apache.coyote.http11.Http11NioProtocol [N/A] - Starting ProtocolHandler ["http-nio-8081"]
+2025-12-16 14:12:52.740 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer [N/A] - Tomcat started on port 8081 (http) with context path '/'
+2025-12-16 14:12:52.747 [main] INFO  com.hengyu.lab.LabStartApplication [N/A] - Started LabStartApplication in 1.412 seconds (process running for 1.663)
+2025-12-16 14:13:19.430 [http-nio-8081-exec-2] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] [N/A] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-12-16 14:13:19.430 [http-nio-8081-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet [N/A] - Initializing Servlet 'dispatcherServlet'
+2025-12-16 14:13:19.431 [http-nio-8081-exec-2] INFO  org.springframework.web.servlet.DispatcherServlet [N/A] - Completed initialization in 1 ms
+2025-12-16 14:13:19.479 [http-nio-8081-exec-2] WARN  c.h.lab.common.exception.GlobalExceptionHandler [N/A] - 参数校验异常: title 不能为空
+2025-12-16 14:13:38.185 [http-nio-8081-exec-3] WARN  c.h.lab.common.exception.GlobalExceptionHandler [N/A] - 参数校验异常: 内容不能为空

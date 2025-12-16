@@ -2,14 +2,15 @@ package com.hengyu.lab.system.domain.feedback;
 
 import com.hengyu.lab.common.annotations.TestIgnore;
 import com.hengyu.lab.system.domain.feedback.constant.FeedbackStatus;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.util.Assert;
 
 @TestIgnore
 @NoArgsConstructor
 @ToString
-@Data
+@Getter
 public class Feedback {
   private Long id;
   private String title;
@@ -17,12 +18,8 @@ public class Feedback {
   private FeedbackStatus status;
 
   public Feedback(String title, String content) {
-    this.title = title;
-    this.content = content;
-    this.status = FeedbackStatus.PENDING;
-  }
-  public Feedback(Long id, String title, String content) {
-    this.id = id;
+    Assert.hasText(title, "title 不能为空");
+    Assert.hasText(content, "内容不能为空");
     this.title = title;
     this.content = content;
     this.status = FeedbackStatus.PENDING;

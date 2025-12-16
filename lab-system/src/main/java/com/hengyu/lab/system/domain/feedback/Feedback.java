@@ -2,7 +2,6 @@ package com.hengyu.lab.system.domain.feedback;
 
 import com.hengyu.lab.common.annotations.TestIgnore;
 import com.hengyu.lab.system.domain.feedback.constant.FeedbackStatus;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -38,7 +37,7 @@ public class Feedback {
   public void update(String title, String content) {
     Assert.hasText(title, "title 不能为空");
     Assert.hasText(content, "content 不能为空");
-    if (this.title == title && this.content == content) {
+    if (this.title.equals(title) && this.content.equals(content)) {
       return;
     }
     this.title = title;

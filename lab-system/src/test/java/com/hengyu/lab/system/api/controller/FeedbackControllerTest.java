@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hengyu.lab.system.application.dto.clientobject.FeedbackCO;
 import com.hengyu.lab.system.application.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.DeleteFeedbackCmd;
-import com.hengyu.lab.system.application.dto.command.UpdateFeedbackCmd;
+import com.hengyu.lab.system.application.dto.command.UpdateFeedbackStatusCmd;
 import com.hengyu.lab.system.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.application.service.FeedbackAppService;
 import com.hengyu.lab.system.domain.feedback.constant.FeedbackStatus;
@@ -107,7 +107,7 @@ class FeedbackControllerTest {
 
   @Test
   void update_success() throws Exception {
-    UpdateFeedbackCmd cmd = new UpdateFeedbackCmd();
+    UpdateFeedbackStatusCmd cmd = new UpdateFeedbackStatusCmd();
     cmd.setId("1");
     cmd.setStatus(FeedbackStatus.SOLVING);
     mockMvc.perform(put("/api/v1/feedbacks")

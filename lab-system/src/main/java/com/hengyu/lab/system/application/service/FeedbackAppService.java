@@ -8,7 +8,7 @@ import com.hengyu.lab.common.exception.FeedbackException;
 import com.hengyu.lab.system.application.dto.clientobject.FeedbackCO;
 import com.hengyu.lab.system.application.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.DeleteFeedbackCmd;
-import com.hengyu.lab.system.application.dto.command.UpdateFeedbackCmd;
+import com.hengyu.lab.system.application.dto.command.UpdateFeedbackStatusCmd;
 import com.hengyu.lab.system.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.domain.feedback.Feedback;
 import com.hengyu.lab.system.domain.feedback.repository.FeedbackRepository;
@@ -53,7 +53,7 @@ public class FeedbackAppService {
   }
 
   @Transactional(rollbackFor = Exception.class)
-  public void updateStatus(UpdateFeedbackCmd cmd) {
+  public void updateStatus(UpdateFeedbackStatusCmd cmd) {
     Long id = Long.parseLong(cmd.getId());
     Feedback feedback = feedbackRepository.find(id).orElseThrow(() -> new FeedbackException(
         ResultCode.FAILURE));

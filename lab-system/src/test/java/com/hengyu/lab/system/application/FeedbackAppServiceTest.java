@@ -3,7 +3,7 @@ package com.hengyu.lab.system.application;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hengyu.lab.system.application.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.DeleteFeedbackCmd;
-import com.hengyu.lab.system.application.dto.command.UpdateFeedbackCmd;
+import com.hengyu.lab.system.application.dto.command.UpdateFeedbackStatusCmd;
 import com.hengyu.lab.system.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.application.service.FeedbackAppService;
 import com.hengyu.lab.system.domain.feedback.Feedback;
@@ -95,7 +95,7 @@ class FeedbackAppServiceTest {
     feedbackPO.setId(1L);
     when(feedBackRepository.find(1L)).thenReturn(Optional.of(feedback));
     Assertions.assertEquals(FeedbackStatus.PENDING, feedback.getStatus());
-    UpdateFeedbackCmd cmd = new UpdateFeedbackCmd();
+    UpdateFeedbackStatusCmd cmd = new UpdateFeedbackStatusCmd();
     cmd.setId("1");
     cmd.setStatus(FeedbackStatus.SOLVING);
     feedBackAppService.updateStatus(cmd);

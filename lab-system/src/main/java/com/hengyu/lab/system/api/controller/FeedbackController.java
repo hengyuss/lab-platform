@@ -5,7 +5,7 @@ import com.hengyu.lab.common.api.R;
 import com.hengyu.lab.system.application.dto.clientobject.FeedbackCO;
 import com.hengyu.lab.system.application.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.DeleteFeedbackCmd;
-import com.hengyu.lab.system.application.dto.command.UpdateFeedbackCmd;
+import com.hengyu.lab.system.application.dto.command.UpdateFeedbackStatusCmd;
 import com.hengyu.lab.system.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.application.service.FeedbackAppService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -58,7 +58,7 @@ public class FeedbackController {
 
   @PutMapping
   @Operation(summary = "更改需求")
-  public R<Void> update(@RequestBody UpdateFeedbackCmd cmd) {
+  public R<Void> update(@RequestBody UpdateFeedbackStatusCmd cmd) {
     feedbackAppService.updateStatus(cmd);
     return R.ok();
   }

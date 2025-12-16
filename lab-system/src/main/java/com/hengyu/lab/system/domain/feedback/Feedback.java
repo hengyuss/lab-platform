@@ -2,6 +2,7 @@ package com.hengyu.lab.system.domain.feedback;
 
 import com.hengyu.lab.common.annotations.TestIgnore;
 import com.hengyu.lab.system.domain.feedback.constant.FeedbackStatus;
+import java.util.Objects;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -37,7 +38,7 @@ public class Feedback {
   public void update(String title, String content) {
     Assert.hasText(title, "title 不能为空");
     Assert.hasText(content, "content 不能为空");
-    if (this.title.equals(title) && this.content.equals(content)) {
+    if (Objects.equals(this.title, title) && Objects.equals(this.content, content)) {
       return;
     }
     this.title = title;

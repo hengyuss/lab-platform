@@ -15,3 +15,20 @@
 2025-12-16 20:31:28.608 [main] INFO  com.hengyu.lab.LabStartApplicationTests [N/A] - Started LabStartApplicationTests in 2.376 seconds (process running for 3.18)
 2025-12-16 20:31:29.336 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Shutdown initiated...
 2025-12-16 20:31:29.338 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Shutdown completed.
+2025-12-16 22:02:01.521 [background-preinit] INFO  org.hibernate.validator.internal.util.Version [N/A] - HV000001: Hibernate Validator 8.0.1.Final
+2025-12-16 22:02:01.551 [main] INFO  com.hengyu.lab.LabStartApplicationTests [N/A] - Starting LabStartApplicationTests using Java 21.0.9 with PID 3192581 (started by hengyu in /home/hengyu/tmp/java/lab-platform/lab-start)
+2025-12-16 22:02:01.552 [main] INFO  com.hengyu.lab.LabStartApplicationTests [N/A] - The following 1 profile is active: "test"
+2025-12-16 22:02:02.587 [main] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Starting...
+2025-12-16 22:02:02.861 [main] INFO  com.zaxxer.hikari.pool.HikariPool [N/A] - HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2025-12-16 22:02:02.863 [main] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Start completed.
+2025-12-16 22:02:02.915 [main] INFO  org.flywaydb.core.FlywayExecutor [N/A] - Database: jdbc:h2:mem:testdb (H2 2.2)
+2025-12-16 22:02:02.921 [main] WARN  org.flywaydb.core.internal.database.base.Database [N/A] - Flyway upgrade recommended: H2 2.2.224 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2025-12-16 22:02:02.937 [main] INFO  o.f.c.i.schemahistory.JdbcTableSchemaHistory [N/A] - Schema history table "PUBLIC"."flyway_schema_history" does not exist yet
+2025-12-16 22:02:02.939 [main] INFO  org.flywaydb.core.internal.command.DbValidate [N/A] - Successfully validated 1 migration (execution time 00:00.011s)
+2025-12-16 22:02:02.945 [main] INFO  o.f.c.i.schemahistory.JdbcTableSchemaHistory [N/A] - Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+2025-12-16 22:02:02.971 [main] INFO  org.flywaydb.core.internal.command.DbMigrate [N/A] - Current version of schema "PUBLIC": << Empty Schema >>
+2025-12-16 22:02:02.979 [main] INFO  org.flywaydb.core.internal.command.DbMigrate [N/A] - Migrating schema "PUBLIC" to version "2025.12.12.001 - create feedback table"
+2025-12-16 22:02:02.999 [main] INFO  org.flywaydb.core.internal.command.DbMigrate [N/A] - Successfully applied 1 migration to schema "PUBLIC", now at version v2025.12.12.001 (execution time 00:00.008s)
+2025-12-16 22:02:03.682 [main] INFO  com.hengyu.lab.LabStartApplicationTests [N/A] - Started LabStartApplicationTests in 2.503 seconds (process running for 3.287)
+2025-12-16 22:02:04.266 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Shutdown initiated...
+2025-12-16 22:02:04.269 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource [N/A] - HikariPool-1 - Shutdown completed.

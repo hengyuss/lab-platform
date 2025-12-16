@@ -5,6 +5,7 @@ import com.hengyu.lab.common.api.R;
 import com.hengyu.lab.system.application.dto.clientobject.FeedbackCO;
 import com.hengyu.lab.system.application.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.DeleteFeedbackCmd;
+import com.hengyu.lab.system.application.dto.command.UpdateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.UpdateFeedbackStatusCmd;
 import com.hengyu.lab.system.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.application.service.FeedbackAppService;
@@ -52,16 +53,22 @@ public class FeedbackController {
   public R<Boolean> delete(@PathVariable("id") @NotBlank(message = "id 不能为空") String id) {
     DeleteFeedbackCmd deleteFeedbackCmd = new DeleteFeedbackCmd();
     deleteFeedbackCmd.setId(id);
-    Boolean delete = feedbackAppService.delete(deleteFeedbackCmd);
-    return R.ok(delete);
+    feedbackAppService.delete(deleteFeedbackCmd);
+    return R.ok();
   }
 
-  @PutMapping
-  @Operation(summary = "更改需求")
-  public R<Void> update(@RequestBody UpdateFeedbackStatusCmd cmd) {
+  @PutMapping("/status")
+  @Operation(summary = "更改需求状态")
+  public R<Void> updateStatus(@RequestBody UpdateFeedbackStatusCmd cmd) {
     feedbackAppService.updateStatus(cmd);
     return R.ok();
   }
 
+  @PutMapping()
+  @Operation(summary = "更改需求")
+  public R<Void> update(@RequestBody UpdateFeedbackCmd cmd) {
+    feedbackAppService.update(cmd);
+    return R.ok();
+  }
 
 }

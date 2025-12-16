@@ -1,8 +1,10 @@
 package com.hengyu.lab.system.application;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hengyu.lab.common.exception.FeedbackException;
 import com.hengyu.lab.system.application.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.DeleteFeedbackCmd;
+import com.hengyu.lab.system.application.dto.command.UpdateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.UpdateFeedbackStatusCmd;
 import com.hengyu.lab.system.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.application.service.FeedbackAppService;
@@ -23,6 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -42,7 +45,7 @@ class FeedbackAppServiceTest {
   private FeedbackAppService feedBackAppService;
 
   @Test
-  void should_create_feedback_success(){
+  void should_create_feedback_success() {
     String title = "title";
     String content = "content";
 
@@ -53,7 +56,7 @@ class FeedbackAppServiceTest {
   }
 
   @Test
-  void get_feedback_by_page(){
+  void get_feedback_by_page() {
     FeedbackQry feedbackQry = new FeedbackQry();
     Page<FeedbackPO> mockPage = new Page<>();
     mockPage.setRecords(List.of(new FeedbackPO()));
@@ -65,32 +68,32 @@ class FeedbackAppServiceTest {
   }
 
   @Test
-  void delete_feedback_exist_by_id(){
+  void delete_feedback_exist_by_id() {
     DeleteFeedbackCmd delCmd = new DeleteFeedbackCmd();
     delCmd.setId("123");
 
-    when(feedBackRepository.removeById(Mockito.any(Long.class))).thenReturn(1);
-    Boolean delete = feedBackAppService.delete(delCmd);
+    Feedback feedback = new Feedback();
+    when(feedBackRepository.find(123L)).thenReturn(Optional.of(feedback));
+    feedBackAppService.delete(delCmd);
 
-    Mockito.verify(feedBackRepository).removeById(Mockito.any(Long.class));
-    Assertions.assertTrue(delete);
+    Mockito.verify(feedBackRepository).find(Mockito.anyLong());
+    Mockito.verify(feedBackRepository).removeById(Mockito.any(Feedback.class));
   }
 
   @Test
-  void delete_feedback_no_exist_by_id(){
+  void delete_feedback_no_exist_by_id() {
     DeleteFeedbackCmd delCmd = new DeleteFeedbackCmd();
     delCmd.setId("123");
-    when(feedBackRepository.removeById(Mockito.any(Long.class))).thenReturn(0);
-    Boolean delete = feedBackAppService.delete(delCmd);
 
-    Mockito.verify(feedBackRepository).removeById(Mockito.any(Long.class));
-    Assertions.assertFalse(delete);
+    when(feedBackRepository.find(123L)).thenThrow(new FeedbackException("test"));
+    Assertions.assertThrows(FeedbackException.class, () -> feedBackAppService.delete(delCmd));
+    Mockito.verify(feedBackRepository, never()).updateById(Mockito.any(Feedback.class));
 
   }
 
   @Test
-  void update_feedback_status(){
-    Feedback feedback = new Feedback( "title", "content");
+  void update_feedback_status() {
+    Feedback feedback = new Feedback("title", "content");
     FeedbackPO feedbackPO = new FeedbackPO();
     feedbackPO.setId(1L);
     when(feedBackRepository.find(1L)).thenReturn(Optional.of(feedback));
@@ -100,6 +103,21 @@ class FeedbackAppServiceTest {
     cmd.setStatus(FeedbackStatus.SOLVING);
     feedBackAppService.updateStatus(cmd);
     Mockito.verify(feedBackRepository).save(feedback);
+  }
+
+  @Test
+  void update_feedback_success() {
+    UpdateFeedbackCmd cmd = new UpdateFeedbackCmd();
+    cmd.setId("1");
+    cmd.setTitle("title");
+    cmd.setContent("content");
+    Feedback feedback = new Feedback();
+    when(feedBackRepository.find(1L)).thenReturn(Optional.of(feedback));
+
+    feedBackAppService.update(cmd);
+
+    Mockito.verify(feedBackRepository).find(Mockito.anyLong());
+    Mockito.verify(feedBackRepository).updateById(Mockito.any(Feedback.class));
   }
 
 

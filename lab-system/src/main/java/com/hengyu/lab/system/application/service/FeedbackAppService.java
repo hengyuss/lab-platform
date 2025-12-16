@@ -8,6 +8,7 @@ import com.hengyu.lab.common.exception.FeedbackException;
 import com.hengyu.lab.system.application.dto.clientobject.FeedbackCO;
 import com.hengyu.lab.system.application.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.DeleteFeedbackCmd;
+import com.hengyu.lab.system.application.dto.command.UpdateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.UpdateFeedbackStatusCmd;
 import com.hengyu.lab.system.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.domain.feedback.Feedback;
@@ -46,10 +47,11 @@ public class FeedbackAppService {
   }
 
 
-  public Boolean delete(DeleteFeedbackCmd delCmd) {
-    Long id = Long.parseLong(delCmd.getId());
-    int i = feedbackRepository.removeById(id);
-    return i > 0;
+  public void delete(DeleteFeedbackCmd cmd) {
+    Long id = Long.parseLong(cmd.getId());
+    Feedback feedback = feedbackRepository.find(id).orElseThrow(() -> new FeedbackException(
+        ResultCode.FAILURE));
+    feedbackRepository.removeById(feedback);
   }
 
   @Transactional(rollbackFor = Exception.class)
@@ -62,4 +64,13 @@ public class FeedbackAppService {
         id, feedback.getStatus(), cmd.getStatus());
     feedbackRepository.save(feedback);
   }
+
+  public void update(UpdateFeedbackCmd cmd) {
+    Long id = Long.parseLong(cmd.getId());
+    Feedback feedback = feedbackRepository.find(id).orElseThrow(() -> new FeedbackException(
+        ResultCode.FAILURE));
+    log.info("执行feedback 数据变更");
+    feedbackRepository.updateById(feedback);
+  }
+
 }

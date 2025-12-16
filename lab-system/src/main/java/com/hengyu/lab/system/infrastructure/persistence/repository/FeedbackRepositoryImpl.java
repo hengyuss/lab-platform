@@ -39,7 +39,14 @@ public class FeedbackRepositoryImpl implements FeedbackRepository {
   }
 
   @Override
-  public Integer removeById(Long l) {
-    return feedbackMapper.deleteById(l);
+  public void removeById(Feedback feedback) {
+    FeedbackPO po = feedbackConverter.toPo(feedback);
+    feedbackMapper.deleteById(po);
+  }
+
+  @Override
+  public void updateById(Feedback feedback) {
+    FeedbackPO po = feedbackConverter.toPo(feedback);
+    feedbackMapper.updateById(po);
   }
 }

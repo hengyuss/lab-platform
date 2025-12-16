@@ -6,6 +6,7 @@ import com.hengyu.lab.system.domain.feedback.repository.FeedbackRepository;
 import com.hengyu.lab.system.infrastructure.persistence.convert.FeedbackConverter;
 import com.hengyu.lab.system.infrastructure.persistence.mapper.FeedbackMapper;
 import com.hengyu.lab.system.infrastructure.persistence.po.FeedbackPO;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -16,8 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 
 @SpringBootTest()
@@ -104,7 +103,20 @@ class FeedbackRepositoryImplTest {
 
   @Test
   void removeById_success() {
-    feedbackRepository.removeById(1L);
-    Mockito.verify(feedbackMapper).deleteById(1L);
+    Feedback feedback = new Feedback();
+    FeedbackPO feedbackPO = new FeedbackPO();
+    Mockito.when(feedbackConverter.toPo(feedback)).thenReturn(feedbackPO);
+    feedbackRepository.removeById(feedback);
+    Mockito.verify(feedbackMapper).deleteById(feedbackPO);
+  }
+
+  @Test
+  void update(){
+    Feedback feedback = new Feedback();
+    FeedbackPO feedbackPO = new FeedbackPO();
+    Mockito.when(feedbackConverter.toPo(feedback)).thenReturn(feedbackPO);
+    feedbackRepository.updateById(feedback);
+    Mockito.verify(feedbackConverter).toPo(feedback);
+    Mockito.verify(feedbackMapper).updateById(feedbackPO);
   }
 }

@@ -10,5 +10,7 @@ public interface FeedbackRepository {
 
   Optional<Feedback> find(Long l);
 
-  Integer removeById(Long l);
+  void removeById(Feedback feedback);
+
+  void updateById(Feedback feedback);
 }

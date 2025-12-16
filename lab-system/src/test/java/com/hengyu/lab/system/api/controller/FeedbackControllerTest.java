@@ -2,10 +2,12 @@ package com.hengyu.lab.system.api.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hengyu.lab.system.application.dto.clientobject.FeedbackCO;
 import com.hengyu.lab.system.application.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.DeleteFeedbackCmd;
+import com.hengyu.lab.system.application.dto.command.UpdateFeedbackCmd;
 import com.hengyu.lab.system.application.dto.command.UpdateFeedbackStatusCmd;
 import com.hengyu.lab.system.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.application.service.FeedbackAppService;
@@ -78,12 +80,9 @@ class FeedbackControllerTest {
   @Test
   void delete_success() throws Exception {
 
-    when(feedbackAppService.delete(Mockito.any(DeleteFeedbackCmd.class))).thenReturn(true);
-
     mockMvc.perform(delete("/api/v1/feedbacks/{id}", "1"))
         .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.data").value(true));
+        .andExpect(status().isOk());
 
     Mockito.verify(feedbackAppService).delete(Mockito.argThat(cmd ->
         cmd.getId().equals("1") // 验证 Service 收到的命令里，ID 确实是 1
@@ -93,12 +92,9 @@ class FeedbackControllerTest {
   @Test
   void delete_fail() throws Exception {
 
-    when(feedbackAppService.delete(Mockito.any(DeleteFeedbackCmd.class))).thenReturn(false);
-
     mockMvc.perform(delete("/api/v1/feedbacks/{id}", "1"))
         .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.data").value(false));
+        .andExpect(status().isOk());
 
     Mockito.verify(feedbackAppService).delete(Mockito.argThat(cmd ->
         cmd.getId().equals("1") // 验证 Service 收到的命令里，ID 确实是 1
@@ -106,17 +102,35 @@ class FeedbackControllerTest {
   }
 
   @Test
-  void update_success() throws Exception {
+  void update_status_success() throws Exception {
     UpdateFeedbackStatusCmd cmd = new UpdateFeedbackStatusCmd();
     cmd.setId("1");
     cmd.setStatus(FeedbackStatus.SOLVING);
-    mockMvc.perform(put("/api/v1/feedbacks")
-        .contentType(MediaType.APPLICATION_JSON)
+    mockMvc.perform(put("/api/v1/feedbacks/status")
+            .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(cmd)))
-            .andDo(print());
-
+        .andDo(print());
 
     Mockito.verify(feedbackAppService).updateStatus(refEq(cmd));
+    Mockito.verify(feedbackAppService).updateStatus(Mockito.argThat(updateCmd -> updateCmd.getStatus().equals(FeedbackStatus.SOLVING)));
+  }
+
+  @Test
+  void update() throws Exception {
+    UpdateFeedbackCmd cmd = new UpdateFeedbackCmd();
+    cmd.setId("1");
+    cmd.setTitle("testTitle");
+    cmd.setContent("testContent");
+    mockMvc.perform(put("/api/v1/feedbacks")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(cmd)))
+        .andDo(print())
+        .andExpect(status().isOk());
+
+    Mockito.verify(feedbackAppService).update(refEq(cmd));
+    Mockito.verify(feedbackAppService).update(Mockito.argThat(feedback -> feedback.getId().equals("1")));
+    Mockito.verify(feedbackAppService).update(Mockito.argThat(feedback -> feedback.getTitle().equals("testTitle")));
+    Mockito.verify(feedbackAppService).update(Mockito.argThat(feedback -> feedback.getContent().equals("testContent")));
   }
 
 }

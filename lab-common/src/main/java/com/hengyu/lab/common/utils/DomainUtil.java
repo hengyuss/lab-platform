@@ -1,8 +1,7 @@
 package com.hengyu.lab.common.utils;
 
-import org.springframework.util.ReflectionUtils;
-
 import java.lang.reflect.Field;
+import org.springframework.util.ReflectionUtils;
 
 public class DomainUtil {
 

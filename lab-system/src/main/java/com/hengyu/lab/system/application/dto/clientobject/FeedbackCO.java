@@ -2,10 +2,8 @@ package com.hengyu.lab.system.application.dto.clientobject;
 
 import com.hengyu.lab.system.domain.feedback.constant.FeedbackStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-
 import java.time.LocalDateTime;
+import lombok.Data;
 
 @Data
 public class FeedbackCO {

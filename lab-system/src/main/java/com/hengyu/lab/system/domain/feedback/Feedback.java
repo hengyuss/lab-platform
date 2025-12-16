@@ -1,11 +1,8 @@
 package com.hengyu.lab.system.domain.feedback;
 
 import com.hengyu.lab.common.annotations.TestIgnore;
-import com.hengyu.lab.common.api.ResultCode;
-import com.hengyu.lab.common.exception.FeedbackException;
 import com.hengyu.lab.system.domain.feedback.constant.FeedbackStatus;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.util.Assert;

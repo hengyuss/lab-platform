@@ -2,6 +2,7 @@ package com.hengyu.lab.system.domain.feedback;
 
 import com.hengyu.lab.common.annotations.TestIgnore;
 import com.hengyu.lab.system.domain.feedback.constant.FeedbackStatus;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -12,6 +13,7 @@ import org.springframework.util.Assert;
 @ToString
 @Data
 public class Feedback {
+
   private Long id;
   private String title;
   private String content;
@@ -33,4 +35,13 @@ public class Feedback {
     this.status = status;
   }
 
+  public void update(String title, String content) {
+    Assert.hasText(title, "title 不能为空");
+    Assert.hasText(content, "content 不能为空");
+    if (this.title == title && this.content == content) {
+      return;
+    }
+    this.title = title;
+    this.content = content;
+  }
 }

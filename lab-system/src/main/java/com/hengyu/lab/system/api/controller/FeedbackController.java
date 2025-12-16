@@ -59,14 +59,14 @@ public class FeedbackController {
 
   @PutMapping("/status")
   @Operation(summary = "更改需求状态")
-  public R<Void> updateStatus(@RequestBody UpdateFeedbackStatusCmd cmd) {
+  public R<Void> updateStatus(@RequestBody @Valid UpdateFeedbackStatusCmd cmd) {
     feedbackAppService.updateStatus(cmd);
     return R.ok();
   }
 
   @PutMapping()
   @Operation(summary = "更改需求")
-  public R<Void> update(@RequestBody UpdateFeedbackCmd cmd) {
+  public R<Void> update(@RequestBody @Valid UpdateFeedbackCmd cmd) {
     feedbackAppService.update(cmd);
     return R.ok();
   }

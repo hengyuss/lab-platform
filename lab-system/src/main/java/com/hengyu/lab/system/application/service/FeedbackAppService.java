@@ -48,29 +48,30 @@ public class FeedbackAppService {
 
 
   public void delete(DeleteFeedbackCmd cmd) {
-    Long id = Long.parseLong(cmd.getId());
-    Feedback feedback = feedbackRepository.find(id).orElseThrow(() -> new FeedbackException(
-        ResultCode.FAILURE));
+    Feedback feedback = getFeedback(cmd.getId());
     feedbackRepository.removeById(feedback);
   }
 
   @Transactional(rollbackFor = Exception.class)
   public void updateStatus(UpdateFeedbackStatusCmd cmd) {
-    Long id = Long.parseLong(cmd.getId());
-    Feedback feedback = feedbackRepository.find(id).orElseThrow(() -> new FeedbackException(
-        ResultCode.FAILURE));
+    Feedback feedback = getFeedback(cmd.getId());
     feedback.updateStatus(cmd.getStatus());
     log.info("执行反馈状态变更: feedbackId={}, oldStatus={}, newStatus={}",
-        id, feedback.getStatus(), cmd.getStatus());
+        feedback.getId(), feedback.getStatus(), cmd.getStatus());
     feedbackRepository.save(feedback);
   }
 
   public void update(UpdateFeedbackCmd cmd) {
-    Long id = Long.parseLong(cmd.getId());
-    Feedback feedback = feedbackRepository.find(id).orElseThrow(() -> new FeedbackException(
-        ResultCode.FAILURE));
+    Feedback feedback = getFeedback(cmd.getId());
+    feedback.update(cmd.getTitle(), cmd.getContent());
     log.info("执行feedback 数据变更");
     feedbackRepository.updateById(feedback);
+  }
+
+  private Feedback getFeedback(String feedbackId) {
+    Long id = Long.parseLong(feedbackId);
+    return feedbackRepository.find(id).orElseThrow(() -> new FeedbackException(
+        ResultCode.ARGUMENT_NOT_VALID, "资源不存在"));
   }
 
 }

@@ -1,6 +1,7 @@
 package com.hengyu.lab.system.domain.feedback;
 
-import com.hengyu.lab.system.domain.feedback.constant.FeedbackStatus;
+import com.hengyu.lab.system.feedback.domain.Feedback;
+import com.hengyu.lab.system.feedback.domain.constant.FeedbackStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

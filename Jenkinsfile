@@ -36,7 +36,7 @@ pipeline {
                     sh 'chmod +x mvnw'
                     // --- ⚠️ 修改点 2: 确保所有模块都编译 ---
                     // 运行 root 下的 install，确保子模块之间的依赖关系被正确解析
-                    sh './mvnw clean install -DskipTests=false'
+                    sh './mvnw clean install -DskipTests=false -Dspring.profiles.active=test'
                 }
                 // --- ⚠️ 修改点 3: 递归收集测试报告 ---
                 // 单模块是 target/*.xml，多模块必须加 **/ 才能找到子文件夹里的报告

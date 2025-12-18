@@ -31,7 +31,7 @@ public class Feedback {
     this.status = FeedbackStatus.PENDING;
   }
 
-  public Boolean updateStatus(FeedbackStatus status) {
+  public boolean updateStatus(FeedbackStatus status) {
     Assert.notNull(status, "需求状态不能为null");
     if (Objects.equals(status, this.status)) {
       return false;
@@ -40,7 +40,7 @@ public class Feedback {
     return true;
   }
 
-  public Boolean update(String title, String content) {
+  public boolean update(String title, String content) {
     Assert.hasText(title, "title 不能为空");
     Assert.hasText(content, "content 不能为空");
     if (Objects.equals(this.title, title) && Objects.equals(this.content, content)) {

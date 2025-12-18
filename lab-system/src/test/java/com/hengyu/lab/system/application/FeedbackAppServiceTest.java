@@ -91,10 +91,8 @@ class FeedbackAppServiceTest {
   }
 
   @Test
-  void update_feedback_status() {
+  void update_feedback_not_same_status() {
     Feedback feedback = new Feedback("title", "content");
-    FeedbackPO feedbackPO = new FeedbackPO();
-    feedbackPO.setId(1L);
     when(feedBackRepository.find(1L)).thenReturn(Optional.of(feedback));
     Assertions.assertEquals(FeedbackStatus.PENDING, feedback.getStatus());
     UpdateFeedbackStatusCmd cmd = new UpdateFeedbackStatusCmd();
@@ -103,6 +101,19 @@ class FeedbackAppServiceTest {
     feedBackAppService.updateStatus(cmd);
     Mockito.verify(feedBackRepository).save(feedback);
   }
+
+  @Test
+  void update_feedback_same_status() {
+    Feedback feedback = new Feedback("title", "content");
+    when(feedBackRepository.find(1L)).thenReturn(Optional.of(feedback));
+    Assertions.assertEquals(FeedbackStatus.PENDING, feedback.getStatus());
+    UpdateFeedbackStatusCmd cmd = new UpdateFeedbackStatusCmd();
+    cmd.setId("1");
+    cmd.setStatus(FeedbackStatus.PENDING);
+    feedBackAppService.updateStatus(cmd);
+    Mockito.verify(feedBackRepository, Mockito.never()).save(feedback);
+  }
+
 
   @Test
   void update_feedback_success() {
@@ -117,6 +128,21 @@ class FeedbackAppServiceTest {
 
     Mockito.verify(feedBackRepository).find(Mockito.anyLong());
     Mockito.verify(feedBackRepository).updateById(Mockito.any(Feedback.class));
+  }
+
+  @Test
+  void update_feedback_same_title_and_content() {
+    UpdateFeedbackCmd cmd = new UpdateFeedbackCmd();
+    cmd.setId("1");
+    cmd.setTitle("title");
+    cmd.setContent("content");
+    Feedback feedback = Feedback.builder().title("title").content("content").build();
+    when(feedBackRepository.find(1L)).thenReturn(Optional.of(feedback));
+
+    feedBackAppService.update(cmd);
+
+    Mockito.verify(feedBackRepository, never()).updateById(Mockito.any(Feedback.class));
+
   }
 
 

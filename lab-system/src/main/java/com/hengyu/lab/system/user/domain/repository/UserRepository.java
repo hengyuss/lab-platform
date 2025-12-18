@@ -2,7 +2,6 @@ package com.hengyu.lab.system.user.domain.repository;
 
 
 import com.hengyu.lab.system.user.domain.User;
-import com.hengyu.lab.system.user.infrastructure.po.UserPO;
 import java.util.Optional;
 
 public interface UserRepository {

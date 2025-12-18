@@ -55,15 +55,19 @@ public class FeedbackAppService {
   @Transactional(rollbackFor = Exception.class)
   public void updateStatus(UpdateFeedbackStatusCmd cmd) {
     Feedback feedback = getFeedback(cmd.getId());
-    feedback.updateStatus(cmd.getStatus());
-    log.info("执行反馈状态变更: feedbackId={}, oldStatus={}, newStatus={}",
-        feedback.getId(), feedback.getStatus(), cmd.getStatus());
+    boolean updateResult = feedback.updateStatus(cmd.getStatus());
+    if (!updateResult) {
+      return;
+    }
     feedbackRepository.save(feedback);
   }
 
   public void update(UpdateFeedbackCmd cmd) {
     Feedback feedback = getFeedback(cmd.getId());
-    feedback.update(cmd.getTitle(), cmd.getContent());
+    Boolean updateFlag = feedback.update(cmd.getTitle(), cmd.getContent());
+    if (!updateFlag) {
+      return;
+    }
     log.info("执行feedback 数据变更");
     feedbackRepository.updateById(feedback);
   }

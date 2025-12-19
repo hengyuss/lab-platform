@@ -19,6 +19,13 @@ public class User {
   private String realName;
   private String email;
   private String mobile;
-  private IdentityType  identityType;
+  private IdentityType identityType;
+
+
+  public static User register(String username, String password, String realName, String email,
+      String mobile) {
+    return User.builder().username(username).password(password).realName(realName).email(email)
+        .mobile(mobile).build();
+  }
 
 }

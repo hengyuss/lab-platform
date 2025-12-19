@@ -3,7 +3,6 @@ package com.hengyu.lab.handler;
 import com.hengyu.lab.common.api.R;
 import com.hengyu.lab.common.api.ResultCode;
 import com.hengyu.lab.common.exception.BizException;
-import com.hengyu.lab.system.feedback.domain.exception.FeedbackException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;

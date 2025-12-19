@@ -7,17 +7,16 @@ import com.hengyu.lab.system.user.infrastructure.convert.UserConverter;
 import com.hengyu.lab.system.user.infrastructure.mapper.UserMapper;
 import com.hengyu.lab.system.user.infrastructure.po.UserPO;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
-  @Autowired
-  private UserMapper userMapper;
+  private final UserMapper userMapper;
 
-  @Autowired
-  private UserConverter userConverter;
+  private final UserConverter userConverter;
 
   @Override
   public void save(User user) {

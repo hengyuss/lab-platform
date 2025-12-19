@@ -4,7 +4,7 @@ import com.hengyu.lab.common.api.ResultCode;
 
 public class BizException extends RuntimeException {
 
-  private Integer code;
+  private final Integer code;
 
   public BizException(IErrorCode errorCode) {
     super(errorCode.getMsg());

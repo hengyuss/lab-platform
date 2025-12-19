@@ -1,10 +1,9 @@
 package com.hengyu.lab.system.feedback.infrastructure.security;
 
 import com.hengyu.lab.system.feedback.domain.security.PasswordEncryptor;
-import org.springframework.stereotype.Component;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 @Component
 public class BCryptPasswordEncryptor implements PasswordEncryptor {

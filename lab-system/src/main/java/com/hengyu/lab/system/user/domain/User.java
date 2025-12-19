@@ -23,9 +23,9 @@ public class User {
 
 
   public static User register(String username, String password, String realName, String email,
-      String mobile) {
+      String mobile, IdentityType identityType) {
     return User.builder().username(username).password(password).realName(realName).email(email)
-        .mobile(mobile).build();
+        .mobile(mobile).identityType(identityType).build();
   }
 
 }

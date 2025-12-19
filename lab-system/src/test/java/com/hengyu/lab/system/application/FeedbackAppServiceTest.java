@@ -4,7 +4,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hengyu.lab.common.exception.FeedbackException;
+import com.hengyu.lab.system.feedback.domain.exception.FeedbackException;
 import com.hengyu.lab.system.feedback.application.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.feedback.application.dto.command.DeleteFeedbackCmd;
 import com.hengyu.lab.system.feedback.application.dto.command.UpdateFeedbackCmd;

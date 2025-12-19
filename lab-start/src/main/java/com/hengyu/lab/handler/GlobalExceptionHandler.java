@@ -1,7 +1,9 @@
-package com.hengyu.lab.common.exception;
+package com.hengyu.lab.handler;
 
 import com.hengyu.lab.common.api.R;
 import com.hengyu.lab.common.api.ResultCode;
+import com.hengyu.lab.common.exception.BizException;
+import com.hengyu.lab.system.feedback.domain.exception.FeedbackException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,9 +14,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(value = FeedbackException.class)
-  public R<Void> handleException(FeedbackException e) {
-    log.warn("业务异常: code={}, msg={}", e.getCode(), e.getMessage());
+  @ExceptionHandler(value = BizException.class)
+  public R<Void> handleException(BizException e) {
+    log.warn("业务异常: code={}, msg={}", e.getCode(), e.getMsg());
     return R.fail(e.getCode(), e.getMessage());
   }
 

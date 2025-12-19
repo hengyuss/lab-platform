@@ -3,8 +3,7 @@ package com.hengyu.lab.system.feedback.application.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hengyu.lab.common.api.ResultCode;
-import com.hengyu.lab.common.exception.FeedbackException;
+import com.hengyu.lab.system.feedback.domain.exception.FeedbackException;
 import com.hengyu.lab.system.feedback.application.dto.clientobject.FeedbackCO;
 import com.hengyu.lab.system.feedback.application.dto.command.CreateFeedbackCmd;
 import com.hengyu.lab.system.feedback.application.dto.command.DeleteFeedbackCmd;
@@ -74,8 +73,7 @@ public class FeedbackAppService {
 
   private Feedback getFeedback(String feedbackId) {
     Long id = Long.parseLong(feedbackId);
-    return feedbackRepository.find(id).orElseThrow(() -> new FeedbackException(
-        ResultCode.ARGUMENT_NOT_VALID, "资源不存在"));
+    return feedbackRepository.find(id).orElseThrow(() -> new FeedbackException("资源不存在"));
   }
 
 }

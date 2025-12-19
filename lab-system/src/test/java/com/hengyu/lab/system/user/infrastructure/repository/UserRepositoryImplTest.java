@@ -8,6 +8,7 @@ import com.hengyu.lab.system.user.domain.constant.IdentityType;
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
 import com.hengyu.lab.system.user.infrastructure.mapper.UserMapper;
 import java.util.Optional;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,8 +49,57 @@ class UserRepositoryImplTest {
 
   @Test
   void findById_success() {
+    User user = User.builder()
+        .email("testEmail")
+        .mobile("testMobile")
+        .password("testPassword")
+        .realName("testRealName")
+        .username("testUsername")
+        .identityType(IdentityType.STUDENT)
+        .build();
+    userRepository.save(user);
 
-    userRepository.findById(1L);
+    Optional<User> byId = userRepository.findById(user.getId());
+    assertTrue(byId.isPresent());
+  }
+
+  @Test
+  void save_when_user_exist() {
+    User user = User.builder()
+        .email("testEmail")
+        .mobile("testMobile")
+        .password("testPassword")
+        .realName("testRealName")
+        .username("testUsername")
+        .identityType(IdentityType.STUDENT)
+        .build();
+    userRepository.save(user);
+    Optional<User> firstFindUser = userRepository.findById(user.getId());
+    Assertions.assertEquals("testEmail", firstFindUser.get().getEmail());
+    Assertions.assertEquals("testUsername", firstFindUser.get().getUsername());
+    User modifiedUser = User.builder().id(user.getId())
+        .email("modifiedEmail")
+        .username("modifiedUsername")
+        .build();
+    userRepository.save(modifiedUser);
+    Optional<User> modified = userRepository.findById(user.getId());
+    Assertions.assertEquals("modifiedEmail", modified.get().getEmail());
+    Assertions.assertEquals("modifiedUsername", modified.get().getUsername());
+  }
+
+  @Test
+  void findByUsername_success() {
+    User user = User.builder()
+        .email("testEmail")
+        .mobile("testMobile")
+        .password("testPassword")
+        .realName("testRealName")
+        .username("testUsername")
+        .identityType(IdentityType.STUDENT)
+        .build();
+    userRepository.save(user);
+    Optional<User> findUser = userRepository.findByUsername("testUsername");
+    assertTrue(findUser.isPresent());
   }
 
 }

@@ -36,4 +36,11 @@ public class UserRepositoryImpl implements UserRepository {
     return Optional.ofNullable(userPO)
         .map(userConverter::toDomain);
   }
+
+  @Override
+  public Optional<User> findByUsername(String username) {
+    UserPO userPO = userMapper.findByUsername(username);
+    return Optional.ofNullable(userPO)
+        .map(userConverter::toDomain);
+  }
 }

@@ -26,6 +26,7 @@
     <jjwt.version>0.11.5</jjwt.version>
     <sonar.coverage.exclusions>
       **/com/hengyu/lab/common/exception/**,
+      **/com/hengyu/lab/common/constant/**,
       **/com/hengyu/lab/LabStartApplication.java
     </sonar.coverage.exclusions>
 

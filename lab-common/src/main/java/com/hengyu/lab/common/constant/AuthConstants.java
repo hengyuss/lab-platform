@@ -2,7 +2,6 @@ package com.hengyu.lab.common.constant;
 
 import com.hengyu.lab.common.annotations.TestIgnore;
 
-@TestIgnore
 public final class AuthConstants {
 
   private AuthConstants() {

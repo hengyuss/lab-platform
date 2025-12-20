@@ -28,7 +28,6 @@
     </dependency>
 
 
-
     <dependency>
       <groupId>com.hengyu</groupId>
       <artifactId>lab-common</artifactId>

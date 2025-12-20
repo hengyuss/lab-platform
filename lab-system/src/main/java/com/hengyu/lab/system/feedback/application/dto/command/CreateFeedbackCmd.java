@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateFeedbackCmd {
+
   @NotBlank(message = "标题不能为空")
   public String title;
   @NotBlank(message = "内容不能为空")

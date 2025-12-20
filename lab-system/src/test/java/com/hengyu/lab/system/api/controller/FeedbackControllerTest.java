@@ -103,7 +103,8 @@ class FeedbackControllerTest {
         .andDo(print());
 
     Mockito.verify(feedbackAppService).updateStatus(refEq(cmd));
-    Mockito.verify(feedbackAppService).updateStatus(Mockito.argThat(updateCmd -> updateCmd.getStatus().equals(FeedbackStatus.SOLVING)));
+    Mockito.verify(feedbackAppService).updateStatus(
+        Mockito.argThat(updateCmd -> updateCmd.getStatus().equals(FeedbackStatus.SOLVING)));
   }
 
   @Test
@@ -119,9 +120,12 @@ class FeedbackControllerTest {
         .andExpect(status().isOk());
 
     Mockito.verify(feedbackAppService).update(refEq(cmd));
-    Mockito.verify(feedbackAppService).update(Mockito.argThat(feedback -> feedback.getId().equals("1")));
-    Mockito.verify(feedbackAppService).update(Mockito.argThat(feedback -> feedback.getTitle().equals("testTitle")));
-    Mockito.verify(feedbackAppService).update(Mockito.argThat(feedback -> feedback.getContent().equals("testContent")));
+    Mockito.verify(feedbackAppService)
+        .update(Mockito.argThat(feedback -> feedback.getId().equals("1")));
+    Mockito.verify(feedbackAppService)
+        .update(Mockito.argThat(feedback -> feedback.getTitle().equals("testTitle")));
+    Mockito.verify(feedbackAppService)
+        .update(Mockito.argThat(feedback -> feedback.getContent().equals("testContent")));
   }
 
 }

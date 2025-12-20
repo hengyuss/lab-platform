@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class UpdateFeedbackCmd {
+
   @NotBlank(message = "id 不能为空")
   private String id;
   @NotBlank(message = "title 不能为空")

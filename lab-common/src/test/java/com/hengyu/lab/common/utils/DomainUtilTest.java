@@ -9,10 +9,13 @@ import org.springframework.util.ReflectionUtils;
 class DomainUtilTest {
 
   static class TestEntity {
+
     Long id;
+
     public void setId(Long id) {
       this.id = id;
     }
+
     public Long getId() {
       return id;
     }
@@ -41,7 +44,8 @@ class DomainUtilTest {
   @Test
   void testDomainUtil_entity_is_null() {
     DomainUtil.setIdToEntity(null, 1L);
-    try(MockedStatic<ReflectionUtils> reflectionUtilsStatic = Mockito.mockStatic(ReflectionUtils.class)) {
+    try (MockedStatic<ReflectionUtils> reflectionUtilsStatic = Mockito.mockStatic(
+        ReflectionUtils.class)) {
       reflectionUtilsStatic.verifyNoInteractions();
     }
   }

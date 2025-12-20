@@ -47,8 +47,8 @@ class AuthControllerTest {
     Mockito.when(authService.register(Mockito.any())).thenReturn(registerVO);
 
     mockMvc.perform(post("/api/v1/auth/register")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(registerCmd)))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(registerCmd)))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data.identityType").value(IdentityType.STUDENT.getTYPE()))

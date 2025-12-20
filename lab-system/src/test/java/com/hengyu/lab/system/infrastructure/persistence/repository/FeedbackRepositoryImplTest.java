@@ -76,7 +76,7 @@ class FeedbackRepositoryImplTest {
 
   @Test
   void findById_success() {
-    Feedback feedback = new Feedback( "testTitle", "testContent");
+    Feedback feedback = new Feedback("testTitle", "testContent");
     FeedbackPO feedbackPO = new FeedbackPO();
     BeanUtils.copyProperties(feedback, feedbackPO);
     Mockito.when(feedbackMapper.selectById(1L)).thenReturn(feedbackPO);
@@ -111,7 +111,7 @@ class FeedbackRepositoryImplTest {
   }
 
   @Test
-  void update(){
+  void update() {
     Feedback feedback = new Feedback();
     FeedbackPO feedbackPO = new FeedbackPO();
     Mockito.when(feedbackConverter.toPo(feedback)).thenReturn(feedbackPO);

@@ -9,7 +9,6 @@ import com.hengyu.lab.system.user.domain.exception.UserErrorCode;
 import com.hengyu.lab.system.user.domain.exception.UserException;
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
 import com.hengyu.lab.system.user.infrastructure.convert.UserConverter;
-import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

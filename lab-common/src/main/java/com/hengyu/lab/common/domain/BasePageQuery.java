@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @TestIgnore
 public class BasePageQuery {
+
   @Schema(description = "页码")
   private Integer pageNo = 1;
   @Schema(description = "每页数量")

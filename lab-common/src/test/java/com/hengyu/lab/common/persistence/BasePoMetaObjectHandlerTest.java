@@ -19,55 +19,57 @@ import org.junit.jupiter.api.Test;
 
 
 class BasePoMetaObjectHandlerTest {
-    private final MetaObjectHandler metaObjectHandler = new BasePoMetaObjectHandler();
 
-    // 1. 【关键修改】必须加上注解，否则 strictInsertFill 会认为该字段不需要填充
-    @Data
-    @TableName("test_po") // 假装它是个表
-    static class TestPO {
-        @TableField(fill = FieldFill.INSERT) // 必须有
-        private LocalDateTime createTime;
+  private final MetaObjectHandler metaObjectHandler = new BasePoMetaObjectHandler();
 
-        @TableField(fill = FieldFill.INSERT_UPDATE) // 必须有
-        private LocalDateTime updateTime;
+  // 1. 【关键修改】必须加上注解，否则 strictInsertFill 会认为该字段不需要填充
+  @Data
+  @TableName("test_po") // 假装它是个表
+  static class TestPO {
 
-        private String otherField;
-    }
+    @TableField(fill = FieldFill.INSERT) // 必须有
+    private LocalDateTime createTime;
 
-    // 2. 【关键修改】手动初始化 TableInfo
-    @BeforeEach
-    void initTableInfo() {
-        // 这一步模拟了 MyBatis Plus 启动时的实体扫描
-        // 如果没有这一步，strictInsertFill 找不到 TableInfo 就会报 NPE
-        TableInfoHelper.initTableInfo(
-                new MapperBuilderAssistant(new MybatisConfiguration(), ""),
-                TestPO.class
-        );
-    }
+    @TableField(fill = FieldFill.INSERT_UPDATE) // 必须有
+    private LocalDateTime updateTime;
 
-    @Test
-    void insertFill_ShouldFillCreateTimeAndUpdateTime() {
-        TestPO po = new TestPO();
-        MetaObject metaObject = SystemMetaObject.forObject(po);
+    private String otherField;
+  }
 
-        metaObjectHandler.insertFill(metaObject);
+  // 2. 【关键修改】手动初始化 TableInfo
+  @BeforeEach
+  void initTableInfo() {
+    // 这一步模拟了 MyBatis Plus 启动时的实体扫描
+    // 如果没有这一步，strictInsertFill 找不到 TableInfo 就会报 NPE
+    TableInfoHelper.initTableInfo(
+        new MapperBuilderAssistant(new MybatisConfiguration(), ""),
+        TestPO.class
+    );
+  }
 
-        assertNotNull(po.getCreateTime(), "insert 操作应该填充 createTime");
-        assertNotNull(po.getUpdateTime(), "insert 操作应该填充 updateTime");
-    }
+  @Test
+  void insertFill_ShouldFillCreateTimeAndUpdateTime() {
+    TestPO po = new TestPO();
+    MetaObject metaObject = SystemMetaObject.forObject(po);
 
-    @Test
-    void updateFill_ShouldOnlyFillUpdateTime() {
-        TestPO po = new TestPO();
-        LocalDateTime oldCreateTime = LocalDateTime.of(2020, 1, 1, 0, 0);
-        po.setCreateTime(oldCreateTime);
+    metaObjectHandler.insertFill(metaObject);
 
-        MetaObject metaObject = SystemMetaObject.forObject(po);
+    assertNotNull(po.getCreateTime(), "insert 操作应该填充 createTime");
+    assertNotNull(po.getUpdateTime(), "insert 操作应该填充 updateTime");
+  }
 
-        metaObjectHandler.updateFill(metaObject);
+  @Test
+  void updateFill_ShouldOnlyFillUpdateTime() {
+    TestPO po = new TestPO();
+    LocalDateTime oldCreateTime = LocalDateTime.of(2020, 1, 1, 0, 0);
+    po.setCreateTime(oldCreateTime);
 
-        assertNotNull(po.getUpdateTime(), "update 操作应该填充 updateTime");
-        // 验证 createTime 没有被篡改
-        assertEquals(oldCreateTime, po.getCreateTime());
-    }
+    MetaObject metaObject = SystemMetaObject.forObject(po);
+
+    metaObjectHandler.updateFill(metaObject);
+
+    assertNotNull(po.getUpdateTime(), "update 操作应该填充 updateTime");
+    // 验证 createTime 没有被篡改
+    assertEquals(oldCreateTime, po.getCreateTime());
+  }
 }

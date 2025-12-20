@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class DeleteFeedbackCmd {
+
   @NotBlank(message = "id不能为空")
   private String id;
 

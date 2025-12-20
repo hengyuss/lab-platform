@@ -28,8 +28,7 @@ public class UserPO extends BasePO {
 
   private String realName;
 
-  private IdentityType  identityType;
-
+  private IdentityType identityType;
 
 
 }

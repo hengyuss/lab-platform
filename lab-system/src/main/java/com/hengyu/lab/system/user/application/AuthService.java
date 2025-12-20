@@ -10,7 +10,6 @@ import com.hengyu.lab.system.user.domain.exception.UserErrorCode;
 import com.hengyu.lab.system.user.domain.exception.UserException;
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
 import com.hengyu.lab.system.user.infrastructure.convert.UserConverter;
-import io.jsonwebtoken.lang.Maps;
 import java.util.HashMap;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Generated
 public class R<T> implements Serializable {
+
   private static final long serialVersionUID = 1L;
 
   private int code;       // 状态码

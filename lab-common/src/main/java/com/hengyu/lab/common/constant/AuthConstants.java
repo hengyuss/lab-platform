@@ -1,9 +1,13 @@
 package com.hengyu.lab.common.constant;
 
-public interface AuthConstants {
+public final class AuthConstants {
 
-   final String HEADER = "Authorization";
-   final String TOKEN_TYPE = "Bearer ";
-   final String TOKEN_PREFIX = "Bearer ";
+  private AuthConstants() {
+    throw new AssertionError("No AuthConstants instances for you!");
+  }
+
+   public final static String HEADER = "Authorization";
+   public final static String TOKEN_TYPE = "Bearer ";
+   public final static String TOKEN_PREFIX = "Bearer ";
 
 }

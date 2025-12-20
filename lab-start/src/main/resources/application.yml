@@ -8,7 +8,7 @@ spring:
   profiles:
     active: local
 
-# Knife4j ??
+# Knife4j
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
@@ -25,18 +25,23 @@ knife4j:
   setting:
     language: zh_cn
 
-# --- MyBatis-Plus ???? ---
+# --- MyBatis-Plus  ---
 mybatis-plus:
-  # ????
   map-underscore-to-camel-case: true
-  # Mapper XML ??
   mapper-locations: classpath*:mapper/**/*.xml
-  # ?????
   type-enums-package: com.hengyu.**.domain.**.constant
   global-config:
     db-config:
-      # ???? & ???? (????)
       logic-delete-field: deleted
       logic-delete-value: 1
       logic-not-delete-value: 0
       id-type: assign_id
+
+# application.yml
+lab:
+  jwt:
+    # 随便写一串乱码，但在生产环境要保密且足够长
+    secret: ${LAB_JWT_SECRET}
+    expiration: 86400000 # 24小时 (单位毫秒)
+    token-header: Authorization
+    token-prefix: "Bearer "

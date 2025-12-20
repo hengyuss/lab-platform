@@ -20,3 +20,11 @@ mybatis-plus:
 
 usr:
   env: "local"
+
+lab:
+  jwt:
+    # 随便写一串乱码，但在生产环境要保密且足够长
+    secret: ${LAB_JWT_SECRET:LocalDevSecretKeyOnlyForDebuggingDO_NOT_USE_IN_PROD}
+    expiration: 86400000 # 24小时 (单位毫秒)
+    token-header: Authorization
+    token-prefix: "Bearer "

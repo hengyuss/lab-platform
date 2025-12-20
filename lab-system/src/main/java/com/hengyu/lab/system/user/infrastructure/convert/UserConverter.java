@@ -1,6 +1,8 @@
 package com.hengyu.lab.system.user.infrastructure.convert;
 
 
+import com.hengyu.lab.system.user.application.dto.command.RegisterCmd;
+import com.hengyu.lab.system.user.application.dto.vo.RegisterVO;
 import com.hengyu.lab.system.user.domain.User;
 import com.hengyu.lab.system.user.infrastructure.po.UserPO;
 import org.mapstruct.Mapper;
@@ -12,5 +14,7 @@ public interface UserConverter {
   UserPO toPO(User user);
 
   User toDomain(UserPO userPO);
+
+  RegisterVO toRegisterVO(User user);
 
 }

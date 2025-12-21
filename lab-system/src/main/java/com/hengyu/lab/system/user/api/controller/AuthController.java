@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/auth")
 @Tag(name = "认证中心")
-@Validated
 @RequiredArgsConstructor
 public class AuthController {
 

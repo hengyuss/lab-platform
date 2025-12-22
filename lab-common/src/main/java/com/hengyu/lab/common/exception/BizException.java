@@ -1,12 +1,13 @@
 package com.hengyu.lab.common.exception;
 
+import com.hengyu.lab.common.api.IResultCode;
 import com.hengyu.lab.common.api.ResultCode;
 
 public class BizException extends RuntimeException {
 
   private final Integer code;
 
-  public BizException(IErrorCode errorCode) {
+  public BizException(IResultCode errorCode) {
     super(errorCode.getMsg());
     this.code = errorCode.getCode();
   }

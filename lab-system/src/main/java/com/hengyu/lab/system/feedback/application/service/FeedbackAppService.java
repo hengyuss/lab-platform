@@ -10,7 +10,7 @@ import com.hengyu.lab.system.feedback.application.dto.command.UpdateFeedbackCmd;
 import com.hengyu.lab.system.feedback.application.dto.command.UpdateFeedbackStatusCmd;
 import com.hengyu.lab.system.feedback.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.feedback.domain.Feedback;
-import com.hengyu.lab.system.feedback.domain.exception.FeedbackErrorCode;
+import com.hengyu.lab.system.feedback.domain.exception.FeedbackResultCode;
 import com.hengyu.lab.system.feedback.domain.exception.FeedbackException;
 import com.hengyu.lab.system.feedback.domain.repository.FeedbackRepository;
 import com.hengyu.lab.system.feedback.infrastructure.persistence.convert.FeedbackConverter;
@@ -74,7 +74,7 @@ public class FeedbackAppService {
 
   private Feedback getFeedback(String feedbackId) {
     Long id = Long.parseLong(feedbackId);
-    return feedbackRepository.find(id).orElseThrow(() -> new FeedbackException(FeedbackErrorCode.FEEDBACK_NOT_FOUND));
+    return feedbackRepository.find(id).orElseThrow(() -> new FeedbackException(FeedbackResultCode.FEEDBACK_NOT_FOUND));
   }
 
 }

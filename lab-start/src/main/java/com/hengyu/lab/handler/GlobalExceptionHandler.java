@@ -3,8 +3,10 @@ package com.hengyu.lab.handler;
 import com.hengyu.lab.common.api.R;
 import com.hengyu.lab.common.api.ResultCode;
 import com.hengyu.lab.common.exception.BizException;
+import com.hengyu.lab.system.user.domain.exception.UserResultCode;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,7 +20,6 @@ public class GlobalExceptionHandler {
     log.warn("业务异常: code={}, msg={}", e.getCode(), e.getMsg());
     return R.fail(e.getCode(), e.getMessage());
   }
-
 
   @ExceptionHandler(value = MethodArgumentNotValidException.class)
   public R<Void> handleException(MethodArgumentNotValidException e) {
@@ -45,5 +46,13 @@ public class GlobalExceptionHandler {
     log.error("系统未知异常", e);
     return R.fail(ResultCode.FAILURE.getCode(), "系统繁忙,请稍候再试");
   }
+
+  @ExceptionHandler(BadCredentialsException.class)
+  public R<Void> handleBadCredentialsException(BadCredentialsException e) {
+    log.warn("登录失败：用户名或密码错误");
+    // 返回业务状态码 401 或 自定义错误码
+    return R.fail(UserResultCode.USERNAME_OR_PASSWORD_ERROR.getCode(), e.getMessage());
+  }
+
 
 }

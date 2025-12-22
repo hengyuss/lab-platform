@@ -1,15 +1,15 @@
 package com.hengyu.lab.system.feedback.domain.exception;
 
-import com.hengyu.lab.common.exception.IErrorCode;
+import com.hengyu.lab.common.api.IResultCode;
 
-public enum FeedbackErrorCode implements IErrorCode {
+public enum FeedbackResultCode implements IResultCode {
   //(0-999) 归这个异常使用的错误代码
   FEEDBACK_NOT_FOUND(0, "该需求不存在");
 
   private final Integer code;
   private final String msg;
 
-  FeedbackErrorCode(Integer code, String msg) {
+  FeedbackResultCode(Integer code, String msg) {
     this.code = code;
     this.msg = msg;
   }

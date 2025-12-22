@@ -2,8 +2,9 @@ package com.hengyu.lab.system.user.api.controller;
 
 import com.hengyu.lab.common.api.R;
 import com.hengyu.lab.system.user.application.AuthService;
+import com.hengyu.lab.system.user.application.dto.command.LoginCmd;
 import com.hengyu.lab.system.user.application.dto.command.RegisterCmd;
-import com.hengyu.lab.system.user.application.dto.vo.RegisterVO;
+import com.hengyu.lab.system.user.application.dto.vo.AuthVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,17 @@ public class AuthController {
 
   @PostMapping("register")
   @Operation(summary = "注册用户") // 对应接口的描述
-  public R<RegisterVO> register(@RequestBody @Validated RegisterCmd cmd) {
-    RegisterVO registerVO = authService.register(cmd);
-    return R.ok(registerVO);
+  public R<AuthVO> register(@RequestBody @Validated RegisterCmd cmd) {
+    AuthVO authVO = authService.register(cmd);
+    return R.ok(authVO);
   }
+
+  @PostMapping("login")
+  @Operation(summary = "登录") // 对应接口的描述
+  public R<AuthVO> login(@RequestBody @Validated LoginCmd cmd) {
+    AuthVO authVO = authService.login(cmd);
+    return R.ok(authVO);
+  }
+
 
 }

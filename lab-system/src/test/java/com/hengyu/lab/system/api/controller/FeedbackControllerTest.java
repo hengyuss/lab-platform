@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hengyu.lab.common.utils.JwtUtils;
 import com.hengyu.lab.system.feedback.api.controller.FeedbackController;
 import com.hengyu.lab.system.feedback.application.dto.clientobject.FeedbackCO;
 import com.hengyu.lab.system.feedback.application.dto.command.CreateFeedbackCmd;
@@ -34,6 +35,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(value = FeedbackController.class)
 @AutoConfigureMockMvc(addFilters = false)
 class FeedbackControllerTest {
+
+  @MockBean
+  private JwtUtils jwtUtils;
 
   @Autowired
   private MockMvc mockMvc;

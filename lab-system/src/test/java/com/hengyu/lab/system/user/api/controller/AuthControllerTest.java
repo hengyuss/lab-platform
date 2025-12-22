@@ -6,10 +6,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hengyu.lab.common.utils.JwtUtils;
 import com.hengyu.lab.system.user.application.AuthService;
 import com.hengyu.lab.system.user.application.dto.command.RegisterCmd;
-import com.hengyu.lab.system.user.application.dto.vo.RegisterVO;
+import com.hengyu.lab.system.user.application.dto.vo.AuthVO;
 import com.hengyu.lab.system.user.domain.constant.IdentityType;
+import com.hengyu.lab.system.user.infrastructure.security.JwtAuthenticationFilter;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(value = AuthController.class)
 @AutoConfigureMockMvc(addFilters = false)
 class AuthControllerTest {
+  @MockBean
+  private JwtUtils jwtUtils;
 
   @Autowired
   private MockMvc mockMvc;
@@ -39,12 +43,13 @@ class AuthControllerTest {
     registerCmd.setPassword("testPassword");
     registerCmd.setEmail("testEmail");
     registerCmd.setMobile("testMobile");
+    registerCmd.setRealName("testRealName");
     registerCmd.setIdentityType(IdentityType.STUDENT);
-    RegisterVO registerVO = new RegisterVO();
-    registerVO.setUsername("testUsername");
-    registerVO.setToken("testToken");
-    registerVO.setIdentityType(IdentityType.STUDENT);
-    Mockito.when(authService.register(Mockito.any())).thenReturn(registerVO);
+    AuthVO authVO = new AuthVO();
+    authVO.setUsername("testUsername");
+    authVO.setToken("testToken");
+    authVO.setIdentityType(IdentityType.STUDENT);
+    Mockito.when(authService.register(Mockito.any())).thenReturn(authVO);
 
     mockMvc.perform(post("/api/v1/auth/register")
             .contentType(MediaType.APPLICATION_JSON)
@@ -54,7 +59,18 @@ class AuthControllerTest {
         .andExpect(jsonPath("$.data.identityType").value(IdentityType.STUDENT.getTYPE()))
         .andExpect(jsonPath("$.data.username").value("testUsername"))
         .andExpect(jsonPath("$.data.token").value("testToken"));
+  }
 
+  @Test
+  void register_fail_when_missing_field() throws Exception {
+    RegisterCmd registerCmd = new RegisterCmd();
+    registerCmd.setUsername("testUsername");
+
+    mockMvc.perform(post("/api/v1/auth/register")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(registerCmd)))
+        .andDo(print())
+        .andExpect(status().isBadRequest());
   }
 
 }

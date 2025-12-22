@@ -1,13 +1,13 @@
 package com.hengyu.lab.system.feedback.domain.exception;
 
+import com.hengyu.lab.common.api.IResultCode;
 import com.hengyu.lab.common.exception.BizException;
-import com.hengyu.lab.common.exception.IErrorCode;
 import lombok.Getter;
 
 @Getter
 public class FeedbackException extends BizException {
 
-  public FeedbackException(IErrorCode errorCode) {
+  public FeedbackException(IResultCode errorCode) {
     super(errorCode);
   }
 

@@ -6,14 +6,13 @@ import com.hengyu.lab.system.user.application.dto.command.LoginCmd;
 import com.hengyu.lab.system.user.application.dto.command.RegisterCmd;
 import com.hengyu.lab.system.user.application.dto.vo.AuthVO;
 import com.hengyu.lab.system.user.domain.User;
-import com.hengyu.lab.system.user.domain.exception.UserResultCode;
 import com.hengyu.lab.system.user.domain.exception.UserException;
+import com.hengyu.lab.system.user.domain.exception.UserResultCode;
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
 import com.hengyu.lab.system.user.infrastructure.convert.UserConverter;
 import com.hengyu.lab.system.user.infrastructure.security.AuthUser;
 import java.util.Collections;
 import java.util.Optional;
-import org.h2.security.AES;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -159,13 +158,14 @@ class AuthServiceTest {
     cmd.setUsername("hengyu");
     cmd.setPassword("123456");
     Mockito.when(authConfig.getAuthenticationManager()).thenReturn(authenticationManager);
-    Mockito.when(authenticationManager.authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class)))
+    Mockito.when(
+            authenticationManager.authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class)))
         .thenThrow(new BadCredentialsException("Bad credentials"));
 
     BizException bizException = Assertions.assertThrows(BizException.class,
         () -> authService.login(cmd));
-    Assertions.assertEquals(UserResultCode.USERNAME_OR_PASSWORD_ERROR.getCode(), bizException.getCode());
-
+    Assertions.assertEquals(UserResultCode.USERNAME_OR_PASSWORD_ERROR.getCode(),
+        bizException.getCode());
   }
 
 

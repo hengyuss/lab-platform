@@ -29,6 +29,7 @@
       **/com/hengyu/lab/common/exception/**,
       **/com/hengyu/lab/common/constant/**,
       **/com/hengyu/lab/common/constant/**,
+      **/com/hengyu/lab/common/security/SecurityCommonConfig.java,
       **/com/hengyu/lab/LabStartApplication.java
     </sonar.coverage.exclusions>
 

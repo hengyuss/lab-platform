@@ -5,6 +5,8 @@ import org.springframework.util.ReflectionUtils;
 
 public class DomainUtil {
 
+  private DomainUtil() {}
+
   public static <T> void setIdToEntity(T entity, Long id) {
     if (entity == null) {
       return;

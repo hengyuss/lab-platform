@@ -8,10 +8,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hengyu.lab.common.utils.JwtUtils;
 import com.hengyu.lab.system.user.application.AuthService;
+import com.hengyu.lab.system.user.application.dto.command.LoginCmd;
 import com.hengyu.lab.system.user.application.dto.command.RegisterCmd;
 import com.hengyu.lab.system.user.application.dto.vo.AuthVO;
 import com.hengyu.lab.system.user.domain.constant.IdentityType;
-import com.hengyu.lab.system.user.infrastructure.security.JwtAuthenticationFilter;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +71,30 @@ class AuthControllerTest {
             .content(objectMapper.writeValueAsString(registerCmd)))
         .andDo(print())
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void login() throws Exception {
+    LoginCmd loginCmd = new LoginCmd();
+    loginCmd.setUsername("testUsername");
+    loginCmd.setPassword("testPassword");
+
+    AuthVO authVO = new AuthVO();
+    authVO.setUsername("testUsername");
+    authVO.setToken("testToken");
+    authVO.setIdentityType(IdentityType.STUDENT);
+    Mockito.when(authService.login(loginCmd)).thenReturn(authVO);
+
+
+    mockMvc.perform(post("/api/v1/auth/login")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(loginCmd)))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.data.username").value("testUsername"))
+        .andExpect(jsonPath("$.data.identityType").value(IdentityType.STUDENT.getTYPE()))
+        .andExpect(jsonPath("$.data.token").value("testToken"));
+
   }
 
 }

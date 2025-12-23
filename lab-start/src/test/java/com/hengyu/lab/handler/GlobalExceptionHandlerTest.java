@@ -53,6 +53,10 @@ class GlobalExceptionHandlerTest {
 
     @PostMapping("/valid")
     public void throwValid(@RequestBody @Validated TestDto testDto) {
+      // 方法体为空是预期的。
+      // 当传入无效参数时，Spring会在进入此方法前抛出 MethodArgumentNotValidException，
+      // 该异常会被 GlobalExceptionHandler 捕获。
+      // 如果进入了方法体，说明参数校验通过（或者测试用例写错了）。
     }
 
     @GetMapping("/illegal")

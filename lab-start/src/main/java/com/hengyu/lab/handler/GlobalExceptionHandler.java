@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(value = Exception.class)
   public R<Void> handleException(Exception e) {
-    log.error("系统未知异常", e);
+    log.error("系统未知异常: {}", e.getMessage());
     return R.fail(ResultCode.FAILURE.getCode(), "系统繁忙,请稍候再试");
   }
 

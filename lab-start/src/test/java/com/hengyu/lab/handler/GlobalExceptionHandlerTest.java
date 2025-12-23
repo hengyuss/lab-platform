@@ -11,6 +11,7 @@ import com.hengyu.lab.common.api.ResultCode;
 import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.common.utils.JwtUtils;
 import com.hengyu.lab.system.user.domain.exception.UserResultCode;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @WebMvcTest(controllers = GlobalExceptionHandlerTest.TestController.class)
@@ -43,6 +45,7 @@ class GlobalExceptionHandlerTest {
   @MockBean
   private JwtUtils jwtUtils;
 
+  @Validated
   @RestController
   @RequestMapping("/test/ex")
   static class TestController {
@@ -72,6 +75,11 @@ class GlobalExceptionHandlerTest {
     @GetMapping("/unknow")
     public void throwUnknow() {
       throw new NullPointerException("发生什么事了");
+    }
+
+    @GetMapping("/constraint")
+    public void throwConstraint(@RequestParam("age") @Min(value = 18, message = "未成年人禁止入内") Integer age) {
+      // do nothing
     }
 
   }
@@ -131,6 +139,20 @@ class GlobalExceptionHandlerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.code").value(ResultCode.FAILURE.getCode()))
         .andExpect(jsonPath("$.msg").value("系统繁忙,请稍候再试"));
+  }
+
+  @Test
+  void handleConstraintViolationException() throws Exception {
+    // 模拟请求：age = 10 (小于 18)
+    mockMvc.perform(get("/test/ex/constraint")
+            .param("age", "10"))
+        .andDo(print())
+        .andExpect(status().isOk()) // 假设你返回 200
+        .andExpect(jsonPath("$.code").value(ResultCode.ARGUMENT_NOT_VALID.getCode()))
+        // ⚠️ 注意：默认的 e.getMessage() 返回的格式通常是 "方法名.参数名: 错误信息"
+        // 例如: "throwConstraint.age: 未成年人禁止入内"
+        // 你可以用 containsString 来断言
+        .andExpect(jsonPath("$.msg").value(org.hamcrest.Matchers.containsString("未成年人禁止入内")));
   }
 
 

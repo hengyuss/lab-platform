@@ -62,8 +62,6 @@ class JwtUtilsTest {
 
     String token = jwtUtils.createToken("hengyu", new HashMap<>());
 
-    // 等待 10 毫秒，确保它过期
-    Thread.sleep(10);
 
     // When & Then: 解析应该报错 ExpiredJwtException
     Assertions.assertThrows(ExpiredJwtException.class, () -> {

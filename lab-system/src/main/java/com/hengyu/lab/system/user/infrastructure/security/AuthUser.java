@@ -2,11 +2,9 @@ package com.hengyu.lab.system.user.infrastructure.security;
 
 import com.hengyu.lab.system.user.domain.User;
 import java.util.Collection;
-import java.util.Collections;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Data

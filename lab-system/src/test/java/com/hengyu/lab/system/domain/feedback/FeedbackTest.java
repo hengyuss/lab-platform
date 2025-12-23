@@ -37,21 +37,28 @@ class FeedbackTest {
   @Test
   void update_fail() {
     Feedback feedback = Feedback.builder().title("testTitle").content("testContent").build();
-    Boolean updateFlag = feedback.update("testTitle", "testContent");
+    boolean updateFlag = feedback.update("testTitle", "testContent");
     Assertions.assertFalse(updateFlag);
   }
 
   @Test
   void update_success_when_not_same_title() {
     Feedback feedback = Feedback.builder().title("testTitle").content("testContent").build();
-    Boolean updateFlag = feedback.update("notSameTitle", "testContent");
+    boolean updateFlag = feedback.update("notSameTitle", "testContent");
     Assertions.assertTrue(updateFlag);
   }
 
   @Test
   void update_success_when_not_same_content() {
     Feedback feedback = Feedback.builder().title("testTitle").content("testContent").build();
-    Boolean updateFlag = feedback.update("testTitle1", "notSameContent");
+    boolean updateFlag = feedback.update("testTitle", "notSameContent");
+    Assertions.assertTrue(updateFlag);
+  }
+
+  @Test
+  void update_success_when_not_same_content_not_same_title() {
+    Feedback feedback = Feedback.builder().title("testTitle").content("testContent").build();
+    boolean updateFlag = feedback.update("testTitle1", "notSameContent1");
     Assertions.assertTrue(updateFlag);
   }
 

@@ -1,4 +1,4 @@
-package com.hengyu.lab.system.user.infrastructure.security;
+package com.hengyu.lab.common.filter;
 
 import com.hengyu.lab.common.constant.AuthConstants;
 import com.hengyu.lab.common.utils.JwtUtils;

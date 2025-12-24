@@ -1,4 +1,4 @@
-package com.hengyu.lab.config;
+package com.hengyu.lab.common.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;

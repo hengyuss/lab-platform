@@ -23,7 +23,7 @@ public class ResultAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
   @Override
   public void commence(HttpServletRequest request, HttpServletResponse response,
-      AuthenticationException authException) throws IOException, ServletException {
+      AuthenticationException authException) throws IOException{
       log.warn("[安全] 拦截未认证请求: Path = {}, Msg = {}", request.getRequestURI(), authException.getMessage());
       response.setStatus(HttpServletResponse.SC_OK);
       response.setContentType("application/json;charset=UTF-8");

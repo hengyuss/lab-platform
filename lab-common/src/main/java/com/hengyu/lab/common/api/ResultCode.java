@@ -11,6 +11,7 @@ public enum ResultCode implements IResultCode {
   SUCCESS(200, "操作成功"),
   FAILURE(500, "业务异常"),
   UN_AUTHORIZED(401, "访问受限，请先登录"),
+  NO_PRIVILEGE(403, "无访问权限"),
   NOT_FOUND(404, "404 没找到请求"),
   MSG_NOT_READABLE(400, "消息不能读取"),
   INTERNAL_SERVER_ERROR(500, "服务器异常"),

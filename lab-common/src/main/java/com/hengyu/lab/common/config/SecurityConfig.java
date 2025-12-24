@@ -1,6 +1,7 @@
 package com.hengyu.lab.common.config;
 
 import com.hengyu.lab.common.filter.JwtAuthenticationFilter;
+import com.hengyu.lab.common.security.handler.RestAccessDeniedHandler;
 import com.hengyu.lab.common.security.handler.ResultAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,8 @@ public class SecurityConfig {
 
   private final ResultAuthenticationEntryPoint resultAuthenticationEntryPoint;
 
+  private final RestAccessDeniedHandler restAccessDeniedHandler;
+
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -35,14 +38,14 @@ public class SecurityConfig {
             .requestMatchers("/doc.html").permitAll()          // Knife4j 主页
             .requestMatchers("/webjars/**").permitAll()        // 静态资源
             .requestMatchers("/v3/api-docs/**").permitAll()   // Swagger3 的 JSON 接口
-//            .requestMatchers("/api/v1/feedbacks/**").permitAll()
             .requestMatchers("/swagger-resources/**").permitAll()
 
             // 3. 基础资源
             .requestMatchers("/favicon.ico", "/error").permitAll()
         .anyRequest().authenticated())
         .exceptionHandling(exception ->
-            exception.authenticationEntryPoint(resultAuthenticationEntryPoint))
+            exception.authenticationEntryPoint(resultAuthenticationEntryPoint)
+                .accessDeniedHandler(restAccessDeniedHandler))
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();

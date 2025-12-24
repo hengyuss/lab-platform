@@ -56,7 +56,7 @@ class JwtUtilsTest {
 
   @Test
   @DisplayName("测试：Token 过期应该抛出异常")
-  void shouldThrowExceptionWhenTokenExpired() throws InterruptedException {
+  void shouldThrowExceptionWhenTokenExpired() {
     // Given: 设置一个极短的过期时间 (比如 1毫秒)
     jwtUtils.setExpiration(1L);
 

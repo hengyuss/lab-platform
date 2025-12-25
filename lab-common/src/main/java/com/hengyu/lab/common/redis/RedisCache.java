@@ -21,7 +21,7 @@ public class RedisCache {
   }
 
   public boolean expire(final String key, final Integer expireTime,  final TimeUnit timeUnit) {
-    return redisTemplate.expire(key, expireTime, timeUnit);
+    return Boolean.TRUE.equals(redisTemplate.expire(key, expireTime, timeUnit));
   }
 
   public boolean hasKey(final String key) {

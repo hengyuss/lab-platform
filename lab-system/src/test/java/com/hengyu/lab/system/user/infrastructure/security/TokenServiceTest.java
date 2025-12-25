@@ -9,7 +9,6 @@ import com.hengyu.lab.common.redis.RedisCache;
 import com.hengyu.lab.common.utils.JwtUtils;
 import com.hengyu.lab.system.user.domain.User;
 import com.hengyu.lab.system.user.domain.constant.IdentityType;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.impl.DefaultClaims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

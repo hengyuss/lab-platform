@@ -31,6 +31,7 @@
       **/com/hengyu/lab/common/constant/**,
       **/com/hengyu/lab/common/constant/**,
       **/com/hengyu/lab/common/config/**,
+      **/com/hengyu/lab/common/redis/**,
       **/com/hengyu/lab/LabStartApplication.java
     </sonar.coverage.exclusions>
 

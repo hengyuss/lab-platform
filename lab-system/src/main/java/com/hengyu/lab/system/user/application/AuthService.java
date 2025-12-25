@@ -2,7 +2,6 @@ package com.hengyu.lab.system.user.application;
 
 import com.hengyu.lab.common.constant.AuthConstants;
 import com.hengyu.lab.common.exception.BizException;
-import com.hengyu.lab.common.utils.JwtUtils;
 import com.hengyu.lab.system.user.application.dto.command.LoginCmd;
 import com.hengyu.lab.system.user.application.dto.command.RegisterCmd;
 import com.hengyu.lab.system.user.application.dto.vo.AuthVO;
@@ -12,7 +11,8 @@ import com.hengyu.lab.system.user.domain.exception.UserResultCode;
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
 import com.hengyu.lab.system.user.infrastructure.convert.UserConverter;
 import com.hengyu.lab.system.user.infrastructure.security.AuthUser;
-import java.util.HashMap;
+import com.hengyu.lab.system.user.infrastructure.security.TokenService;
+import java.util.Collections;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +32,8 @@ public class AuthService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncryptor;
   private final UserConverter userConverter;
-  private final JwtUtils jwtUtils;
-  private final AuthenticationConfiguration  authConfig;
+  private final AuthenticationConfiguration authConfig;
+  private final TokenService tokenService;
 
   @Transactional(rollbackFor = Exception.class)
   public AuthVO register(RegisterCmd cmd) {
@@ -46,8 +46,9 @@ public class AuthService {
         cmd.getMobile(),
         cmd.getIdentityType());
     userRepository.save(registerUser);
+    AuthUser authUser = new AuthUser(registerUser, Collections.emptyList());
 
-    return buildAuthVO(registerUser);
+    return buildAuthVO(authUser);
   }
 
   public AuthVO login(LoginCmd cmd) {
@@ -60,21 +61,18 @@ public class AuthService {
           usernamePasswordAuthenticationToken);
 
       AuthUser authUser = (AuthUser) authenticate.getPrincipal();
-      User user = authUser.getUser();
 
-      return buildAuthVO(user);
+      return buildAuthVO(authUser);
     } catch (Exception e) {
       throw new BizException(UserResultCode.USERNAME_OR_PASSWORD_ERROR);
     }
   }
 
-  private AuthVO buildAuthVO(User user) {
+  private AuthVO buildAuthVO(AuthUser user) {
 
-    HashMap<String, Object> tokenMap = new HashMap<>();
-    tokenMap.put("userId", user.getId());
-    tokenMap.put("role", user.getIdentityType());
-    String token = jwtUtils.createToken(user.getUsername(), tokenMap);
-    AuthVO authVO = userConverter.toAuthVO(user);
+    String token = tokenService.createToken(user);
+    tokenService.refreshToken(user);
+    AuthVO authVO = userConverter.toAuthVO(user.getUser());
     authVO.setToken(token);
     authVO.setTokenType(AuthConstants.TOKEN_TYPE);
     return authVO;

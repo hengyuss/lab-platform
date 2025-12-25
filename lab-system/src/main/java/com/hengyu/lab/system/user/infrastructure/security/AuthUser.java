@@ -1,6 +1,7 @@
 package com.hengyu.lab.system.user.infrastructure.security;
 
 import com.hengyu.lab.system.user.domain.User;
+import com.hengyu.lab.system.user.domain.constant.IdentityType;
 import java.util.Collection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,14 @@ public class AuthUser implements UserDetails {
     // 将 user 中的身份转为 Security 认识的角色
     //TODO 权限认证后边再写
     return this.authorities;
+  }
+
+  public Long getUserId(){
+    return user.getId();
+  }
+
+  public IdentityType getIdentityType(){
+    return  user.getIdentityType();
   }
 
   @Override

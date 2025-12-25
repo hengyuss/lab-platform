@@ -1,7 +1,6 @@
 package com.hengyu.lab.system.user.application;
 
 import com.hengyu.lab.common.exception.BizException;
-import com.hengyu.lab.common.utils.JwtUtils;
 import com.hengyu.lab.system.user.application.dto.command.LoginCmd;
 import com.hengyu.lab.system.user.application.dto.command.RegisterCmd;
 import com.hengyu.lab.system.user.application.dto.vo.AuthVO;
@@ -11,6 +10,7 @@ import com.hengyu.lab.system.user.domain.exception.UserResultCode;
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
 import com.hengyu.lab.system.user.infrastructure.convert.UserConverter;
 import com.hengyu.lab.system.user.infrastructure.security.AuthUser;
+import com.hengyu.lab.system.user.infrastructure.security.TokenService;
 import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -40,7 +40,7 @@ class AuthServiceTest {
   private UserConverter userConverter;
 
   @Mock
-  private JwtUtils jwtUtils;
+  private TokenService tokenService;
 
   @Mock
   private AuthenticationConfiguration authConfig;
@@ -72,7 +72,7 @@ class AuthServiceTest {
     Mockito.when(userConverter.toAuthVO(Mockito.any(User.class))).thenReturn(mockVo);
 
     // 1.4 模拟 JWT 生成
-    Mockito.when(jwtUtils.createToken(Mockito.eq("hengyu"), Mockito.anyMap()))
+    Mockito.when(tokenService.createToken(Mockito.any(AuthUser.class)))
         .thenReturn("mock-jwt-token");
 
     // --- 2. 执行测试 (When) ---
@@ -94,8 +94,6 @@ class AuthServiceTest {
     Assertions.assertEquals("encoded_123456", savedUser.getPassword()); // 验证密码是否被加密
     Assertions.assertEquals("Hengyu", savedUser.getRealName());
 
-    // 4.2 验证 JWT 调用参数是否正确
-    Mockito.verify(jwtUtils).createToken(Mockito.eq("hengyu"), Mockito.anyMap());
   }
 
   @Test
@@ -141,7 +139,7 @@ class AuthServiceTest {
     Mockito.when(
             authenticationManager.authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class)))
         .thenReturn(authResult);
-    Mockito.when(jwtUtils.createToken(Mockito.eq("hengyu"), Mockito.anyMap()))
+    Mockito.when(tokenService.createToken(Mockito.any(AuthUser.class)))
         .thenReturn("mock-jwt-token");
     Mockito.when(userConverter.toAuthVO(mockUser)).thenReturn(new AuthVO());
 

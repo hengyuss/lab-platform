@@ -1,7 +1,6 @@
 package com.hengyu.lab.common.utils;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -54,20 +53,6 @@ class JwtUtilsTest {
     Assertions.assertEquals("ADMIN", parsedClaims.get("role"));
   }
 
-  @Test
-  @DisplayName("测试：Token 过期应该抛出异常")
-  void shouldThrowExceptionWhenTokenExpired() {
-    // Given: 设置一个极短的过期时间 (比如 1毫秒)
-    jwtUtils.setExpiration(1L);
-
-    String token = jwtUtils.createToken("hengyu", new HashMap<>());
-
-
-    // When & Then: 解析应该报错 ExpiredJwtException
-    Assertions.assertThrows(ExpiredJwtException.class, () -> {
-      jwtUtils.parseToken(token);
-    });
-  }
 
   @Test
   @DisplayName("测试：Token 被篡改应该抛出异常")

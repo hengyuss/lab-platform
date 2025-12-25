@@ -13,6 +13,31 @@ spring:
   flyway:
     enabled: true # 本地启动时自动跑 SQL
 
+  data:
+    # redis 配置
+    redis:
+      # 地址
+      host: 10.33.9.41
+      # 端口，默认为6379
+      port: 6379
+      # 数据库索引
+      database: 0
+      # 密码
+      password:
+      # 连接超时时间
+      timeout: 10s
+      lettuce:
+        pool:
+          # 连接池中的最小空闲连接
+          min-idle: 0
+          # 连接池中的最大空闲连接
+          max-idle: 8
+          # 连接池的最大数据库连接数
+          max-active: 8
+          # #连接池最大阻塞等待时间（使用负值表示没有限制）
+          max-wait: -1ms
+
+
 mybatis-plus:
   configuration:
     # ✅ 开启 SQL 打印
@@ -25,6 +50,6 @@ lab:
   jwt:
     # 随便写一串乱码，但在生产环境要保密且足够长
     secret: ${LAB_JWT_SECRET:LocalDevSecretKeyOnlyForDebuggingDO_NOT_USE_IN_PROD}
-    expiration: 86400000 # 24小时 (单位毫秒)
+    expiration: 30 #  (单位分钟)
     token-header: Authorization
     token-prefix: "Bearer "

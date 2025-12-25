@@ -31,8 +31,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
     response.setContentType("application/json;charset=UTF-8");
 
     try (PrintWriter out = response.getWriter()) {
-      out.write(objectMapper.writeValueAsString(
-          objectMapper.writeValueAsString(R.fail(ResultCode.NO_PRIVILEGE))));
+      out.write(objectMapper.writeValueAsString(R.fail(ResultCode.NO_PRIVILEGE)));
     }
 
   }

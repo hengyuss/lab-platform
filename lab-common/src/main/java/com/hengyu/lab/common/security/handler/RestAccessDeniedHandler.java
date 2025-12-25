@@ -24,7 +24,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
   @Override
   public void handle(HttpServletRequest request, HttpServletResponse response,
-      AccessDeniedException accessDeniedException) throws IOException, ServletException {
+      AccessDeniedException accessDeniedException) throws IOException {
 
     log.warn("[安全] 拦截越权访问: Path = {}", request.getRequestURI());
     response.setStatus(HttpServletResponse.SC_OK);

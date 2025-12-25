@@ -3,7 +3,6 @@ package com.hengyu.lab.common.security.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hengyu.lab.common.api.R;
 import com.hengyu.lab.common.api.ResultCode;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;

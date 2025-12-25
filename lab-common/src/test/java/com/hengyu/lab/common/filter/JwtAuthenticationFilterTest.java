@@ -1,12 +1,13 @@
 package com.hengyu.lab.common.filter;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.never;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-import com.hengyu.lab.common.constant.AuthConstants;
 import com.hengyu.lab.common.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;

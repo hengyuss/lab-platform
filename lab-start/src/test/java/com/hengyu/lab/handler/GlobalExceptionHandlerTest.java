@@ -11,6 +11,7 @@ import com.hengyu.lab.common.api.ResultCode;
 import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.common.utils.JwtUtils;
 import com.hengyu.lab.system.user.domain.exception.UserResultCode;
+import com.hengyu.lab.system.user.infrastructure.security.TokenService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -35,6 +36,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Import({GlobalExceptionHandler.class, GlobalExceptionHandlerTest.TestController.class})
 @AutoConfigureMockMvc(addFilters = false)
 class GlobalExceptionHandlerTest {
+
+
+  @MockBean
+  private TokenService tokenService;
 
   @Autowired
   private MockMvc mockMvc;

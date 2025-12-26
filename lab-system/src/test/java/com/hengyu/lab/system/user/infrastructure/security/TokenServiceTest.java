@@ -1,6 +1,7 @@
 package com.hengyu.lab.system.user.infrastructure.security;
 
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -24,6 +25,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -49,6 +51,7 @@ class TokenServiceTest {
 
 
   @InjectMocks
+  @Spy
   private TokenService tokenService;
 
   @Captor
@@ -65,7 +68,6 @@ class TokenServiceTest {
   }
 
 
-
   @Test
   void test_createToken() {
     User user = User.builder().username("testUsername")
@@ -73,7 +75,7 @@ class TokenServiceTest {
         .identityType(IdentityType.STUDENT)
         .build();
 
-    AuthUser authUser = new AuthUser(user, Collections.emptyList());
+    AuthUser authUser = AuthUser.builder().user(user).authorities(Collections.emptyList()).build();
     String expectedToken = "mock-jwt-token";
     when(jwtUtils.createToken(eq("testUsername"), Mockito.anyMap())).thenReturn(expectedToken);
 
@@ -95,17 +97,27 @@ class TokenServiceTest {
         .id(100L)
         .identityType(IdentityType.STUDENT)
         .build();
-    AuthUser authUser = new AuthUser(user, Collections.emptyList());
+
+    Long loginTime = System.currentTimeMillis();
+    Long expireTime = System.currentTimeMillis() + MOCK_EXPIRE_TIME * 60 * 1000;
+
+    AuthUser authUser = AuthUser.builder().user(user).authorities(Collections.emptyList())
+        .loginTime(loginTime)
+        .expireTime(expireTime)
+        .build();
 
     String userKey = AuthConstants.LOGIN_TOKEN_KEY + user.getId();
 
     tokenService.refreshToken(authUser);
 
     verify(redisCache).setCacheObject(userKey, authUser, MOCK_EXPIRE_TIME, TimeUnit.MINUTES);
+    Assertions.assertTrue(Math.abs(System.currentTimeMillis() - loginTime) < 5000);
+    Assertions.assertTrue(Math.abs(expireTime - authUser.getLoginTime()) > 29 * 60 * 1000);
   }
 
+
   @Test
-  void test_get_user(){
+  void test_get_user() {
     String token = "mock-jwt-token";
     when(request.getHeader("Authorization")).thenReturn(token);
     User testUser = User.builder().username("testUsername")
@@ -116,7 +128,8 @@ class TokenServiceTest {
     claims.setSubject("testUsername");
     claims.put(AuthConstants.LOGIN_USER_ID, 100L);
 
-    AuthUser authUser = new AuthUser(testUser, Collections.emptyList());
+    AuthUser authUser = AuthUser.builder().user(testUser).authorities(Collections.emptyList())
+        .build();
     when(redisCache.getCacheObject(AuthConstants.LOGIN_TOKEN_KEY + 100L)).thenReturn(authUser);
     when(jwtUtils.parseToken(token)).thenReturn(claims);
 
@@ -129,6 +142,46 @@ class TokenServiceTest {
 
   }
 
+  @Test
+  void verify_token_refresh_token() {
+    Long loginTime = System.currentTimeMillis() - 20 * 60 * 1000;
+    Long expireTime = loginTime + MOCK_EXPIRE_TIME * 60 * 1000;
+    Long expectExpireTime = System.currentTimeMillis() + MOCK_EXPIRE_TIME * 60 * 1000;
+    User testUser = User.builder().username("testUsername")
+        .id(100L)
+        .build();
+    AuthUser authUser = AuthUser.builder()
+        .user(testUser)
+        .loginTime(loginTime)
+        .expireTime(expireTime)
+        .build();
 
+    tokenService.verifyToken(authUser);
+
+    Assertions.assertTrue(Math.abs(System.currentTimeMillis() - authUser.getLoginTime()) < 5000);
+    Assertions.assertTrue(Math.abs(expectExpireTime - authUser.getExpireTime()) < 5000);
+  }
+
+  @Test
+  void verify_token_not_refresh_token() {
+    Long loginTime = System.currentTimeMillis();
+    Long expireTime = loginTime + MOCK_EXPIRE_TIME * 60 * 1000;
+    Long expectExpireTime = System.currentTimeMillis() + MOCK_EXPIRE_TIME * 60 * 1000;
+    User testUser = User.builder().username("testUsername")
+        .id(100L)
+        .build();
+    AuthUser authUser = AuthUser.builder()
+        .user(testUser)
+        .loginTime(loginTime)
+        .expireTime(expireTime)
+        .build();
+
+    tokenService.verifyToken(authUser);
+
+    verify(tokenService, never()).refreshToken(authUser);
+
+    Assertions.assertTrue(Math.abs(System.currentTimeMillis() - authUser.getLoginTime()) < 5000);
+    Assertions.assertTrue(Math.abs(expectExpireTime - authUser.getExpireTime()) < 5000);
+  }
 
 }

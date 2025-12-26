@@ -12,6 +12,7 @@ import com.hengyu.lab.system.user.application.dto.command.LoginCmd;
 import com.hengyu.lab.system.user.application.dto.command.RegisterCmd;
 import com.hengyu.lab.system.user.application.dto.vo.AuthVO;
 import com.hengyu.lab.system.user.domain.constant.IdentityType;
+import com.hengyu.lab.system.user.infrastructure.security.TokenService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ import org.springframework.test.web.servlet.MockMvc;
 class AuthControllerTest {
   @MockBean
   private JwtUtils jwtUtils;
+
+  @MockBean
+  private TokenService tokenService;
 
   @Autowired
   private MockMvc mockMvc;

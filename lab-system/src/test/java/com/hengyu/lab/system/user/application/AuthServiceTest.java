@@ -130,7 +130,7 @@ class AuthServiceTest {
     cmd.setUsername("hengyu");
     cmd.setPassword("123456");
     User mockUser = User.builder().username("hengyu").build();
-    AuthUser mockAuthUser = new AuthUser(mockUser, Collections.emptyList());
+    AuthUser mockAuthUser = AuthUser.builder().user(mockUser).authorities(Collections.emptyList()).build();
 
     UsernamePasswordAuthenticationToken authResult = new UsernamePasswordAuthenticationToken(
         mockAuthUser, null, mockAuthUser.getAuthorities());

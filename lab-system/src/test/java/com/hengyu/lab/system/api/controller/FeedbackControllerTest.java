@@ -22,6 +22,7 @@ import com.hengyu.lab.system.feedback.application.dto.command.UpdateFeedbackStat
 import com.hengyu.lab.system.feedback.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.feedback.application.service.FeedbackAppService;
 import com.hengyu.lab.system.feedback.domain.constant.FeedbackStatus;
+import com.hengyu.lab.system.user.infrastructure.security.TokenService;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -38,6 +39,9 @@ class FeedbackControllerTest {
 
   @MockBean
   private JwtUtils jwtUtils;
+
+  @MockBean
+  private TokenService tokenService;
 
   @Autowired
   private MockMvc mockMvc;

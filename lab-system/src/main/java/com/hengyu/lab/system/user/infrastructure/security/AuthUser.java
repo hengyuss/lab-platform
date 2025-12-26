@@ -4,16 +4,20 @@ import com.hengyu.lab.system.user.domain.User;
 import com.hengyu.lab.system.user.domain.constant.IdentityType;
 import java.util.Collection;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class AuthUser implements UserDetails {
 
   private final User user;
   private final Collection<? extends GrantedAuthority> authorities;
+  private  Long loginTime;
+  private  Long expireTime;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -46,7 +46,7 @@ public class AuthService {
         cmd.getMobile(),
         cmd.getIdentityType());
     userRepository.save(registerUser);
-    AuthUser authUser = new AuthUser(registerUser, Collections.emptyList());
+    AuthUser authUser = AuthUser.builder().user(registerUser).authorities(Collections.emptyList()).build();
 
     return buildAuthVO(authUser);
   }

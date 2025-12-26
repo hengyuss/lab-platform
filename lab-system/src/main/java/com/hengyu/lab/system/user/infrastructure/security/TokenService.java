@@ -25,6 +25,11 @@ public class TokenService {
 
   private final JwtUtils jwtUtils;
 
+  protected static final long MILLIS_SECOND = 1000;
+
+  protected static final long MILLIS_MINUTE = 60 * MILLIS_SECOND;
+
+  private static final Long MILLIS_MINUTE_TWENTY = 20 * 60 * 1000L;
 
   public String createToken(AuthUser user) {
     HashMap<String, Object> tokenMap = new HashMap<>();
@@ -35,6 +40,8 @@ public class TokenService {
   }
 
   public void refreshToken(AuthUser user) {
+    user.setLoginTime(System.currentTimeMillis());
+    user.setExpireTime(user.getLoginTime() + expireTime * MILLIS_MINUTE);
     String userKey = AuthConstants.LOGIN_TOKEN_KEY + user.getUserId();
     redisCache.setCacheObject(userKey, user, expireTime, TimeUnit.MINUTES);
   }
@@ -64,5 +71,13 @@ public class TokenService {
       token = token.replace(AuthConstants.TOKEN_PREFIX, "");
     }
     return token;
+  }
+
+  public void verifyToken(AuthUser authUser) {
+    Long currentTimeMillis = System.currentTimeMillis();
+    Long expireTime = authUser.getExpireTime();
+    if (expireTime - currentTimeMillis < MILLIS_MINUTE_TWENTY) {
+      refreshToken(authUser);
+    }
   }
 }

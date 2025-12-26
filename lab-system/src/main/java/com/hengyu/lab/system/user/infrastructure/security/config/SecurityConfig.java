@@ -1,6 +1,6 @@
-package com.hengyu.lab.common.config;
+package com.hengyu.lab.system.user.infrastructure.security.config;
 
-import com.hengyu.lab.common.filter.JwtAuthenticationFilter;
+import com.hengyu.lab.system.user.infrastructure.security.filter.JwtAuthenticationFilter;
 import com.hengyu.lab.common.security.handler.RestAccessDeniedHandler;
 import com.hengyu.lab.common.security.handler.ResultAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
@@ -55,8 +55,6 @@ public class SecurityConfig {
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
-
-
 
 
 }

@@ -1,4 +1,4 @@
-package com.hengyu.lab.common.filter;
+package com.hengyu.lab.system.user.infrastructure.security.filter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

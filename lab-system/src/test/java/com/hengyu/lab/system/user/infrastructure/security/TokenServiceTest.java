@@ -1,5 +1,6 @@
 package com.hengyu.lab.system.user.infrastructure.security;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -104,9 +105,10 @@ class TokenServiceTest {
     AuthUser authUser = AuthUser.builder().user(user).authorities(Collections.emptyList())
         .loginTime(loginTime)
         .expireTime(expireTime)
+        .uniqueKey("123")
         .build();
 
-    String userKey = AuthConstants.LOGIN_TOKEN_KEY + user.getId();
+    String userKey = ReflectionTestUtils.invokeMethod(tokenService, "getTokenKey", authUser.getUniqueKey());
 
     tokenService.refreshToken(authUser);
 
@@ -126,16 +128,17 @@ class TokenServiceTest {
 
     DefaultClaims claims = new DefaultClaims();
     claims.setSubject("testUsername");
-    claims.put(AuthConstants.LOGIN_USER_ID, 100L);
+    claims.put(AuthConstants.LOGIN_USER_KEY, "123");
 
     AuthUser authUser = AuthUser.builder().user(testUser).authorities(Collections.emptyList())
+        .uniqueKey("123")
         .build();
-    when(redisCache.getCacheObject(AuthConstants.LOGIN_TOKEN_KEY + 100L)).thenReturn(authUser);
+    when(redisCache.getCacheObject(AuthConstants.LOGIN_TOKEN_KEY + "123")).thenReturn(authUser);
     when(jwtUtils.parseToken(token)).thenReturn(claims);
 
     AuthUser user = tokenService.getUser(request);
 
-    verify(redisCache).getCacheObject(AuthConstants.LOGIN_TOKEN_KEY + user.getUserId());
+    verify(redisCache).getCacheObject(AuthConstants.LOGIN_TOKEN_KEY + authUser.getUniqueKey());
 
     Assertions.assertEquals(user.getUserId(), authUser.getUserId());
     Assertions.assertEquals(user.getUsername(), authUser.getUsername());
@@ -182,6 +185,25 @@ class TokenServiceTest {
 
     Assertions.assertTrue(Math.abs(System.currentTimeMillis() - authUser.getLoginTime()) < 5000);
     Assertions.assertTrue(Math.abs(expectExpireTime - authUser.getExpireTime()) < 5000);
+  }
+
+  @Test
+  void del_login_user_token_not_null() {
+    String uuid = "123";
+
+    tokenService.delLoginUser(uuid);
+
+    verify(redisCache).deleteObject(anyString());
+
+  }
+
+  @Test
+  void del_login_user_token_null() {
+    String uuid = null;
+
+    tokenService.delLoginUser(uuid);
+
+    verify(redisCache, never()).deleteObject(anyString());
   }
 
 }

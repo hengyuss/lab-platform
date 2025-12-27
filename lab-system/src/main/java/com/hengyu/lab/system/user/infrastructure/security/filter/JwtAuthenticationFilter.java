@@ -24,7 +24,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final UserDetailsService userDetailsService;
   private final JwtUtils jwtUtils;
-  //TODO 使用tokenservice
   private final TokenService tokenService;
 
   @Override

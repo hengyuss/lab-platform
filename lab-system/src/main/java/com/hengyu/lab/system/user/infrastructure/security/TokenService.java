@@ -2,6 +2,7 @@ package com.hengyu.lab.system.user.infrastructure.security;
 
 import com.hengyu.lab.common.constant.AuthConstants;
 import com.hengyu.lab.common.redis.RedisCache;
+import com.hengyu.lab.common.utils.IdUtils;
 import com.hengyu.lab.common.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import io.micrometer.common.util.StringUtils;
@@ -33,6 +34,9 @@ public class TokenService {
 
   public String createToken(AuthUser user) {
     HashMap<String, Object> tokenMap = new HashMap<>();
+    String uuid = IdUtils.fastUUID();
+    user.setUniqueKey(uuid);
+    tokenMap.put(AuthConstants.LOGIN_USER_KEY, uuid);
     tokenMap.put(AuthConstants.LOGIN_USER_ID, user.getUserId());
     tokenMap.put(AuthConstants.LOGIN_USER_ROLE, user.getIdentityType());
     String token = jwtUtils.createToken(user.getUsername(), tokenMap);
@@ -42,7 +46,7 @@ public class TokenService {
   public void refreshToken(AuthUser user) {
     user.setLoginTime(System.currentTimeMillis());
     user.setExpireTime(user.getLoginTime() + expireTime * MILLIS_MINUTE);
-    String userKey = AuthConstants.LOGIN_TOKEN_KEY + user.getUserId();
+    String userKey = getTokenKey(user.getUniqueKey());
     redisCache.setCacheObject(userKey, user, expireTime, TimeUnit.MINUTES);
   }
 
@@ -54,8 +58,8 @@ public class TokenService {
       try {
 
         Claims claims = jwtUtils.parseToken(token);
-        Long userId = (Long) claims.get(AuthConstants.LOGIN_USER_ID);
-        AuthUser authUser = redisCache.getCacheObject(AuthConstants.LOGIN_TOKEN_KEY + userId);
+        String uuid = (String) claims.get(AuthConstants.LOGIN_USER_KEY);
+        AuthUser authUser = redisCache.getCacheObject(getTokenKey(uuid));
         return authUser;
       } catch (Exception e) {
         log.error("获取用户信息失败爱  :{}", e.getMessage());
@@ -66,8 +70,7 @@ public class TokenService {
 
   private String getToken(HttpServletRequest request) {
     String token = request.getHeader("Authorization");
-    if (StringUtils.isNotEmpty(token) && token.startsWith(AuthConstants.TOKEN_PREFIX))
-    {
+    if (StringUtils.isNotEmpty(token) && token.startsWith(AuthConstants.TOKEN_PREFIX)) {
       token = token.replace(AuthConstants.TOKEN_PREFIX, "");
     }
     return token;
@@ -78,6 +81,18 @@ public class TokenService {
     Long expireTime = authUser.getExpireTime();
     if (expireTime - currentTimeMillis < MILLIS_MINUTE_TWENTY) {
       refreshToken(authUser);
+    }
+  }
+
+
+  private String getTokenKey(String token) {
+    return AuthConstants.LOGIN_TOKEN_KEY + token;
+  }
+
+  public void delLoginUser(String token) {
+    if (!StringUtils.isEmpty(token)) {
+      String tokenKey = getTokenKey(token);
+      redisCache.deleteObject(tokenKey);
     }
   }
 }

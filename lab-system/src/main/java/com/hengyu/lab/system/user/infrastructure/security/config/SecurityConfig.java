@@ -3,6 +3,7 @@ package com.hengyu.lab.system.user.infrastructure.security.config;
 import com.hengyu.lab.common.security.handler.RestAccessDeniedHandler;
 import com.hengyu.lab.common.security.handler.ResultAuthenticationEntryPoint;
 import com.hengyu.lab.system.user.infrastructure.security.filter.JwtAuthenticationFilter;
+import com.hengyu.lab.system.user.infrastructure.security.handler.LogoutSuccessHandlerImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,11 +21,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private final JwtAuthenticationFilter  jwtAuthenticationFilter;
+  private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
   private final ResultAuthenticationEntryPoint resultAuthenticationEntryPoint;
 
   private final RestAccessDeniedHandler restAccessDeniedHandler;
+
+  private final LogoutSuccessHandlerImpl logoutSuccessHandlerImpl;
 
 
   @Bean
@@ -42,10 +45,12 @@ public class SecurityConfig {
 
             // 3. 基础资源
             .requestMatchers("/favicon.ico", "/error").permitAll()
-        .anyRequest().authenticated())
+            .anyRequest().authenticated())
         .exceptionHandling(exception ->
             exception.authenticationEntryPoint(resultAuthenticationEntryPoint)
                 .accessDeniedHandler(restAccessDeniedHandler))
+        .logout(
+            logout -> logout.logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandlerImpl))
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();

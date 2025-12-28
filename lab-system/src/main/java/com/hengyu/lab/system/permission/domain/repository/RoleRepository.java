@@ -10,4 +10,5 @@ public interface RoleRepository {
   void save(Role role);
 
   Optional<Role> findById(Long l);
+
 }

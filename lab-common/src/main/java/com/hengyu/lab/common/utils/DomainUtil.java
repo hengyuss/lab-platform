@@ -1,7 +1,6 @@
 package com.hengyu.lab.common.utils;
 
 import java.lang.reflect.Field;
-import org.springframework.data.annotation.Id;
 import org.springframework.util.ReflectionUtils;
 
 public class DomainUtil {

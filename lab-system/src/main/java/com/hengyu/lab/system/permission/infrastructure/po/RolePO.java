@@ -20,5 +20,5 @@ public class RolePO extends BasePO {
   private Integer roleSort;
   private String dataScope;
   private String status;
-  private String MenuCheckStrictly;
+  private String menuCheckStrictly;
 }

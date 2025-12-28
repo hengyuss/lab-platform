@@ -120,8 +120,8 @@ class RoleRepositoryImplTest {
     Optional<Role> optionalRole1 = roleRepository.findById(role1.getRoleId());
     Assertions.assertTrue(optionalRole1.isPresent());
     Role findRole1 = optionalRole1.get();
-    Assertions.assertEquals(findRole1.getRoleKey(), "admin");
-    Assertions.assertEquals(findRole1.getRoleName(), "管理员");
+    Assertions.assertEquals("admin", findRole1.getRoleKey());
+    Assertions.assertEquals("管理员", findRole1.getRoleName());
 
     Role role2 = Role.builder()
         .roleId(role1.getRoleId())
@@ -133,8 +133,8 @@ class RoleRepositoryImplTest {
     Mockito.verify(roleMapper).updateById(Mockito.any(RolePO.class));
     Assertions.assertTrue(optionalRole2.isPresent());
     Role findRole2 = optionalRole2.get();
-    Assertions.assertEquals(findRole2.getRoleKey(), "common");
-    Assertions.assertEquals(findRole2.getRoleName(), "普通用户");
+    Assertions.assertEquals("common", findRole2.getRoleKey());
+    Assertions.assertEquals("普通用户", findRole2.getRoleName());
   }
 
 

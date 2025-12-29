@@ -137,5 +137,21 @@ class RoleRepositoryImplTest {
     Assertions.assertEquals("普通用户", findRole2.getRoleName());
   }
 
+  @Test
+  void list_role(){
+    Role role = Role.builder()
+        .status("0")
+        .roleKey("admin")
+        .roleSort(1)
+        .roleName("管理员")
+        .build();
+    roleRepository.save(role);
+    List<Role> roles = roleRepository.listRole(role);
+
+    Assertions.assertEquals(1, roles.size());
+    Assertions.assertEquals("admin", roles.get(0).getRoleKey());
+    Assertions.assertEquals("管理员", roles.get(0).getRoleName());
+  }
+
 
 }

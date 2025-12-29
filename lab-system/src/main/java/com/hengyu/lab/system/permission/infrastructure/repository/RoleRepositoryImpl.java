@@ -67,4 +67,13 @@ public class RoleRepositoryImpl implements RoleRepository {
           return role;
         });
   }
+
+  @Override
+  public List<Role> listRole(Role role) {
+    RolePO po = converter.toPO(role);
+    return roleMapper.listRole(po).stream()
+        .filter(Objects::nonNull)
+        .map(converter::toDomain)
+        .collect(Collectors.toList());
+  }
 }

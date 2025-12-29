@@ -27,7 +27,7 @@ public enum IdentityType {
         return type;
       }
     }
-    return null; // 或者 throw new IllegalArgumentException("未知身份类型");
+    return null;
   }
 
 }

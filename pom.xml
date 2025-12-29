@@ -31,9 +31,9 @@
     <sonar.coverage.exclusions>
       **/com/hengyu/lab/common/exception/**,
       **/com/hengyu/lab/common/constant/**,
-      **/com/hengyu/lab/common/constant/**,
-      **/com/hengyu/lab/common/config/**,
-      **/com/hengyu/lab/common/redis/**,
+      **/com/hengyu/lab/common/api/**,
+      **/com/hengyu/lab/framework/config/**,
+      **/com/hengyu/lab/framework/redis/**,
       **/com/hengyu/lab/common/utils/IdUtils.java,
       **/com/hengyu/lab/common/utils/UUID.java,
       **/com/hengyu/lab/LabStartApplication.java

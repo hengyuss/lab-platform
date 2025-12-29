@@ -10,6 +10,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class UserRolePO {
-  private  Long UserId;
-  private Long RoleId;
+  private  Long userId;
+  private Long roleId;
 }

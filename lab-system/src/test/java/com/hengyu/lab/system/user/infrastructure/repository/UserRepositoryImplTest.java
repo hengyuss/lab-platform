@@ -144,4 +144,19 @@ class UserRepositoryImplTest {
   }
 
 
+  @Test
+  void findByUsername_success() {
+    User user = User.builder()
+        .email("testEmail")
+        .mobile("testMobile")
+        .password("testPassword")
+        .realName("testRealName")
+        .username("testUsername")
+        .identityType(IdentityType.STUDENT)
+        .build();
+    userRepository.save(user);
+    Optional<User> findUser = userRepository.findByUsername("testUsername");
+    assertTrue(findUser.isPresent());
+  }
+
 }

@@ -1,6 +1,6 @@
 package com.hengyu.lab.system.permission.infrastructure.repository;
 
-import com.hengyu.lab.common.utils.DomainUtil;
+import com.hengyu.lab.framework.utils.DomainUtil;
 import com.hengyu.lab.system.permission.domain.Menu;
 import com.hengyu.lab.system.permission.domain.repository.MenuRepository;
 import com.hengyu.lab.system.permission.infrastructure.convert.MenuConverter;

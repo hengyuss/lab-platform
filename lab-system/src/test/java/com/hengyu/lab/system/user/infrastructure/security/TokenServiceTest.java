@@ -7,8 +7,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.hengyu.lab.common.constant.AuthConstants;
-import com.hengyu.lab.common.redis.RedisCache;
-import com.hengyu.lab.common.utils.JwtUtils;
+import com.hengyu.lab.framework.redis.RedisCache;
+import com.hengyu.lab.framework.utils.JwtUtils;
 import com.hengyu.lab.system.user.domain.User;
 import com.hengyu.lab.system.user.domain.constant.IdentityType;
 import io.jsonwebtoken.impl.DefaultClaims;

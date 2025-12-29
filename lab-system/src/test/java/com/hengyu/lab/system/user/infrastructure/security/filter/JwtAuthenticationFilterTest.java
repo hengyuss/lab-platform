@@ -9,7 +9,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.hengyu.lab.common.utils.JwtUtils;
+import com.hengyu.lab.framework.utils.JwtUtils;
 import com.hengyu.lab.system.user.domain.User;
 import com.hengyu.lab.system.user.infrastructure.security.AuthUser;
 import com.hengyu.lab.system.user.infrastructure.security.TokenService;

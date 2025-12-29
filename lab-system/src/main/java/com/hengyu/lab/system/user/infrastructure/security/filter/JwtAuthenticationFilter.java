@@ -1,6 +1,6 @@
 package com.hengyu.lab.system.user.infrastructure.security.filter;
 
-import com.hengyu.lab.common.utils.JwtUtils;
+import com.hengyu.lab.framework.utils.JwtUtils;
 import com.hengyu.lab.system.user.infrastructure.security.AuthUser;
 import com.hengyu.lab.system.user.infrastructure.security.TokenService;
 import jakarta.servlet.FilterChain;

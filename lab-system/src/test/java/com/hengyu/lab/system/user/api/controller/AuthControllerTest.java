@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hengyu.lab.common.utils.JwtUtils;
+import com.hengyu.lab.framework.utils.JwtUtils;
 import com.hengyu.lab.system.user.application.AuthService;
 import com.hengyu.lab.system.user.application.dto.command.LoginCmd;
 import com.hengyu.lab.system.user.application.dto.command.RegisterCmd;

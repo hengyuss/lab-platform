@@ -1,6 +1,6 @@
 package com.hengyu.lab.system.infrastructure.persistence.repository;
 
-import com.hengyu.lab.common.utils.DomainUtil;
+import com.hengyu.lab.framework.utils.DomainUtil;
 import com.hengyu.lab.system.feedback.domain.Feedback;
 import com.hengyu.lab.system.feedback.domain.repository.FeedbackRepository;
 import com.hengyu.lab.system.feedback.infrastructure.persistence.convert.FeedbackConverter;

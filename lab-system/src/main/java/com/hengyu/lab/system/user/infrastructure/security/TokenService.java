@@ -1,9 +1,9 @@
 package com.hengyu.lab.system.user.infrastructure.security;
 
 import com.hengyu.lab.common.constant.AuthConstants;
-import com.hengyu.lab.common.redis.RedisCache;
+import com.hengyu.lab.framework.redis.RedisCache;
 import com.hengyu.lab.common.utils.IdUtils;
-import com.hengyu.lab.common.utils.JwtUtils;
+import com.hengyu.lab.framework.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;

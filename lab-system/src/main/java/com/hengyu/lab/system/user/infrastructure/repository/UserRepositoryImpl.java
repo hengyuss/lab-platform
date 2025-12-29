@@ -2,7 +2,7 @@ package com.hengyu.lab.system.user.infrastructure.repository;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.hengyu.lab.common.utils.DomainUtil;
+import com.hengyu.lab.framework.utils.DomainUtil;
 import com.hengyu.lab.system.user.domain.User;
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
 import com.hengyu.lab.system.user.infrastructure.convert.UserConverter;

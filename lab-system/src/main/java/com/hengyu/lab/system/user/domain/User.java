@@ -1,10 +1,8 @@
 package com.hengyu.lab.system.user.domain;
 
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.hengyu.lab.system.user.domain.constant.IdentityType;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

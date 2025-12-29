@@ -10,6 +10,7 @@
     <module>lab-common</module>
     <module>lab-system</module>
     <module>lab-start</module>
+    <module>lab-framework</module>
   </modules>
 
 
@@ -41,19 +42,12 @@
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <optional>true</optional>
     </dependency>
-
-
 
   </dependencies>
 
@@ -123,13 +117,13 @@
         <version>${jjwt.version}</version>
         <scope>runtime</scope>
       </dependency>
+
       <dependency>
         <groupId>io.jsonwebtoken</groupId>
         <artifactId>jjwt-jackson</artifactId>
         <version>${jjwt.version}</version>
         <scope>runtime</scope>
       </dependency>
-
 
     </dependencies>
   </dependencyManagement>
@@ -148,7 +142,6 @@
           <artifactId>sonar-maven-plugin</artifactId>
           <version>3.11.0.3922</version>
         </plugin>
-
       </plugins>
     </pluginManagement>
     <plugins>
@@ -169,7 +162,7 @@
             <path>
               <groupId>org.mapstruct</groupId>
               <artifactId>mapstruct-processor</artifactId>
-              <version>1.5.5.Final</version>
+              <version>${mapstruct.version}</version>
             </path>
             <path>
               <groupId>org.projectlombok</groupId>
@@ -202,6 +195,7 @@
         </executions>
       </plugin>
     </plugins>
+
   </build>
 
 

@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hengyu.lab.common.api.ResultCode;
 import com.hengyu.lab.common.exception.BizException;
-import com.hengyu.lab.common.utils.JwtUtils;
+import com.hengyu.lab.framework.utils.JwtUtils;
 import com.hengyu.lab.system.user.domain.exception.UserResultCode;
 import com.hengyu.lab.system.user.infrastructure.security.TokenService;
 import jakarta.validation.constraints.Min;

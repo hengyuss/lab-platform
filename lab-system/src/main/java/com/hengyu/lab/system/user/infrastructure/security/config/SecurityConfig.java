@@ -1,7 +1,7 @@
 package com.hengyu.lab.system.user.infrastructure.security.config;
 
-import com.hengyu.lab.common.security.handler.RestAccessDeniedHandler;
-import com.hengyu.lab.common.security.handler.ResultAuthenticationEntryPoint;
+import com.hengyu.lab.framework.security.handler.RestAccessDeniedHandler;
+import com.hengyu.lab.framework.security.handler.ResultAuthenticationEntryPoint;
 import com.hengyu.lab.system.user.infrastructure.security.filter.JwtAuthenticationFilter;
 import com.hengyu.lab.system.user.infrastructure.security.handler.LogoutSuccessHandlerImpl;
 import lombok.RequiredArgsConstructor;

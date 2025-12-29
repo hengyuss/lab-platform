@@ -2,7 +2,7 @@ package com.hengyu.lab.system.permission.infrastructure.repository;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.hengyu.lab.common.utils.DomainUtil;
+import com.hengyu.lab.framework.utils.DomainUtil;
 import com.hengyu.lab.system.permission.domain.Role;
 import com.hengyu.lab.system.permission.domain.repository.RoleRepository;
 import com.hengyu.lab.system.permission.infrastructure.convert.RoleConverter;

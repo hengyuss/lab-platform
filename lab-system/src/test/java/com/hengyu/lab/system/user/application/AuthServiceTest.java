@@ -1,16 +1,17 @@
 package com.hengyu.lab.system.user.application;
 
 import com.hengyu.lab.common.exception.BizException;
+import com.hengyu.lab.framework.security.AuthUser;
+import com.hengyu.lab.framework.security.TokenService;
 import com.hengyu.lab.system.user.application.dto.command.LoginCmd;
 import com.hengyu.lab.system.user.application.dto.command.RegisterCmd;
 import com.hengyu.lab.system.user.application.dto.vo.AuthVO;
 import com.hengyu.lab.system.user.domain.User;
+import com.hengyu.lab.system.user.domain.constant.IdentityType;
 import com.hengyu.lab.system.user.domain.exception.UserException;
 import com.hengyu.lab.system.user.domain.exception.UserResultCode;
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
 import com.hengyu.lab.system.user.infrastructure.convert.UserConverter;
-import com.hengyu.lab.system.user.infrastructure.security.AuthUser;
-import com.hengyu.lab.system.user.infrastructure.security.TokenService;
 import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -59,6 +60,7 @@ class AuthServiceTest {
     cmd.setUsername("hengyu");
     cmd.setPassword("123456"); // 必须设置，防止加密报错
     cmd.setRealName("Hengyu");
+    cmd.setIdentityType(IdentityType.STUDENT);
 
     // 模拟依赖行为
     // 1.1 模拟用户查重：不存在
@@ -67,9 +69,8 @@ class AuthServiceTest {
     // 1.2 模拟密码加密 (重要！不要漏掉)
     Mockito.when(passwordEncryptor.encode("123456")).thenReturn("encoded_123456");
 
-    // 1.3 模拟 Converter
-    AuthVO mockVo = new AuthVO();
-    Mockito.when(userConverter.toAuthVO(Mockito.any(User.class))).thenReturn(mockVo);
+    Mockito.when(userConverter.toAuthUser(Mockito.any(User.class))).thenReturn(AuthUser.builder().build());
+
 
     // 1.4 模拟 JWT 生成
     Mockito.when(tokenService.createToken(Mockito.any(AuthUser.class)))
@@ -129,8 +130,10 @@ class AuthServiceTest {
     LoginCmd cmd = new LoginCmd();
     cmd.setUsername("hengyu");
     cmd.setPassword("123456");
-    User mockUser = User.builder().username("hengyu").build();
-    AuthUser mockAuthUser = AuthUser.builder().user(mockUser).authorities(Collections.emptyList()).build();
+    AuthUser mockAuthUser = AuthUser.builder()
+        .username("hengyu")
+        .password("123456")
+        .authorities(Collections.emptyList()).build();
 
     UsernamePasswordAuthenticationToken authResult = new UsernamePasswordAuthenticationToken(
         mockAuthUser, null, mockAuthUser.getAuthorities());
@@ -141,7 +144,6 @@ class AuthServiceTest {
         .thenReturn(authResult);
     Mockito.when(tokenService.createToken(Mockito.any(AuthUser.class)))
         .thenReturn("mock-jwt-token");
-    Mockito.when(userConverter.toAuthVO(mockUser)).thenReturn(new AuthVO());
 
     AuthVO result = authService.login(cmd);
 

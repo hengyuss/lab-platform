@@ -1,8 +1,8 @@
-package com.hengyu.lab.system.user.infrastructure.security.filter;
+package com.hengyu.lab.framework.security.filter;
 
+import com.hengyu.lab.framework.security.AuthUser;
+import com.hengyu.lab.framework.security.TokenService;
 import com.hengyu.lab.framework.utils.JwtUtils;
-import com.hengyu.lab.system.user.infrastructure.security.AuthUser;
-import com.hengyu.lab.system.user.infrastructure.security.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.hengyu.lab.system.user.infrastructure.security.filter;
+package com.hengyu.lab.framework.security.filter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,10 +9,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.hengyu.lab.framework.security.AuthUser;
+import com.hengyu.lab.framework.security.TokenService;
 import com.hengyu.lab.framework.utils.JwtUtils;
-import com.hengyu.lab.system.user.domain.User;
-import com.hengyu.lab.system.user.infrastructure.security.AuthUser;
-import com.hengyu.lab.system.user.infrastructure.security.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -65,11 +64,9 @@ class JwtAuthenticationFilterTest {
 
   @Test
   void testDoFilterInternal_ValidToken() throws Exception {
-    User testUser = User.builder().username("testUsername")
-        .id(100L)
-        .build();
     AuthUser authUser = AuthUser.builder()
-        .user(testUser)
+        .username("testUsername")
+        .id(100L)
         .build();
     when(tokenService.getUser(request)).thenReturn(authUser);
 

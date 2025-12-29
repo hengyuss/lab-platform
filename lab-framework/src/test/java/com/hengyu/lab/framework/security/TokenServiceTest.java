@@ -1,4 +1,4 @@
-package com.hengyu.lab.system.user.infrastructure.security;
+package com.hengyu.lab.framework.security;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -9,8 +9,6 @@ import static org.mockito.Mockito.when;
 import com.hengyu.lab.common.constant.AuthConstants;
 import com.hengyu.lab.framework.redis.RedisCache;
 import com.hengyu.lab.framework.utils.JwtUtils;
-import com.hengyu.lab.system.user.domain.User;
-import com.hengyu.lab.system.user.domain.constant.IdentityType;
 import io.jsonwebtoken.impl.DefaultClaims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -71,12 +69,12 @@ class TokenServiceTest {
 
   @Test
   void test_createToken() {
-    User user = User.builder().username("testUsername")
-        .id(100L)
-        .identityType(IdentityType.STUDENT)
-        .build();
 
-    AuthUser authUser = AuthUser.builder().user(user).authorities(Collections.emptyList()).build();
+    AuthUser authUser = AuthUser.builder()
+        .username("testUsername")
+        .id(100L)
+        .identityType(1)
+        .authorities(Collections.emptyList()).build();
     String expectedToken = "mock-jwt-token";
     when(jwtUtils.createToken(eq("testUsername"), Mockito.anyMap())).thenReturn(expectedToken);
 
@@ -88,21 +86,21 @@ class TokenServiceTest {
     Map<String, Object> map = captor.getValue();
 
     Assertions.assertEquals(100L, map.get(AuthConstants.LOGIN_USER_ID));
-    Assertions.assertEquals(IdentityType.STUDENT, map.get(AuthConstants.LOGIN_USER_ROLE));
+    Assertions.assertEquals(1, map.get(AuthConstants.LOGIN_USER_ROLE));
 
   }
 
   @Test
   void test_refreshToken() {
-    User user = User.builder().username("testUsername")
-        .id(100L)
-        .identityType(IdentityType.STUDENT)
-        .build();
 
     Long loginTime = System.currentTimeMillis();
     Long expireTime = System.currentTimeMillis() + MOCK_EXPIRE_TIME * 60 * 1000;
 
-    AuthUser authUser = AuthUser.builder().user(user).authorities(Collections.emptyList())
+    AuthUser authUser = AuthUser.builder()
+        .username("testUsername")
+        .id(100L)
+        .identityType(1)
+        .authorities(Collections.emptyList())
         .loginTime(loginTime)
         .expireTime(expireTime)
         .uniqueKey("123")
@@ -122,15 +120,15 @@ class TokenServiceTest {
   void test_get_user() {
     String token = "mock-jwt-token";
     when(request.getHeader("Authorization")).thenReturn(token);
-    User testUser = User.builder().username("testUsername")
-        .id(100L)
-        .build();
 
     DefaultClaims claims = new DefaultClaims();
     claims.setSubject("testUsername");
     claims.put(AuthConstants.LOGIN_USER_KEY, "123");
 
-    AuthUser authUser = AuthUser.builder().user(testUser).authorities(Collections.emptyList())
+    AuthUser authUser = AuthUser.builder()
+        .username("testUsername")
+        .id(100L)
+        .authorities(Collections.emptyList())
         .uniqueKey("123")
         .build();
     when(redisCache.getCacheObject(AuthConstants.LOGIN_TOKEN_KEY + "123")).thenReturn(authUser);
@@ -150,11 +148,9 @@ class TokenServiceTest {
     Long loginTime = System.currentTimeMillis() - 20 * 60 * 1000;
     Long expireTime = loginTime + MOCK_EXPIRE_TIME * 60 * 1000;
     Long expectExpireTime = System.currentTimeMillis() + MOCK_EXPIRE_TIME * 60 * 1000;
-    User testUser = User.builder().username("testUsername")
-        .id(100L)
-        .build();
     AuthUser authUser = AuthUser.builder()
-        .user(testUser)
+        .username("testUsername")
+        .id(100L)
         .loginTime(loginTime)
         .expireTime(expireTime)
         .build();
@@ -170,11 +166,9 @@ class TokenServiceTest {
     Long loginTime = System.currentTimeMillis();
     Long expireTime = loginTime + MOCK_EXPIRE_TIME * 60 * 1000;
     Long expectExpireTime = System.currentTimeMillis() + MOCK_EXPIRE_TIME * 60 * 1000;
-    User testUser = User.builder().username("testUsername")
-        .id(100L)
-        .build();
     AuthUser authUser = AuthUser.builder()
-        .user(testUser)
+        .username("testUsername")
+        .id(100L)
         .loginTime(loginTime)
         .expireTime(expireTime)
         .build();

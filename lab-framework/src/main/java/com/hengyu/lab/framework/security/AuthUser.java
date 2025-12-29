@@ -1,9 +1,7 @@
-package com.hengyu.lab.system.user.infrastructure.security;
+package com.hengyu.lab.framework.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.hengyu.lab.system.user.domain.User;
-import com.hengyu.lab.system.user.domain.constant.IdentityType;
 import java.util.Collection;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,10 +17,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AuthUser implements UserDetails {
 
-  private  User user;
   private  Collection<? extends GrantedAuthority> authorities;
+  private String username;
+  private String password;
   private  Long loginTime;
   private  Long expireTime;
+  private  Long id;
+  private  Integer identityType;
+  private  Integer status;
   private String uniqueKey;
 
   @Override
@@ -34,24 +36,24 @@ public class AuthUser implements UserDetails {
 
   @JsonIgnore
   public Long getUserId(){
-    return user.getId();
+    return this.id;
   }
 
   @JsonIgnore
-  public IdentityType getIdentityType(){
-    return  user.getIdentityType();
+  public Integer getIdentityType(){
+    return  this.identityType;
   }
 
   @JsonIgnore
   @Override
   public String getPassword() {
-    return user.getPassword();
+    return this.password;
   }
 
   @JsonIgnore
   @Override
   public String getUsername() {
-    return user.getUsername();
+    return this.username;
   }
 
   @JsonIgnore

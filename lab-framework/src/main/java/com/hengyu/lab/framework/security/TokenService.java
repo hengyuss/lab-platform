@@ -1,8 +1,8 @@
-package com.hengyu.lab.system.user.infrastructure.security;
+package com.hengyu.lab.framework.security;
 
 import com.hengyu.lab.common.constant.AuthConstants;
-import com.hengyu.lab.framework.redis.RedisCache;
 import com.hengyu.lab.common.utils.IdUtils;
+import com.hengyu.lab.framework.redis.RedisCache;
 import com.hengyu.lab.framework.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import io.micrometer.common.util.StringUtils;

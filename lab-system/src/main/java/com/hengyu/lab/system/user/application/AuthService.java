@@ -2,17 +2,17 @@ package com.hengyu.lab.system.user.application;
 
 import com.hengyu.lab.common.constant.AuthConstants;
 import com.hengyu.lab.common.exception.BizException;
+import com.hengyu.lab.framework.security.AuthUser;
+import com.hengyu.lab.framework.security.TokenService;
 import com.hengyu.lab.system.user.application.dto.command.LoginCmd;
 import com.hengyu.lab.system.user.application.dto.command.RegisterCmd;
 import com.hengyu.lab.system.user.application.dto.vo.AuthVO;
 import com.hengyu.lab.system.user.domain.User;
+import com.hengyu.lab.system.user.domain.constant.IdentityType;
 import com.hengyu.lab.system.user.domain.exception.UserException;
 import com.hengyu.lab.system.user.domain.exception.UserResultCode;
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
 import com.hengyu.lab.system.user.infrastructure.convert.UserConverter;
-import com.hengyu.lab.system.user.infrastructure.security.AuthUser;
-import com.hengyu.lab.system.user.infrastructure.security.TokenService;
-import java.util.Collections;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,8 @@ public class AuthService {
         cmd.getMobile(),
         cmd.getIdentityType());
     userRepository.save(registerUser);
-    AuthUser authUser = AuthUser.builder().user(registerUser).authorities(Collections.emptyList()).build();
+
+    AuthUser authUser =  userConverter.toAuthUser(registerUser);
 
     return buildAuthVO(authUser);
   }
@@ -72,7 +73,9 @@ public class AuthService {
 
     String token = tokenService.createToken(user);
     tokenService.refreshToken(user);
-    AuthVO authVO = userConverter.toAuthVO(user.getUser());
+    AuthVO authVO = new AuthVO();
+    authVO.setUsername(user.getUsername());
+    authVO.setIdentityType(IdentityType.of(user.getIdentityType()));
     authVO.setToken(token);
     authVO.setTokenType(AuthConstants.TOKEN_TYPE);
     return authVO;

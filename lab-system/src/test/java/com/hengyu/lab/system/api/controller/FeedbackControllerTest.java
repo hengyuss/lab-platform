@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hengyu.lab.framework.security.TokenService;
 import com.hengyu.lab.framework.utils.JwtUtils;
 import com.hengyu.lab.system.feedback.api.controller.FeedbackController;
 import com.hengyu.lab.system.feedback.application.dto.clientobject.FeedbackCO;
@@ -22,7 +23,6 @@ import com.hengyu.lab.system.feedback.application.dto.command.UpdateFeedbackStat
 import com.hengyu.lab.system.feedback.application.dto.query.FeedbackQry;
 import com.hengyu.lab.system.feedback.application.service.FeedbackAppService;
 import com.hengyu.lab.system.feedback.domain.constant.FeedbackStatus;
-import com.hengyu.lab.system.user.infrastructure.security.TokenService;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

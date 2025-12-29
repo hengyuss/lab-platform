@@ -1,9 +1,9 @@
-package com.hengyu.lab.system.user.infrastructure.security.config;
+package com.hengyu.lab.framework.security.config;
 
+import com.hengyu.lab.framework.security.filter.JwtAuthenticationFilter;
+import com.hengyu.lab.framework.security.handler.LogoutSuccessHandlerImpl;
 import com.hengyu.lab.framework.security.handler.RestAccessDeniedHandler;
 import com.hengyu.lab.framework.security.handler.ResultAuthenticationEntryPoint;
-import com.hengyu.lab.system.user.infrastructure.security.filter.JwtAuthenticationFilter;
-import com.hengyu.lab.system.user.infrastructure.security.handler.LogoutSuccessHandlerImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,9 +1,9 @@
-package com.hengyu.lab.system.user.infrastructure.security.handler;
+package com.hengyu.lab.framework.security.handler;
 
 import com.alibaba.fastjson2.JSON;
 import com.hengyu.lab.common.api.R;
-import com.hengyu.lab.system.user.infrastructure.security.AuthUser;
-import com.hengyu.lab.system.user.infrastructure.security.TokenService;
+import com.hengyu.lab.framework.security.AuthUser;
+import com.hengyu.lab.framework.security.TokenService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

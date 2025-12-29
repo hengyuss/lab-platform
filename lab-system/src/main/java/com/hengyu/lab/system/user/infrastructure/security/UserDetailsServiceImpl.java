@@ -1,7 +1,7 @@
 package com.hengyu.lab.system.user.infrastructure.security;
 
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
-import java.util.Collections;
+import com.hengyu.lab.system.user.infrastructure.convert.UserConverter;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +16,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   private final UserRepository userRepository;
 
+  private final UserConverter converter;
+
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     return userRepository.findByUsername(username)
-        .map(user -> AuthUser.builder().user(user).authorities(Collections.emptyList()).build())
+        .map(user -> converter.toAuthUser(user))
         .orElseThrow(() -> new UsernameNotFoundException(username));
   }
 }

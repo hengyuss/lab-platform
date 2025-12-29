@@ -17,4 +17,17 @@ public enum IdentityType {
   private final Integer TYPE;
 
   private final String DESC;
+
+  public static IdentityType of(Integer code) {
+    if (code == null) {
+      return null;
+    }
+    for (IdentityType type : values()) {
+      if (type.getTYPE().equals(code)) {
+        return type;
+      }
+    }
+    return null; // 或者 throw new IllegalArgumentException("未知身份类型");
+  }
+
 }

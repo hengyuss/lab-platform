@@ -1,7 +1,10 @@
 package com.hengyu.lab.system.user.domain;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.hengyu.lab.system.user.domain.constant.IdentityType;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,12 +26,17 @@ public class User implements Serializable {
   private String email;
   private String mobile;
   private IdentityType identityType;
+  private List<Long> roleIds;
 
 
   public static User register(String username, String password, String realName, String email,
       String mobile, IdentityType identityType) {
     return User.builder().username(username).password(password).realName(realName).email(email)
         .mobile(mobile).identityType(identityType).build();
+  }
+
+  public void assignRoles(List<Long> roleIds) {
+    this.roleIds = roleIds;
   }
 
 }

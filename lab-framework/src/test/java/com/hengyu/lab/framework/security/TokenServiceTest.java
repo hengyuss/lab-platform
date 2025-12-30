@@ -132,7 +132,7 @@ class TokenServiceTest {
         .uniqueKey("123")
         .build();
     when(redisCache.getCacheObject(AuthConstants.LOGIN_TOKEN_KEY + "123")).thenReturn(authUser);
-    when(jwtUtils.parseToken(token)).thenReturn(claims);
+    when(jwtUtils.parseToken("mock-jwt-token")).thenReturn(claims);
 
     AuthUser user = tokenService.getUser(request);
 

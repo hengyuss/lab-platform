@@ -4,5 +4,5 @@ import java.util.List;
 import java.util.Set;
 
 public interface PermissionProvider {
-    Set<String> getMenuPermission(List<String> RoleIds);
+    Set<String> getMenuPermission(List<Long> RoleIds);
 }

@@ -8,6 +8,7 @@ import com.hengyu.lab.system.permission.infrastructure.mapper.MenuMapper;
 import com.hengyu.lab.system.permission.infrastructure.po.MenuPO;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -42,6 +43,11 @@ public class MenuRepositoryImpl implements MenuRepository {
     return menuMapper.selectMenuList(po).stream()
         .map(converter::toDomain)
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public Set<String> getPermsByRoleIds(List<Long> roleIds) {
+    return menuMapper.getPermsByRoleIds(roleIds);
   }
 
 }

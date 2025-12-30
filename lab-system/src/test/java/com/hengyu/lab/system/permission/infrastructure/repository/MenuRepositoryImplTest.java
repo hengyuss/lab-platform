@@ -10,6 +10,8 @@ import com.hengyu.lab.system.permission.infrastructure.mapper.MenuMapper;
 import com.hengyu.lab.system.permission.infrastructure.po.MenuPO;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,8 +98,14 @@ class MenuRepositoryImplTest {
 
     Menu menu = Menu.builder().build();
     List<Menu> menuList = menuRepository.selectMenuList(menu);
-    assertEquals(1, menuList.size());
+    assertEquals(7, menuList.size());
     assertEquals("系统管理",  menuList.get(0).getMenuName());
+  }
+
+  @Test
+  void get_menu_perms_by_role_ids(){
+    Set<String> permsByRoleIds = menuMapper.getPermsByRoleIds(List.of(1L, 2L));
+    Assertions.assertEquals(Set.of("system:user:list", "system:role:list"),  permsByRoleIds);
   }
 
 

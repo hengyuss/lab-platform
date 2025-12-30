@@ -89,6 +89,14 @@ CREATE TABLE sys_menu
     PRIMARY KEY (menu_id)
 );
 
+insert into sys_menu values('1', '系统管理', '0', '1', 'system',           null, '', '', 1, 0, 'M', '0', '0', '', 'system',   'admin', now(), '', null, '系统管理目录');
+insert into sys_menu values('2', '系统监控', '0', '2', 'monitor',          null, '', '', 1, 0, 'M', '0', '0', '', 'monitor',  'admin', now(), '', null, '系统监控目录');
+insert into sys_menu values('3', '系统工具', '0', '3', 'tool',             null, '', '', 1, 0, 'M', '0', '0', '', 'tool',     'admin', now(), '', null, '系统工具目录');
+insert into sys_menu values('4', '若依官网', '0', '4', 'http://ruoyi.vip', null, '', '', 0, 0, 'M', '0', '0', '', 'guide',    'admin', now(), '', null, '若依官网地址');
+
+insert into sys_menu values('100',  '用户管理', '1',   '1', 'user',       'system/user/index',        '', '', 1, 0, 'C', '0', '0', 'system:user:list',        'user',          'admin', now(), '', null, '用户管理菜单');
+insert into sys_menu values('101',  '角色管理', '1',   '2', 'role',       'system/role/index',        '', '', 1, 0, 'C', '0', '0', 'system:role:list',        'peoples',       'admin', now(), '', null, '角色管理菜单');
+
 
 -- ----------------------------
 -- 3、用户和角色关联表
@@ -112,3 +120,9 @@ CREATE TABLE sys_role_menu
     menu_id BIGINT NOT NULL,
     PRIMARY KEY (role_id, menu_id)
 );
+insert into sys_role_menu values ('2', '1');
+insert into sys_role_menu values ('2', '2');
+insert into sys_role_menu values ('2', '3');
+insert into sys_role_menu values ('2', '4');
+insert into sys_role_menu values ('2', '100');
+insert into sys_role_menu values ('2', '101');

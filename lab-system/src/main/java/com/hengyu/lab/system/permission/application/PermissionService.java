@@ -1,11 +1,10 @@
 package com.hengyu.lab.system.permission.application;
 
+import java.util.List;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Set;
 
 @Service
 @Slf4j
@@ -19,8 +18,8 @@ public class PermissionService {
 
 
 
-  public Set<String> getPermission(List<String> roleIds) {
-
+  public Set<String> getPermission(List<Long> roleIds) {
+    Set<String> perms = menuService.getPermsByRoleIds(roleIds);
     return Set.of();
   }
 }

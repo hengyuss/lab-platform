@@ -19,7 +19,6 @@ public class PermissionService {
 
 
   public Set<String> getPermission(List<Long> roleIds) {
-    Set<String> perms = menuService.getPermsByRoleIds(roleIds);
-    return Set.of();
+    return menuService.getPermsByRoleIds(roleIds);
   }
 }

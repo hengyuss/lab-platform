@@ -12,7 +12,6 @@ public class MenuService {
   private final MenuRepository menuRepository;
 
   public Set<String> getPermsByRoleIds(List<Long> roleIds) {
-    Set<String> perms = menuRepository.getPermsByRoleIds(roleIds);
-    return perms;
+    return menuRepository.getPermsByRoleIds(roleIds);
   }
 }

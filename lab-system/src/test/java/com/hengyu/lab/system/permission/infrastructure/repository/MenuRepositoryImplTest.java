@@ -104,7 +104,7 @@ class MenuRepositoryImplTest {
 
   @Test
   void get_menu_perms_by_role_ids(){
-    Set<String> permsByRoleIds = menuMapper.getPermsByRoleIds(List.of(1L, 2L));
+    Set<String> permsByRoleIds = menuRepository.getPermsByRoleIds(List.of(1L, 2L));
     Assertions.assertEquals(Set.of("system:user:list", "system:role:list"),  permsByRoleIds);
   }
 

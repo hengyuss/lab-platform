@@ -118,7 +118,7 @@ class TokenServiceTest {
 
   @Test
   void test_get_user() {
-    String token = "mock-jwt-token";
+    String token = "Bearer mock-jwt-token";
     when(request.getHeader("Authorization")).thenReturn(token);
 
     DefaultClaims claims = new DefaultClaims();

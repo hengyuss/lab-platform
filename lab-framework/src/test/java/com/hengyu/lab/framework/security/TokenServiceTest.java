@@ -1,5 +1,6 @@
 package com.hengyu.lab.framework.security;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
@@ -19,6 +20,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -28,6 +31,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
@@ -198,6 +202,40 @@ class TokenServiceTest {
     tokenService.delLoginUser(uuid);
 
     verify(redisCache, never()).deleteObject(anyString());
+  }
+
+  @ParameterizedTest(name = "输入Header: [{0}] => 期望结果: [{1}]")
+  @CsvSource({
+      // 场景1: 正常情况 (带前缀) -> 去掉前缀
+      "Bearer my-token-123,   my-token-123",
+
+      // 场景2: 没有前缀 -> 原样返回 (根据你的代码逻辑)
+      "Basic my-token-123,    Basic my-token-123",
+
+      // 场景3: 只有前缀 -> 返回空串
+      "'Bearer ',               ''",
+
+      // 场景4: 纯乱码/无空格 -> 原样返回
+      "JustToken,             JustToken",
+
+      // 场景5: 空字符串 -> 原样返回 (StringUtils.isNotEmpty 判断为 false)
+      "'',                    ''",
+
+      // 场景6: Null -> 返回 Null (CSV 中用 null 关键字表示 null)
+      ",                      "
+  })
+  void getToken_ShouldHandleAllCases(String inputHeader, String expectedToken) {
+    // 1. 准备请求
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    if (inputHeader != null) {
+      request.addHeader("Authorization", inputHeader);
+    }
+
+    // 2. 调用私有方法
+    String result = ReflectionTestUtils.invokeMethod(tokenService, "getToken", request);
+
+    // 3. 统一断言
+    assertEquals(expectedToken, result);
   }
 
 }

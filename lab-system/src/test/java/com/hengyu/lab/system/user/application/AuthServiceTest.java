@@ -152,21 +152,5 @@ class AuthServiceTest {
 
   }
 
-  @Test
-  void login_fail_when_wrong_password() throws Exception {
-    LoginCmd cmd = new LoginCmd();
-    cmd.setUsername("hengyu");
-    cmd.setPassword("123456");
-    Mockito.when(authConfig.getAuthenticationManager()).thenReturn(authenticationManager);
-    Mockito.when(
-            authenticationManager.authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class)))
-        .thenThrow(new BadCredentialsException("Bad credentials"));
-
-    BizException bizException = Assertions.assertThrows(BizException.class,
-        () -> authService.login(cmd));
-    Assertions.assertEquals(UserResultCode.USERNAME_OR_PASSWORD_ERROR.getCode(),
-        bizException.getCode());
-  }
-
 
 }

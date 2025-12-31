@@ -1,7 +1,6 @@
 package com.hengyu.lab.system.user.application;
 
 import com.hengyu.lab.common.constant.AuthConstants;
-import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.framework.security.AuthUser;
 import com.hengyu.lab.framework.security.TokenService;
 import com.hengyu.lab.system.user.application.dto.command.LoginCmd;
@@ -47,26 +46,22 @@ public class AuthService {
         cmd.getIdentityType());
     userRepository.save(registerUser);
 
-    AuthUser authUser =  userConverter.toAuthUser(registerUser);
+    AuthUser authUser = userConverter.toAuthUser(registerUser);
 
     return buildAuthVO(authUser);
   }
 
-  public AuthVO login(LoginCmd cmd) {
-    try {
-      AuthenticationManager authenticationManager = authConfig.getAuthenticationManager();
-      UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-          cmd.getUsername(), cmd.getPassword());
+  public AuthVO login(LoginCmd cmd) throws Exception {
+    AuthenticationManager authenticationManager = authConfig.getAuthenticationManager();
+    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+        cmd.getUsername(), cmd.getPassword());
 
-      Authentication authenticate = authenticationManager.authenticate(
-          usernamePasswordAuthenticationToken);
+    Authentication authenticate = authenticationManager.authenticate(
+        usernamePasswordAuthenticationToken);
 
-      AuthUser authUser = (AuthUser) authenticate.getPrincipal();
+    AuthUser authUser = (AuthUser) authenticate.getPrincipal();
 
-      return buildAuthVO(authUser);
-    } catch (Exception e) {
-      throw new BizException(UserResultCode.USERNAME_OR_PASSWORD_ERROR);
-    }
+    return buildAuthVO(authUser);
   }
 
   private AuthVO buildAuthVO(AuthUser user) {

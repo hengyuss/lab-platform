@@ -31,7 +31,7 @@ public class AuthController {
 
   @PostMapping("login")
   @Operation(summary = "登录") // 对应接口的描述
-  public R<AuthVO> login(@RequestBody @Validated LoginCmd cmd) {
+  public R<AuthVO> login(@RequestBody @Validated LoginCmd cmd) throws Exception {
     AuthVO authVO = authService.login(cmd);
     return R.ok(authVO);
   }

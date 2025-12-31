@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PermissionProviderImpl implements PermissionProvider {
 
-    private final PermissionService permissionService;
+  private final PermissionService permissionService;
 
-    @Override
-    public Set<String> getMenuPermission(List<Long> roleIds) {
-        return permissionService.getPermission(roleIds);
-    }
+  @Override
+  public Set<String> getMenuPermission(List<Long> roleIds) {
+    return roleIds == null ? Set.of() : permissionService.getPermission(roleIds);
+  }
 }

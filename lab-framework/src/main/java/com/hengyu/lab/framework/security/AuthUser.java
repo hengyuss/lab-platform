@@ -3,6 +3,8 @@ package com.hengyu.lab.framework.security;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,12 +28,13 @@ public class AuthUser implements UserDetails {
   private  Integer identityType;
   private  Integer status;
   private String uniqueKey;
+  private Set<String> permissions;
+  private List<Long> roleIds;
 
   @Override
+  @JsonIgnore
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    // 将 user 中的身份转为 Security 认识的角色
-    //TODO 权限认证后边再写
-    return this.authorities;
+    return null;
   }
 
   @JsonIgnore

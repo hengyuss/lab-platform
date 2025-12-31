@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,7 @@ public class FeedbackController {
   }
 
   @GetMapping
+  @PreAuthorize("@ss.hasPermi('testpermission')")
   @Operation(summary = "获取需求分页数据")
   public R<IPage<FeedbackCO>> getFeedbackPage(@ParameterObject FeedbackQry feedbackQry) {
     IPage<FeedbackCO> feedbackPage = feedbackAppService.getFeedbackPage(feedbackQry);

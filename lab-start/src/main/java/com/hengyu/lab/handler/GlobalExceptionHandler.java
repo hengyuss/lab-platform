@@ -4,8 +4,10 @@ import com.hengyu.lab.common.api.R;
 import com.hengyu.lab.common.api.ResultCode;
 import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.system.user.domain.exception.UserResultCode;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -45,6 +47,15 @@ public class GlobalExceptionHandler {
   public R<Void> handleException(Exception e) {
     log.error("系统未知异常: {}", e.getMessage());
     return R.fail(ResultCode.FAILURE.getCode(), "系统繁忙,请稍候再试");
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public R<Void> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
+    // 1. 打印 WARN 日志即可，因为这是用户行为（试图访问没权限的接口），不是系统 Bug
+    log.warn("请求地址'{}', 权限不足: {}", request.getRequestURI(), e.getMessage());
+
+    // 2. 返回标准的 403 状态码和提示
+    return R.fail(ResultCode.NO_PRIVILEGE);
   }
 
   @ExceptionHandler(BadCredentialsException.class)

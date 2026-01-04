@@ -15,6 +15,7 @@ import com.hengyu.lab.system.user.domain.exception.UserResultCode;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,6 +23,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.validation.annotation.Validated;
@@ -59,6 +61,12 @@ class GlobalExceptionHandlerTest {
       throw new BizException(ResultCode.FAILURE.getCode(), "业务挂了");
     }
 
+    @GetMapping("/biz-error")
+    public void throwError() {
+      // 抛出一个带有 cause 的异常，触发你的 log.error 分支
+      throw new BizException(ResultCode.FAILURE, new IllegalArgumentException("参数不对"));
+    }
+
     @PostMapping("/valid")
     public void throwValid(@RequestBody @Validated TestDto testDto) {
       // 方法体为空是预期的。
@@ -87,6 +95,11 @@ class GlobalExceptionHandlerTest {
       // do nothing
     }
 
+    @GetMapping("/trigger-error")
+    public void trigger() {
+      throw new AccessDeniedException("故意抛出的权限异常");
+    }
+
   }
 
   @Data
@@ -95,6 +108,30 @@ class GlobalExceptionHandlerTest {
     private String name;
   }
 
+  @Test
+  @DisplayName("集成测试：当 Controller 抛出权限异常时，应拦截并返回 JSON")
+  void shouldInterceptAccessDeniedException() throws Exception {
+    mockMvc.perform(get("/test/ex/trigger-error")
+            .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print()) // 打印请求详情，方便调试
+
+        // 1. 验证 HTTP 状态码
+        // 注意：GlobalHandler 通常返回 HTTP 200，但 JSON 里包含错误码
+        // 如果你的代码里没设置 response.setStatus，这里就是 200
+        .andExpect(status().isOk())
+
+        // 2. 验证 JSON 内容
+        .andExpect(jsonPath("$.code").value(ResultCode.NO_PRIVILEGE.getCode()))
+        .andExpect(jsonPath("$.msg").value(ResultCode.NO_PRIVILEGE.getMsg()));
+  }
+
+  @Test
+  void shouldHandleBizException() throws Exception {
+    mockMvc.perform(get("/test/ex/biz-error")
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk()) // 通常业务异常 HTTP 状态码也是 200
+        .andExpect(jsonPath("$.code").value(ResultCode.FAILURE.getCode()));
+  }
 
   @Test
   void test_throw_biz() throws Exception {
@@ -154,9 +191,6 @@ class GlobalExceptionHandlerTest {
         .andDo(print())
         .andExpect(status().isOk()) // 假设你返回 200
         .andExpect(jsonPath("$.code").value(ResultCode.ARGUMENT_NOT_VALID.getCode()))
-        // ⚠️ 注意：默认的 e.getMessage() 返回的格式通常是 "方法名.参数名: 错误信息"
-        // 例如: "throwConstraint.age: 未成年人禁止入内"
-        // 你可以用 containsString 来断言
         .andExpect(jsonPath("$.msg").value(org.hamcrest.Matchers.containsString("未成年人禁止入内")));
   }
 

@@ -169,6 +169,13 @@ class TokenServiceTest {
     assertNull(result, "当发生异常时，应该返回 null");
   }
 
+  @Test
+  void getUser_when_tokenIsNull_ShouldReturnNull() {
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    AuthUser result = tokenService.getUser(request);
+    assertNull(result, "token为Null时，应该返回 null");
+  }
+
 
 
 

@@ -1,6 +1,7 @@
 package com.hengyu.lab.framework.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -146,6 +148,29 @@ class TokenServiceTest {
     Assertions.assertEquals(user.getUsername(), authUser.getUsername());
 
   }
+
+  @Test
+  @DisplayName("测试：解析Token抛出异常时，应该进入catch并返回null")
+   void getUser_WhenException_ShouldReturnNull() {
+    // 1. 准备 Request (必须有 Token，否则进不去 if 判断)
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.addHeader("Authorization", "Bearer invalid-token-string");
+
+    // 2. 🔥 关键步骤：强行让 jwtUtils 抛出异常
+    // 告诉 Mockito：当调用 parseToken 时，不管参数是啥，直接给我抛个异常出来！
+    when(jwtUtils.parseToken(anyString())).thenThrow(new RuntimeException("Token解析失败模拟"));
+
+
+    // 3. 执行方法
+    AuthUser result = tokenService.getUser(request);
+
+    // 4. 断言
+    // 因为你的 catch 块捕获了异常并打印了日志，代码会继续往下走，最终 return null
+    assertNull(result, "当发生异常时，应该返回 null");
+  }
+
+
+
 
   @Test
   void verify_token_refresh_token() {

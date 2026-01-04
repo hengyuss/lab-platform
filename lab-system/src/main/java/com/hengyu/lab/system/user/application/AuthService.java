@@ -33,6 +33,7 @@ public class AuthService {
   private final UserConverter userConverter;
   private final AuthenticationConfiguration authConfig;
   private final TokenService tokenService;
+  private final AuthenticationManager authenticationManager;
 
   @Transactional(rollbackFor = Exception.class)
   public AuthVO register(RegisterCmd cmd) {
@@ -52,7 +53,6 @@ public class AuthService {
   }
 
   public AuthVO login(LoginCmd cmd) throws Exception {
-    AuthenticationManager authenticationManager = authConfig.getAuthenticationManager();
     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
         cmd.getUsername(), cmd.getPassword());
 

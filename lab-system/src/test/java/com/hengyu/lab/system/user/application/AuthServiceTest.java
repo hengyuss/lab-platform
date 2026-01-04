@@ -1,6 +1,5 @@
 package com.hengyu.lab.system.user.application;
 
-import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.framework.security.AuthUser;
 import com.hengyu.lab.framework.security.TokenService;
 import com.hengyu.lab.system.user.application.dto.command.LoginCmd;
@@ -23,7 +22,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -138,7 +136,6 @@ class AuthServiceTest {
     UsernamePasswordAuthenticationToken authResult = new UsernamePasswordAuthenticationToken(
         mockAuthUser, null, mockAuthUser.getAuthorities());
 
-    Mockito.when(authConfig.getAuthenticationManager()).thenReturn(authenticationManager);
     Mockito.when(
             authenticationManager.authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class)))
         .thenReturn(authResult);

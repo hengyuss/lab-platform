@@ -22,6 +22,11 @@ public class BizException extends RuntimeException {
     this.code = code;
   }
 
+  public BizException(ResultCode resultCode, Exception e) {
+    super(resultCode.getMsg(), e);
+    this.code = resultCode.getCode();
+  }
+
   public Integer getCode() {
     if (this.code == null) {
       return ResultCode.FAILURE.getCode();
@@ -32,6 +37,10 @@ public class BizException extends RuntimeException {
   public String getMsg() {
     return super.getMessage();
   }
+
+
+
+
 
 
 }

@@ -62,7 +62,7 @@ public class TokenService {
         AuthUser authUser = redisCache.getCacheObject(getTokenKey(uuid));
         return authUser;
       } catch (Exception e) {
-        log.error("获取用户信息失败爱  :{}", e.getMessage());
+        log.error("获取用户信息失败  :{}", e.getMessage());
       }
     }
     return null;

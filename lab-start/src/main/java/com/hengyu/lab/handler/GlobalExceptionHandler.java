@@ -19,7 +19,11 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(value = BizException.class)
   public R<Void> handleException(BizException e) {
-    log.warn("业务异常: code={}, msg={}", e.getCode(), e.getMsg());
+    if (e.getCause() != null) {
+      log.error("业务异常关联的系统错误：{}", e.getMessage(), e.getCause());
+    } else {
+      log.warn("业务异常: code={}, msg={}", e.getCode(), e.getMsg());
+    }
     return R.fail(e.getCode(), e.getMessage());
   }
 

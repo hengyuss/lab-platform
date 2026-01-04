@@ -28,4 +28,10 @@ class PermissionProviderImplTest {
     Assertions.assertEquals(expect, menuPermission);
   }
 
+  @Test
+  void test_get_menu_role_permission_when_roleIds_is_null() {
+    Set<String> menuPermission = permissionProvider.getMenuPermission(null);
+    Assertions.assertEquals(Set.of(), menuPermission);
+  }
+
 }

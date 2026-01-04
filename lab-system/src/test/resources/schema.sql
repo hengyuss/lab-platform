@@ -89,13 +89,25 @@ CREATE TABLE sys_menu
     PRIMARY KEY (menu_id)
 );
 
-insert into sys_menu values('1', '系统管理', '0', '1', 'system',           null, '', '', 1, 0, 'M', '0', '0', '', 'system',   'admin', now(), '', null, '系统管理目录');
-insert into sys_menu values('2', '系统监控', '0', '2', 'monitor',          null, '', '', 1, 0, 'M', '0', '0', '', 'monitor',  'admin', now(), '', null, '系统监控目录');
-insert into sys_menu values('3', '系统工具', '0', '3', 'tool',             null, '', '', 1, 0, 'M', '0', '0', '', 'tool',     'admin', now(), '', null, '系统工具目录');
-insert into sys_menu values('4', '若依官网', '0', '4', 'http://ruoyi.vip', null, '', '', 0, 0, 'M', '0', '0', '', 'guide',    'admin', now(), '', null, '若依官网地址');
+insert into sys_menu
+values ('1', '系统管理', '0', '1', 'system', null, '', '', 1, 0, 'M', '0', '0', '', 'system',
+        'admin', now(), '', null, '系统管理目录');
+insert into sys_menu
+values ('2', '系统监控', '0', '2', 'monitor', null, '', '', 1, 0, 'M', '0', '0', '', 'monitor',
+        'admin', now(), '', null, '系统监控目录');
+insert into sys_menu
+values ('3', '系统工具', '0', '3', 'tool', null, '', '', 1, 0, 'M', '0', '0', '', 'tool', 'admin',
+        now(), '', null, '系统工具目录');
+insert into sys_menu
+values ('4', '若依官网', '0', '4', 'http://ruoyi.vip', null, '', '', 0, 0, 'M', '0', '0', '',
+        'guide', 'admin', now(), '', null, '若依官网地址');
 
-insert into sys_menu values('100',  '用户管理', '1',   '1', 'user',       'system/user/index',        '', '', 1, 0, 'C', '0', '0', 'system:user:list',        'user',          'admin', now(), '', null, '用户管理菜单');
-insert into sys_menu values('101',  '角色管理', '1',   '2', 'role',       'system/role/index',        '', '', 1, 0, 'C', '0', '0', 'system:role:list',        'peoples',       'admin', now(), '', null, '角色管理菜单');
+insert into sys_menu
+values ('100', '用户管理', '1', '1', 'user', 'system/user/index', '', '', 1, 0, 'C', '0', '0',
+        'system:user:list', 'user', 'admin', now(), '', null, '用户管理菜单');
+insert into sys_menu
+values ('101', '角色管理', '1', '2', 'role', 'system/role/index', '', '', 1, 0, 'C', '0', '0',
+        'system:role:list', 'peoples', 'admin', now(), '', null, '角色管理菜单');
 
 
 -- ----------------------------
@@ -120,9 +132,84 @@ CREATE TABLE sys_role_menu
     menu_id BIGINT NOT NULL,
     PRIMARY KEY (role_id, menu_id)
 );
-insert into sys_role_menu values ('2', '1');
-insert into sys_role_menu values ('2', '2');
-insert into sys_role_menu values ('2', '3');
-insert into sys_role_menu values ('2', '4');
-insert into sys_role_menu values ('2', '100');
-insert into sys_role_menu values ('2', '101');
+insert into sys_role_menu
+values ('2', '1');
+insert into sys_role_menu
+values ('2', '2');
+insert into sys_role_menu
+values ('2', '3');
+insert into sys_role_menu
+values ('2', '4');
+insert into sys_role_menu
+values ('2', '100');
+insert into sys_role_menu
+values ('2', '101');
+
+
+-- 1. 成果主表
+DROP TABLE IF EXISTS sys_outcome;
+
+CREATE TABLE sys_outcome
+(
+    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    `title`       VARCHAR(512) NOT NULL COMMENT '成果标题',
+
+    `type`        VARCHAR(32)  NOT NULL COMMENT '成果类型',
+    `status`      VARCHAR(32)  NOT NULL COMMENT '状态',
+
+    `create_by`   VARCHAR(64)  DEFAULT '' COMMENT '创建者',
+    `update_by`   VARCHAR(64)  DEFAULT '' COMMENT '更新者',
+    `create_time` TIMESTAMP    DEFAULT NULL COMMENT '创建时间', -- H2 推荐用 TIMESTAMP
+    `update_time` TIMESTAMP    DEFAULT NULL COMMENT '更新时间',
+    `remark`      VARCHAR(500) DEFAULT NULL COMMENT '备注',
+
+    PRIMARY KEY (`id`)
+);
+
+-- H2 需要单独创建索引
+CREATE INDEX idx_sys_outcome_type ON sys_outcome (`type`);
+CREATE INDEX idx_sys_outcome_create_by ON sys_outcome (`create_by`);
+
+
+-- 2. 成果作者关联表
+DROP TABLE IF EXISTS sys_outcome_author;
+
+CREATE TABLE sys_outcome_author
+(
+    `id`               BIGINT      NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `outcome_id`       BIGINT      NOT NULL COMMENT '关联成果ID',
+
+    `user_id`          BIGINT               DEFAULT NULL COMMENT '系统用户ID',
+    `author_name`      VARCHAR(64) NOT NULL COMMENT '作者姓名',
+
+    `sort`             INT         NOT NULL DEFAULT 1 COMMENT '作者排名',
+    `is_corresponding` TINYINT     NOT NULL DEFAULT 0 COMMENT '是否通讯作者', -- H2 也可以用 BOOLEAN
+
+    PRIMARY KEY (`id`)
+);
+
+-- H2 需要单独创建索引
+CREATE INDEX idx_sys_outcome_author_outcome_id ON sys_outcome_author (`outcome_id`);
+
+
+DROP TABLE IF EXISTS sys_outcome_paper;
+
+CREATE TABLE sys_outcome_paper
+(
+    -- H2 不使用 (20) 这种宽度定义，直接用 BIGINT
+    `outcome_id`   BIGINT NOT NULL COMMENT '成果ID (关联 sys_outcome.id)',
+
+    `journal_name` VARCHAR(255) DEFAULT NULL COMMENT '期刊名称',
+    `issn`         VARCHAR(32)  DEFAULT NULL COMMENT 'ISSN号',
+
+    -- H2 推荐使用 TIMESTAMP 来对应 Java 的 LocalDateTime
+    `publish_time` TIMESTAMP    DEFAULT NULL COMMENT '发表时间',
+
+    `create_by`    VARCHAR(64)  DEFAULT '' COMMENT '创建者',
+    `create_time`  TIMESTAMP    DEFAULT NULL COMMENT '创建时间',
+    `update_by`    VARCHAR(64)  DEFAULT '' COMMENT '更新者',
+    `update_time`  TIMESTAMP    DEFAULT NULL COMMENT '更新时间',
+    `remark`       VARCHAR(500) DEFAULT NULL COMMENT '备注',
+
+    PRIMARY KEY (`outcome_id`)
+);

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 @TableName("sys_outcome_paper")
 public class PaperOutcomePO extends BasePO {
+  private Long outcomeId;
   private String journalName;
   private String issn;
   private LocalDateTime publishTime;

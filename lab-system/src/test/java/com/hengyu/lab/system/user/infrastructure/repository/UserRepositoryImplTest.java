@@ -1,8 +1,5 @@
 package com.hengyu.lab.system.user.infrastructure.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.hengyu.lab.system.user.domain.User;
 import com.hengyu.lab.system.user.domain.constant.IdentityType;
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
@@ -10,8 +7,6 @@ import com.hengyu.lab.system.user.infrastructure.convert.UserRoleConverter;
 import com.hengyu.lab.system.user.infrastructure.mapper.UserMapper;
 import com.hengyu.lab.system.user.infrastructure.mapper.UserRoleMapper;
 import com.hengyu.lab.system.user.infrastructure.po.UserPO;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -20,6 +15,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")

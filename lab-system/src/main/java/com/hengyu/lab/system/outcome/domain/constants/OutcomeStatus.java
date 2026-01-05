@@ -2,6 +2,7 @@ package com.hengyu.lab.system.outcome.domain.constants;
 
 public enum OutcomeStatus {
 
+  DRAFT(1, "草稿")
   ;
   Integer code;
   String desc;

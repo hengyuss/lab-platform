@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hengyu.lab.system.outcome.infrastructure.mapper.AuthorMapper">
+   <insert id="insertBatch">
+       INSERT INTO sys_outcome_author (outcome_id, user_id, author_name, sort, is_corresponding) VALUES
+           <foreach collection="authorPOs" item="item" separator=",">
+               (#{item.outcomeId}, #{item.userId}, #{item.authorName}, #{item.sort}, #{item.isCorresponding})
+           </foreach>
+   </insert>
+
+</mapper>

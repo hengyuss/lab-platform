@@ -8,7 +8,7 @@ import com.hengyu.lab.system.outcome.domain.constants.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constants.OutcomeType;
 import lombok.Data;
 
-@TableName("sys_out_come")
+@TableName("sys_outcome")
 @Data
 public class OutcomePO extends BasePO {
 

@@ -11,8 +11,6 @@ import com.hengyu.lab.system.user.domain.exception.UserException;
 import com.hengyu.lab.system.user.domain.exception.UserResultCode;
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
 import com.hengyu.lab.system.user.infrastructure.convert.UserConverter;
-import java.util.Collections;
-import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +23,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Collections;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class AuthServiceTest {

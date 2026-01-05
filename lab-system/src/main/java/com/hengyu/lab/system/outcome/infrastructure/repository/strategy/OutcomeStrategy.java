@@ -7,6 +7,7 @@ public interface OutcomeStrategy {
 
   OutcomeType getOutcomeType();
 
-  void setDetails(Outcome outcome);
+  void saveDetails(Outcome outcome);
+
 
 }

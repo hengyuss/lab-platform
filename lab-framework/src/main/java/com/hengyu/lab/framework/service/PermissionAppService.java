@@ -4,12 +4,13 @@ import com.hengyu.lab.common.api.PermissionProvider;
 import com.hengyu.lab.common.constant.AuthConstants;
 import com.hengyu.lab.framework.security.AuthUser;
 import com.hengyu.lab.framework.utils.SecurityUtils;
-import java.util.Objects;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Objects;
+import java.util.Set;
 
 @Service("ss")
 @RequiredArgsConstructor

@@ -1,16 +1,10 @@
 package com.hengyu.lab.system.permission.infrastructure.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.hengyu.lab.system.permission.domain.Menu;
 import com.hengyu.lab.system.permission.domain.repository.MenuRepository;
 import com.hengyu.lab.system.permission.infrastructure.convert.MenuConverter;
 import com.hengyu.lab.system.permission.infrastructure.mapper.MenuMapper;
 import com.hengyu.lab.system.permission.infrastructure.po.MenuPO;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,6 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")

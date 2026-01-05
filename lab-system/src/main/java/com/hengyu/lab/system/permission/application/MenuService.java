@@ -1,10 +1,11 @@
 package com.hengyu.lab.system.permission.application;
 
 import com.hengyu.lab.system.permission.domain.repository.MenuRepository;
-import java.util.List;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor

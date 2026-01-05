@@ -1,7 +1,5 @@
 package com.hengyu.lab.system.outcome.domain.constants;
 
-import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
-
 public enum OutcomeType {
   PAPER(1, "论文")
   ;

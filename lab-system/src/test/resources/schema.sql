@@ -161,6 +161,7 @@ CREATE TABLE sys_outcome
     `update_by`   VARCHAR(64)  DEFAULT '' COMMENT '更新者',
     `create_time` TIMESTAMP    DEFAULT NULL COMMENT '创建时间', -- H2 推荐用 TIMESTAMP
     `update_time` TIMESTAMP    DEFAULT NULL COMMENT '更新时间',
+    `deleted`     INT          DEFAULT 0,
     `remark`      VARCHAR(500) DEFAULT NULL COMMENT '备注',
 
     PRIMARY KEY (`id`)
@@ -204,12 +205,6 @@ CREATE TABLE sys_outcome_paper
 
     -- H2 推荐使用 TIMESTAMP 来对应 Java 的 LocalDateTime
     `publish_time` TIMESTAMP    DEFAULT NULL COMMENT '发表时间',
-
-    `create_by`    VARCHAR(64)  DEFAULT '' COMMENT '创建者',
-    `create_time`  TIMESTAMP    DEFAULT NULL COMMENT '创建时间',
-    `update_by`    VARCHAR(64)  DEFAULT '' COMMENT '更新者',
-    `update_time`  TIMESTAMP    DEFAULT NULL COMMENT '更新时间',
-    `remark`       VARCHAR(500) DEFAULT NULL COMMENT '备注',
 
     PRIMARY KEY (`outcome_id`)
 );

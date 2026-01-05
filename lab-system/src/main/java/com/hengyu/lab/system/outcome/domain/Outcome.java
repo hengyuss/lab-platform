@@ -3,8 +3,9 @@ package com.hengyu.lab.system.outcome.domain;
 import com.hengyu.lab.system.outcome.domain.constants.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constants.OutcomeType;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
-import java.util.List;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public abstract class Outcome {

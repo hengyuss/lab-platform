@@ -53,8 +53,6 @@ public class OutcomeRepositoryImpl implements OutcomeRepository {
         }
         saveAuthor(outcome);
         saveDetails(outcome);
-
-
     }
 
 

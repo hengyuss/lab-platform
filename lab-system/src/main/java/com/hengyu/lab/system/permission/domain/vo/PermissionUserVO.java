@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class PermissionUserVO {
-  private Long userid;
+  private Long userId;
   private String roleName;
   private List<Long> roleIds;
 

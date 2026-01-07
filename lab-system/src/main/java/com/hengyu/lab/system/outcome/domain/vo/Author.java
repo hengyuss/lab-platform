@@ -2,12 +2,10 @@ package com.hengyu.lab.system.outcome.domain.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@Data
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class Author {
   private String name;

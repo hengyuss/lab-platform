@@ -1,19 +1,20 @@
 package com.hengyu.lab.system.outcome.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 
-@AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
 @Data
 public class PaperOutcome extends Outcome {
   private String journalName;
   private String issn;
   private LocalDateTime publishTime;
 }
+

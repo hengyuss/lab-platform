@@ -1,10 +1,13 @@
 package com.hengyu.lab.system.user.domain;
 
 import com.hengyu.lab.system.user.domain.constant.IdentityType;
-import lombok.*;
-
 import java.io.Serializable;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

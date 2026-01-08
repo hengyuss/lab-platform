@@ -1,14 +1,13 @@
 package com.hengyu.lab.system.outcome.domain;
 
-import com.hengyu.lab.system.outcome.domain.constants.OutcomeStatus;
-import com.hengyu.lab.system.outcome.domain.constants.OutcomeType;
+import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
+import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @Data
 @SuperBuilder

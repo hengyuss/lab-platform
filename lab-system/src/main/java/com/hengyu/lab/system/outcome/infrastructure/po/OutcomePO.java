@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hengyu.lab.framework.persistence.BasePO;
-import com.hengyu.lab.system.outcome.domain.constants.OutcomeStatus;
-import com.hengyu.lab.system.outcome.domain.constants.OutcomeType;
+import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
+import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import lombok.Data;
 
 @TableName("sys_outcome")

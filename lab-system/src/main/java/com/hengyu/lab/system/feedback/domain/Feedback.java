@@ -2,10 +2,13 @@ package com.hengyu.lab.system.feedback.domain;
 
 import com.hengyu.lab.common.annotations.TestIgnore;
 import com.hengyu.lab.system.feedback.domain.constant.FeedbackStatus;
-import lombok.*;
-import org.springframework.util.Assert;
-
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.springframework.util.Assert;
 
 @TestIgnore
 @NoArgsConstructor

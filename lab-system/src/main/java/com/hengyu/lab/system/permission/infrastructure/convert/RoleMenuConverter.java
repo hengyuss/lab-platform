@@ -2,11 +2,10 @@ package com.hengyu.lab.system.permission.infrastructure.convert;
 
 import com.hengyu.lab.system.permission.domain.Role;
 import com.hengyu.lab.system.permission.infrastructure.po.RoleMenuPO;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 @Component
 public class RoleMenuConverter {

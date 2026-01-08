@@ -1,10 +1,9 @@
 package com.hengyu.lab.common.api;
 
+import java.io.Serializable;
 import lombok.Data;
 import lombok.Generated;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 @Data
 @NoArgsConstructor

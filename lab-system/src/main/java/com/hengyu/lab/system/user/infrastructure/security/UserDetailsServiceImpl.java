@@ -4,14 +4,13 @@ import com.hengyu.lab.common.api.PermissionProvider;
 import com.hengyu.lab.framework.security.AuthUser;
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
 import com.hengyu.lab.system.user.infrastructure.convert.UserConverter;
+import java.util.Set;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.Set;
 
 @Data
 @RequiredArgsConstructor

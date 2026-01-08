@@ -1,6 +1,8 @@
 package com.hengyu.lab.system.permission.infrastructure.providerimpl;
 
 import com.hengyu.lab.system.permission.application.PermissionService;
+import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,9 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Set;
 
 @ExtendWith(MockitoExtension.class)
 class PermissionProviderImplTest {

@@ -1,7 +1,9 @@
 package com.hengyu.lab.system.outcome.infrastructure.repository.strategy;
 
+import static org.mockito.ArgumentMatchers.any;
+
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
-import com.hengyu.lab.system.outcome.domain.constants.OutcomeType;
+import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import com.hengyu.lab.system.outcome.infrastructure.convert.PaperOutcomeConverter;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.PaperOutcomeMapper;
 import com.hengyu.lab.system.outcome.infrastructure.po.PaperOutcomePO;
@@ -12,8 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class PaperOutcomeStrategyTest {
@@ -40,6 +40,14 @@ class PaperOutcomeStrategyTest {
         Mockito.when(paperConverter.toPO(paperOutcome)).thenReturn(PaperOutcomePO.builder().build());
         outcomePaperStrategy.saveDetails(paperOutcome);
         Mockito.verify(paperOutcomeMapper).insert(any(PaperOutcomePO.class));
+    }
+
+    @Test
+    void delete_details(){
+      PaperOutcome paperOutcome = PaperOutcome.builder().build();
+      Mockito.when(paperConverter.toPO(paperOutcome)).thenReturn(PaperOutcomePO.builder().build());
+      outcomePaperStrategy.deleteDetails(paperOutcome);
+      Mockito.verify(paperOutcomeMapper).deleteById(any(PaperOutcomePO.class));
     }
 
 }

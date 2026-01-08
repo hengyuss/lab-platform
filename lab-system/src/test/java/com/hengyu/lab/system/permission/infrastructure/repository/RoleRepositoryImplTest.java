@@ -6,6 +6,8 @@ import com.hengyu.lab.system.permission.infrastructure.convert.RoleMenuConverter
 import com.hengyu.lab.system.permission.infrastructure.mapper.RoleMapper;
 import com.hengyu.lab.system.permission.infrastructure.mapper.RoleMenuMapper;
 import com.hengyu.lab.system.permission.infrastructure.po.RolePO;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -14,9 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 
 @SpringBootTest

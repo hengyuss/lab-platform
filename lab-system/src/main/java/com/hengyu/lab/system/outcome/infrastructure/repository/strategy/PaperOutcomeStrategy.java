@@ -2,7 +2,7 @@ package com.hengyu.lab.system.outcome.infrastructure.repository.strategy;
 
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
-import com.hengyu.lab.system.outcome.domain.constants.OutcomeType;
+import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import com.hengyu.lab.system.outcome.infrastructure.convert.PaperOutcomeConverter;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.PaperOutcomeMapper;
 import com.hengyu.lab.system.outcome.infrastructure.po.PaperOutcomePO;
@@ -32,7 +32,13 @@ public class PaperOutcomeStrategy implements OutcomeStrategy {
         }
     }
 
-    private void verifyClass(Outcome outcome) {
+  @Override
+  public void deleteDetails(Outcome outcome) {
+    PaperOutcomePO po = getPaperOutcomePO(outcome);
+    paperOutcomeMapper.deleteById(po);
+  }
+
+  private void verifyClass(Outcome outcome) {
         if (!(outcome instanceof PaperOutcome)) {
             throw new IllegalArgumentException("类型不匹配， 期望 PaperOutcome");
         }

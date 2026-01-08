@@ -1,4 +1,4 @@
-package com.hengyu.lab.system.outcome.domain.constants;
+package com.hengyu.lab.system.outcome.domain.constant;
 
 public enum OutcomeStatus {
 

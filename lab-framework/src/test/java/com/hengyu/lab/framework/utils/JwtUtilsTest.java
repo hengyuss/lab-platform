@@ -1,13 +1,12 @@
 package com.hengyu.lab.framework.utils;
 
 import io.jsonwebtoken.Claims;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 class JwtUtilsTest {
 

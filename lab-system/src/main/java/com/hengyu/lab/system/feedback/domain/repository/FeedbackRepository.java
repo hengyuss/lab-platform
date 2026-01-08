@@ -1,7 +1,6 @@
 package com.hengyu.lab.system.feedback.domain.repository;
 
 import com.hengyu.lab.system.feedback.domain.Feedback;
-
 import java.util.Optional;
 
 public interface FeedbackRepository {

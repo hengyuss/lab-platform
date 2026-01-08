@@ -11,12 +11,11 @@ import com.hengyu.lab.system.user.infrastructure.mapper.UserMapper;
 import com.hengyu.lab.system.user.infrastructure.mapper.UserRoleMapper;
 import com.hengyu.lab.system.user.infrastructure.po.UserPO;
 import com.hengyu.lab.system.user.infrastructure.po.UserRolePO;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor

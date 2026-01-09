@@ -1,9 +1,13 @@
 package com.hengyu.lab.system.outcome.infrastructure.repository;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.framework.utils.DomainUtil;
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
+import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
 import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
 import com.hengyu.lab.system.outcome.infrastructure.convert.AuthorConverter;
@@ -63,7 +67,7 @@ public class OutcomeRepositoryImpl implements OutcomeRepository {
   @Transactional
   public void delete(Outcome outcome) {
     OutcomePO outcomePO = outcomeConverter.toPO(outcome);
-    OutcomeStrategy strategy = getOutcomeStrategy(outcome);
+    OutcomeStrategy strategy = getOutcomeStrategy(outcome.getType());
     strategy.deleteDetails(outcome);
     authorMapper.deleteByOutcomeId(outcome.getId());
     outcomeMapper.deleteById(outcomePO);
@@ -77,6 +81,14 @@ public class OutcomeRepositoryImpl implements OutcomeRepository {
       outcome.setAuthors(authors);
       return outcome;
     });
+  }
+
+  @Override
+  public IPage<Outcome> selectOutcomePage(OutcomeQry qry) {
+    Page<Outcome> page = new Page<>(qry.getPageNo(), qry.getPageSize());
+    QueryWrapper wrapper = new QueryWrapper();
+    strategyMap.forEach((k, v) -> v.buildSearchCondition(wrapper, qry));
+    return outcomeMapper.selectPageDomain(page, wrapper);
   }
 
 
@@ -95,14 +107,14 @@ public class OutcomeRepositoryImpl implements OutcomeRepository {
   }
 
   private void saveDetails(Outcome outcome) {
-    OutcomeStrategy strategy = getOutcomeStrategy(outcome);
+    OutcomeStrategy strategy = getOutcomeStrategy(outcome.getType());
     strategy.saveDetails(outcome);
   }
 
-  private OutcomeStrategy getOutcomeStrategy(Outcome outcome) {
-    OutcomeStrategy strategy = strategyMap.get(outcome.getType());
+  private OutcomeStrategy getOutcomeStrategy(OutcomeType type) {
+    OutcomeStrategy strategy = strategyMap.get(type);
     if (strategy == null) {
-      throw new BizException("未找到对应存储策略 " + outcome.getType());
+      throw new BizException("未找到对应存储策略 " + type);
     }
     return strategy;
   }

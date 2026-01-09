@@ -34,6 +34,18 @@
     where t1.id = #{id}
   </select>
 
+  <select id="selectPageDomain" resultMap="BaseResultMap">
+    SELECT o.id,
+           o.title,
+           o.status,
+           o.type AS outcome_type,
+           p.issn,
+           p.journal_name,
+           p.publish_time
+    FROM sys_outcome as o
+           LEFT JOIN sys_outcome_paper as p ON o.id = p.outcome_id
+      ${ew.customSqlSegment}
+  </select>
 
 
 </mapper>

@@ -1,4 +1,4 @@
-package com.hengyu.lab.system.outcome.exception;
+package com.hengyu.lab.system.outcome.domain.exception;
 
 import com.hengyu.lab.common.api.IResultCode;
 

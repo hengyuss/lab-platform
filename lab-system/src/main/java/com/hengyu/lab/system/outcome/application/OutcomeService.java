@@ -6,7 +6,7 @@ import com.hengyu.lab.system.outcome.application.dto.command.SavePaperOutcomeCmd
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
-import com.hengyu.lab.system.outcome.exception.OutcomeResultCode;
+import com.hengyu.lab.system.outcome.domain.exception.OutcomeResultCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -4,10 +4,12 @@ package com.hengyu.lab.system.outcome.infrastructure.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
+import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
 import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.AuthorMapper;
@@ -24,6 +26,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +45,9 @@ class OutcomeRepositoryTest { // IT = Integration Test
   private AuthorMapper authorMapper;
   @Autowired
   private PaperOutcomeMapper paperMapper;
+  @Autowired
+  private JdbcTemplate jdbcTemplate; // 用于直接写 SQL 准备测试数据
+
 
   @Test
   @DisplayName("集成测试：完整保存一篇论文(主表+作者+详情)")
@@ -224,5 +230,56 @@ class OutcomeRepositoryTest { // IT = Integration Test
     assertThat(findOutcome.get().getStatus()).isEqualTo(OutcomeStatus.DRAFT);
     assertThat(findOutcome.get().getAuthors()).hasSize(1);
   }
+
+
+
+
+  @Test
+  @DisplayName("测试：策略模式+多态映射 查询论文")
+  void testSelectOutcomePage_ShouldReturnPaperOutcome() {
+    // === 1. Arrange (准备数据) ===
+    // 我们直接用 SQL 插入数据，模拟数据库里已有的状态
+    // 插入主表 (注意：type 必须是 'PAPER' 才能触发鉴别器)
+    jdbcTemplate.update("INSERT INTO sys_outcome (id, title, status, type, create_time) " +
+        "VALUES (1001, 'Deep Learning Research', 'PUBLISHED', 'PAPER', NOW())");
+
+    // 插入论文扩展表
+    jdbcTemplate.update("INSERT INTO sys_outcome_paper (outcome_id, journal_name, issn, publish_time) " +
+        "VALUES (1001, 'Nature Intelligence', 'ISSN-8888', '2023-01-01')");
+
+    // 构造查询参数
+    OutcomeQry qry = new OutcomeQry();
+    qry.setPageNo(1);
+    qry.setPageSize(10);
+    qry.setIssn("ISSN-8888"); // 触发具体的查询条件
+    qry.setTitle("Deep"); // 触发通用查询条件
+
+    // === 2. Act (执行查询) ===
+    IPage<Outcome> resultPage = outcomeRepository.selectOutcomePage(qry);
+
+    // === 3. Assert (验证结果) ===
+
+    // 验证分页信息
+    assertThat(resultPage.getTotal()).isEqualTo(1);
+    assertThat(resultPage.getRecords()).hasSize(1);
+
+    // 获取第一条记录
+    Outcome outcome = resultPage.getRecords().get(0);
+
+    // 🔥 核心验证：多态是否生效？
+    // 验证 XML 的 <discriminator> 是否成功把行映射成了 PaperOutcome 子类
+    assertThat(outcome).isInstanceOf(PaperOutcome.class);
+
+    // 验证字段映射
+    PaperOutcome paper = (PaperOutcome) outcome;
+    assertThat(paper.getId()).isEqualTo(1001L);
+    assertThat(paper.getTitle()).isEqualTo("Deep Learning Research");
+
+    // 验证 JOIN 扩展表字段是否查出来了
+    assertThat(paper.getJournalName()).isEqualTo("Nature Intelligence");
+    assertThat(paper.getIssn()).isEqualTo("ISSN-8888");
+  }
+
+
 
 }

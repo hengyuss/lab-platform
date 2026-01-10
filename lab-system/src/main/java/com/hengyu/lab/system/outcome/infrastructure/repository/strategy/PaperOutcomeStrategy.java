@@ -7,7 +7,6 @@ import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
 import com.hengyu.lab.system.outcome.infrastructure.convert.PaperOutcomeConverter;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.PaperOutcomeMapper;
-import com.hengyu.lab.system.outcome.infrastructure.po.OutcomePO;
 import com.hengyu.lab.system.outcome.infrastructure.po.PaperOutcomePO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -43,7 +42,7 @@ public class PaperOutcomeStrategy implements OutcomeStrategy {
   }
 
   @Override
-  public void buildSearchCondition(QueryWrapper<OutcomePO> queryWrapper, OutcomeQry query) {
+  public void buildSearchCondition(QueryWrapper<Outcome> queryWrapper, OutcomeQry query) {
     queryWrapper.eq(StringUtils.hasText(query.getIssn()), "p.issn", query.getIssn())
         .like(StringUtils.hasText(query.getJournalName()), "p.journal_name",
             query.getJournalName());

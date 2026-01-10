@@ -86,7 +86,7 @@ public class OutcomeRepositoryImpl implements OutcomeRepository {
   @Override
   public IPage<Outcome> selectOutcomePage(OutcomeQry qry) {
     Page<Outcome> page = new Page<>(qry.getPageNo(), qry.getPageSize());
-    QueryWrapper wrapper = new QueryWrapper();
+    QueryWrapper<Outcome> wrapper = new QueryWrapper<Outcome>();
     strategyMap.forEach((k, v) -> v.buildSearchCondition(wrapper, qry));
     return outcomeMapper.selectPageDomain(page, wrapper);
   }

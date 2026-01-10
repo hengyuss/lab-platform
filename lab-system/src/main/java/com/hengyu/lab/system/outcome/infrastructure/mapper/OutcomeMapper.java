@@ -14,5 +14,5 @@ import org.apache.ibatis.annotations.Param;
 public interface OutcomeMapper extends BaseMapper<OutcomePO> {
   Outcome findById(Long id);
 
-  IPage<Outcome> selectPageDomain(Page<Outcome> page, @Param(Constants.WRAPPER)QueryWrapper wrapper);
+  IPage<Outcome> selectPageDomain(Page<Outcome> page, @Param(Constants.WRAPPER)QueryWrapper<Outcome> wrapper);
 }

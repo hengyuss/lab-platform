@@ -2,15 +2,19 @@ package com.hengyu.lab.system.outcome.application;
 
 import static org.mockito.ArgumentMatchers.any;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.system.outcome.application.assembler.OutcomeAssembler;
 import com.hengyu.lab.system.outcome.application.dto.command.AuthorDTO;
 import com.hengyu.lab.system.outcome.application.dto.command.SavePaperOutcomeCmd;
+import com.hengyu.lab.system.outcome.application.service.OutcomeService;
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import com.hengyu.lab.system.outcome.domain.exception.OutcomeResultCode;
+import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
 import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -106,7 +110,14 @@ class OutcomeServiceTest {
 
   @Test
   void test_select_outcome_by_page() {
-
+    OutcomeQry qry = new OutcomeQry();
+    Page<Outcome> page = new Page<>();
+      page.setTotal(3);
+      page.setPages(3);
+      Mockito.when(outcomeRepository.selectOutcomePage(qry)).thenReturn(page);
+    IPage<Outcome> outcomeIPage = outcomeService.selectOutcomePage(qry);
+    Assertions.assertThat(outcomeIPage.getPages()).isEqualTo(page.getPages());
+    Assertions.assertThat(outcomeIPage.getTotal()).isEqualTo(page.getTotal());
   }
 
 

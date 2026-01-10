@@ -14,6 +14,9 @@
       javaType="com.hengyu.lab.system.outcome.domain.constant.OutcomeType"
       typeHandler="com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler"/>
 
+    <collection property="authors" column="id" select="com.hengyu.lab.system.outcome.infrastructure.mapper.AuthorMapper.selectByOutcomeId">
+    </collection>
+
     <discriminator javaType="String" column="outcome_type">
       <case value="PAPER" resultMap="PaperResultMap"></case>
     </discriminator>
@@ -31,20 +34,26 @@
       t2.journal_name, t2.issn, t2.publish_time
     FROM sys_outcome as t1
     LEFT JOIN sys_outcome_paper as t2 ON t1.id = t2.outcome_id
-    where t1.id = #{id}
+    where t1.id = #{id} AND t1.deleted = 0
   </select>
+
 
   <select id="selectPageDomain" resultMap="BaseResultMap">
     SELECT o.id,
-           o.title,
-           o.status,
-           o.type AS outcome_type,
-           p.issn,
-           p.journal_name,
-           p.publish_time
+    o.title,
+    o.status,
+    o.type AS outcome_type,
+    p.issn,
+    p.journal_name,
+    p.publish_time
     FROM sys_outcome as o
-           LEFT JOIN sys_outcome_paper as p ON o.id = p.outcome_id
-      ${ew.customSqlSegment}
+    LEFT JOIN sys_outcome_paper as p ON o.id = p.outcome_id
+    <where>
+      o.deleted = 0
+      <if test="ew != null and ew.sqlSegment != null and ew.sqlSegment != ''">
+        AND ${ew.sqlSegment}
+      </if>
+    </where>
   </select>
 
 

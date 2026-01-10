@@ -232,8 +232,6 @@ class OutcomeRepositoryTest { // IT = Integration Test
   }
 
 
-
-
   @Test
   @DisplayName("测试：策略模式+多态映射 查询论文")
   void testSelectOutcomePage_ShouldReturnPaperOutcome() {
@@ -244,9 +242,13 @@ class OutcomeRepositoryTest { // IT = Integration Test
         "VALUES (1001, 'Deep Learning Research', 'PUBLISHED', 'PAPER', NOW())");
 
     // 插入论文扩展表
-    jdbcTemplate.update("INSERT INTO sys_outcome_paper (outcome_id, journal_name, issn, publish_time) " +
-        "VALUES (1001, 'Nature Intelligence', 'ISSN-8888', '2023-01-01')");
+    jdbcTemplate.update(
+        "INSERT INTO sys_outcome_paper (outcome_id, journal_name, issn, publish_time) " +
+            "VALUES (1001, 'Nature Intelligence', 'ISSN-8888', '2023-01-01')");
 
+    jdbcTemplate.update(
+        "INSERT INTO sys_outcome_author (outcome_id, author_name, sort, is_corresponding) " +
+            "VALUES (1001, 'sk', 1, 0)");
     // 构造查询参数
     OutcomeQry qry = new OutcomeQry();
     qry.setPageNo(1);
@@ -278,8 +280,6 @@ class OutcomeRepositoryTest { // IT = Integration Test
     // 验证 JOIN 扩展表字段是否查出来了
     assertThat(paper.getJournalName()).isEqualTo("Nature Intelligence");
     assertThat(paper.getIssn()).isEqualTo("ISSN-8888");
+    assertThat(paper.getAuthors()).hasSize(1);
   }
-
-
-
 }

@@ -7,6 +7,21 @@ spring:
     baseline-on-migrate: true
   profiles:
     active: local
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: z15903750100
+    publisher-confirm-type: correlated
+    publisher-returns: true
+
+    listener:
+      simple:
+        acknowledge-mode: manual
+        prefetch: 1
+        # 暂时 1个 线程处理应该就够
+        concurrency: 1
+        max-concurrency: 3
 
 # Knife4j
 springdoc:
@@ -37,7 +52,6 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
       id-type: assign_id
-
 # application.yml
 lab:
   jwt:

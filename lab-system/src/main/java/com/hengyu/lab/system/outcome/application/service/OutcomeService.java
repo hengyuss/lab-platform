@@ -9,6 +9,7 @@ import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.exception.OutcomeResultCode;
 import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
 import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
+import com.hengyu.lab.system.outcome.domain.service.PaperMQGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

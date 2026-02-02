@@ -3,9 +3,11 @@ package com.hengyu.lab.system.outcome.api.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hengyu.lab.common.api.R;
 import com.hengyu.lab.system.outcome.application.dto.command.SavePaperOutcomeCmd;
+import com.hengyu.lab.system.outcome.application.service.MessageService;
 import com.hengyu.lab.system.outcome.application.service.OutcomeService;
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
+import com.hengyu.lab.system.outcome.domain.vo.PaperMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OutcomeController {
 
   private final OutcomeService outcomeService;
+  private final MessageService messageService;
 
 
   @PostMapping("/paper")
@@ -42,6 +45,13 @@ public class OutcomeController {
   public R<Void> deletePaperOutcome(@PathVariable("id") String id) {
     Long outcomeId = Long.valueOf(id);
     outcomeService.deleteOutcome(outcomeId);
+    return R.ok();
+  }
+
+  @PostMapping("/paper/message")
+  @Operation(summary = "发送爬取老师dblp元数据的消息")
+  public R<Void> sendPaperMessage(@RequestBody @Valid PaperMessage message) {
+    messageService.sendPaperMessage(message);
     return R.ok();
   }
 

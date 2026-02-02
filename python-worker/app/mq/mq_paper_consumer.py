@@ -13,20 +13,24 @@ def process_mq_message(ch, method, properties, body, rabbitmq):
     teacher_name = task_data.get('name')
     logger.info(f"处理中， 收到 任务{teacher_name}")
     teacher_pid = settings.TEACHER_PID_JSON.get(teacher_name)
+    results = {
+      "status": False,
+      "teacher_name": teacher_name,
+      "pid": teacher_pid
+    }
 
     if not teacher_name or not teacher_pid:
       logger.info(f"没有{teacher_name} 的 pid信息 无法处理")
+      rabbitmq.publish(settings.MQ_QUEUE_RESULT, results)
       ch.basic_ack(delivery_tag=method.delivery_tag)
       return
 
     data = fetcher.fetch(teacher_pid)
 
-    results = {
-      "teacher_name": teacher_name,
-      "pid": teacher_pid,
-      "data": data,
-      "count": len(data)
-    }
+    results["status"] = True
+    results["data"] = data
+    results["count"] = len(data)
+
 
     rabbitmq.publish(settings.MQ_QUEUE_RESULT, results)
 

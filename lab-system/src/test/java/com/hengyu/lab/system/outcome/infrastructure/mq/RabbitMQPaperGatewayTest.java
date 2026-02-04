@@ -1,7 +1,8 @@
 package com.hengyu.lab.system.outcome.infrastructure.mq;
 
-import com.hengyu.lab.system.outcome.domain.vo.PaperMessage;
+import com.hengyu.lab.system.outcome.domain.vo.PaperMetaTask;
 import com.hengyu.lab.system.outcome.infrastructure.config.RabbitmqPaperConfig;
+import com.hengyu.lab.system.outcome.infrastructure.mq.producer.RabbitMQPaperGateway;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -22,7 +23,7 @@ class RabbitMQPaperGatewayTest {
 
   @Test
   void publishTask() {
-    PaperMessage message = new PaperMessage();
+    PaperMetaTask message = new PaperMetaTask();
     message.setTeacherName("Yong Ding");
     rabbitMQPaperGateway.publishTask(message);
     Mockito.verify(rabbitTemplate).convertAndSend(

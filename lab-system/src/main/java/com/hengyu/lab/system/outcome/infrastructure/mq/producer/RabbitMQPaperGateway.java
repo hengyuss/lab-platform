@@ -1,7 +1,7 @@
-package com.hengyu.lab.system.outcome.infrastructure.mq;
+package com.hengyu.lab.system.outcome.infrastructure.mq.producer;
 
 import com.hengyu.lab.system.outcome.domain.service.PaperMQGateway;
-import com.hengyu.lab.system.outcome.domain.vo.PaperMessage;
+import com.hengyu.lab.system.outcome.domain.vo.PaperMetaTask;
 import com.hengyu.lab.system.outcome.infrastructure.config.RabbitmqPaperConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +16,10 @@ public class RabbitMQPaperGateway implements PaperMQGateway {
   private final RabbitTemplate rabbitTemplate;
 
   @Override
-  public void publishTask(PaperMessage message) {
+  public void publishTask(PaperMetaTask message) {
     rabbitTemplate.convertAndSend(RabbitmqPaperConfig.PAPER_META_EXCHANGE,
         RabbitmqPaperConfig.PAPER_META_ROUTING_KEY, message);
-    log.info("成功发送消息");
+    log.info("成功发送消息 {}", message);
   }
 
 }

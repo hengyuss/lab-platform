@@ -2,12 +2,12 @@ package com.hengyu.lab.system.outcome.api.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hengyu.lab.common.api.R;
+import com.hengyu.lab.system.outcome.application.dto.command.PaperMessage;
 import com.hengyu.lab.system.outcome.application.dto.command.SavePaperOutcomeCmd;
 import com.hengyu.lab.system.outcome.application.service.MessageService;
 import com.hengyu.lab.system.outcome.application.service.OutcomeService;
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
-import com.hengyu.lab.system.outcome.domain.vo.PaperMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

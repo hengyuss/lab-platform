@@ -24,8 +24,10 @@ import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +50,9 @@ class OutcomeRepositoryTest { // IT = Integration Test
   @Autowired
   private JdbcTemplate jdbcTemplate; // 用于直接写 SQL 准备测试数据
 
+
+  @MockBean
+  private ConnectionFactory connectionFactory;
 
   @Test
   @DisplayName("集成测试：完整保存一篇论文(主表+作者+详情)")

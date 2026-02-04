@@ -1,5 +1,7 @@
 package com.hengyu.lab.framework.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
@@ -18,7 +20,11 @@ public class FrameworkRabbitConfig {
 
   @Bean
   public MessageConverter messageConverter() {
-    return new Jackson2JsonMessageConverter();
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    // 这一行告诉 Jackson：序列化和反序列化时，自动把 "teacherName" <-> "teacher_name" 互转
+    objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+    return new Jackson2JsonMessageConverter(objectMapper);
   }
 
 

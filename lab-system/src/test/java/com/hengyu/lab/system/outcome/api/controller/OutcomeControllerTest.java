@@ -1,5 +1,6 @@
 package com.hengyu.lab.system.outcome.api.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -14,6 +15,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hengyu.lab.framework.security.TokenService;
 import com.hengyu.lab.framework.utils.JwtUtils;
+import com.hengyu.lab.system.outcome.application.dto.command.PaperMessage;
 import com.hengyu.lab.system.outcome.application.dto.command.SavePaperOutcomeCmd;
 import com.hengyu.lab.system.outcome.application.service.MessageService;
 import com.hengyu.lab.system.outcome.application.service.OutcomeService;
@@ -23,11 +25,11 @@ import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
-import com.hengyu.lab.system.outcome.domain.vo.PaperMessage;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -145,23 +147,38 @@ class OutcomeControllerTest {
   }
 
   @Test
-  @DisplayName("发送消息失败：当参数缺失时，应返回 400 Bad Request")
-  void sendPaperMessage_ShouldReturn400_WhenInputIsInvalid() throws Exception {
-    // --- 1. 准备非法数据 (假设 TeacherName 有 @NotNull) ---
-    PaperMessage invalidDto = new PaperMessage();
-    invalidDto.setTeacherName(null); // ❌ 故意传空
+  @DisplayName("当 teacherName 为空时，应使用默认值 'all' 并返回 200")
+  void sendPaperMessage_ShouldUseDefault_WhenTeacherNameIsNull() throws Exception {
+    // --- 1. 准备数据 ---
+    // 这里的 dto 里面 teacherName 应该是 null 或者你在 DTO 里写的初始值
+    PaperMessage emptyDto = new PaperMessage();
+    // 确保你的 DTO 序列化出去时不包含 teacherName，或者包含 null
+    // 如果你在 DTO 里直接写 private String teacherName = "all";
+    // 那么 objectMapper.writeValueAsString(emptyDto) 生成的 JSON 就已经是 {"teacherName": "all"} 了
+    // 这其实是在测试前端传了默认值，而不是后端处理默认值。
+
+    // 如果你想测试“前端啥也没传，后端默认为 all”，建议直接构造 JSON 字符串：
 
     // --- 2. 执行请求 ---
     mockMvc.perform(post("/api/v1/outcomes/paper/message")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(invalidDto)))
+            .content(objectMapper.writeValueAsString(emptyDto))) // 把对象转成 JSON String
 
-        // --- 3. 验证 ---
-        .andExpect(status().isBadRequest()); // 期望 HTTP 400
+        // --- 3. 验证 HTTP 状态 ---
+        .andExpect(status().isOk()); // 因为有了默认值，所以应该是成功的
 
-    // 确保 Service 方法**没有**被调用 (因为参数校验这一关就没过)
-    // verify(messageService, never()).sendPaperMessage(any());
+    // --- 4. 关键步骤：捕获 Service 接收到的参数 ---
+    // 4.1 创建一个“捕获笼子”
+    ArgumentCaptor<PaperMessage> captor = ArgumentCaptor.forClass(PaperMessage.class);
+
+    // 4.2 验证 service 方法被调用，并把参数“抓”进笼子里
+    verify(messageService).sendPaperMessage(captor.capture());
+
+    // 4.3 从笼子里拿出对象进行断言
+    PaperMessage capturedMessage = captor.getValue();
+
+    // 验证：虽然前端没传，但在 Service 层接收到时，它应该是 "all"
+    assertEquals("all", capturedMessage.getTeacherName());
   }
-
 
 }

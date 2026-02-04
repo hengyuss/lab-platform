@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +33,9 @@ class FeedbackRepositoryImplTest {
 
   @MockBean
   private FeedbackConverter feedbackConverter;
+
+  @MockBean
+  private ConnectionFactory connectionFactory;
 
 
   @Test

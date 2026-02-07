@@ -202,9 +202,14 @@ CREATE TABLE sys_outcome_paper
 
     `journal_name` VARCHAR(255) DEFAULT NULL COMMENT '期刊名称',
     `issn`         VARCHAR(32)  DEFAULT NULL COMMENT 'ISSN号',
-
+    `dblp_key`     VARCHAR(255),
+    `year`         INT,
+    `ee`           VARCHAR(255),
+    `authors`      TEXT,
+    `paper_type`   VARCHAR(50),
     -- H2 推荐使用 TIMESTAMP 来对应 Java 的 LocalDateTime
     `publish_time` TIMESTAMP    DEFAULT NULL COMMENT '发表时间',
 
-    PRIMARY KEY (`outcome_id`)
+    PRIMARY KEY (`outcome_id`),
+    unique key (`dblp_key`)
 );

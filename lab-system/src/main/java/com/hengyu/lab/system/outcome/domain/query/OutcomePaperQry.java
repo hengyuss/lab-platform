@@ -4,7 +4,7 @@ import com.hengyu.lab.framework.domain.BasePageQuery;
 import lombok.Data;
 
 @Data
-public class OutcomeQry extends BasePageQuery {
+public class OutcomePaperQry extends BasePageQuery {
 
    private String title;
 

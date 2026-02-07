@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
-import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
+import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.infrastructure.convert.PaperOutcomeConverter;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.PaperOutcomeMapper;
 import com.hengyu.lab.system.outcome.infrastructure.po.PaperOutcomePO;
@@ -42,7 +42,7 @@ public class PaperOutcomeStrategy implements OutcomeStrategy {
   }
 
   @Override
-  public void buildSearchCondition(QueryWrapper<Outcome> queryWrapper, OutcomeQry query) {
+  public void buildSearchCondition(QueryWrapper<Outcome> queryWrapper, OutcomePaperQry query) {
     queryWrapper.eq(StringUtils.hasText(query.getIssn()), "p.issn", query.getIssn())
         .like(StringUtils.hasText(query.getJournalName()), "p.journal_name",
             query.getJournalName());

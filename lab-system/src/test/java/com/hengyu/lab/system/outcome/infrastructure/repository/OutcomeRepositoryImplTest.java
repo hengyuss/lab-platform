@@ -9,7 +9,7 @@ import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
-import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
+import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.AuthorMapper;
@@ -255,7 +255,7 @@ class OutcomeRepositoryTest { // IT = Integration Test
         "INSERT INTO sys_outcome_author (outcome_id, author_name, sort, is_corresponding) " +
             "VALUES (1001, 'sk', 1, 0)");
     // 构造查询参数
-    OutcomeQry qry = new OutcomeQry();
+    OutcomePaperQry qry = new OutcomePaperQry();
     qry.setPageNo(1);
     qry.setPageSize(10);
     qry.setIssn("ISSN-8888"); // 触发具体的查询条件
@@ -287,4 +287,26 @@ class OutcomeRepositoryTest { // IT = Integration Test
     assertThat(paper.getIssn()).isEqualTo("ISSN-8888");
     assertThat(paper.getAuthors()).hasSize(1);
   }
+
+
+  @Test
+  void testExistDblpKey(){
+
+    jdbcTemplate.update("INSERT INTO sys_outcome (id, title, status, type, create_time) " +
+        "VALUES (1001, 'Deep Learning Research', 'PUBLISHED', 'PAPER', NOW())");
+
+    jdbcTemplate.update(
+        "INSERT INTO sys_outcome_paper (outcome_id, journal_name, issn, publish_time, dblp_key) " +
+            "VALUES (1001, 'Nature Intelligence', 'ISSN-8888', '2023-01-01', 'testKey')");
+
+    jdbcTemplate.update(
+        "INSERT INTO sys_outcome_author (outcome_id, author_name, sort, is_corresponding) " +
+            "VALUES (1001, 'sk', 1, 0)");
+
+    boolean result = outcomeRepository.existsByDblpKey("testKey");
+    Assertions.assertTrue(result);
+
+  }
+
+
 }

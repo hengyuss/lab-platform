@@ -14,7 +14,7 @@ import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import com.hengyu.lab.system.outcome.domain.exception.OutcomeResultCode;
-import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
+import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -110,7 +110,7 @@ class OutcomeServiceTest {
 
   @Test
   void test_select_outcome_by_page() {
-    OutcomeQry qry = new OutcomeQry();
+    OutcomePaperQry qry = new OutcomePaperQry();
     Page<Outcome> page = new Page<>();
       page.setTotal(3);
       page.setPages(3);

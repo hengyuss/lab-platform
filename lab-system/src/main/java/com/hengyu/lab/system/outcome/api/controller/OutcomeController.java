@@ -7,7 +7,7 @@ import com.hengyu.lab.system.outcome.application.dto.command.SavePaperOutcomeCmd
 import com.hengyu.lab.system.outcome.application.service.MessageService;
 import com.hengyu.lab.system.outcome.application.service.OutcomeService;
 import com.hengyu.lab.system.outcome.domain.Outcome;
-import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
+import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -56,9 +56,9 @@ public class OutcomeController {
   }
 
   @GetMapping()
-  @Operation(summary = "查询成果")
-  public R<IPage<Outcome>> selectOutcomePage(@ParameterObject OutcomeQry outcomeQry){
-    IPage<Outcome> outcomeIPage = outcomeService.selectOutcomePage(outcomeQry);
+  @Operation(summary = "查询论文成果")
+  public R<IPage<Outcome>> selectOutcomePage(@ParameterObject OutcomePaperQry outcomePaperQry){
+    IPage<Outcome> outcomeIPage = outcomeService.selectOutcomePage(outcomePaperQry);
     return R.ok(outcomeIPage);
   }
 

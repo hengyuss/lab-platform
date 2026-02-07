@@ -7,7 +7,7 @@ import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.framework.utils.DomainUtil;
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
-import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
+import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
 import com.hengyu.lab.system.outcome.infrastructure.convert.AuthorConverter;
@@ -86,11 +86,16 @@ public class OutcomeRepositoryImpl implements OutcomeRepository {
   }
 
   @Override
-  public IPage<Outcome> selectOutcomePage(OutcomeQry qry) {
+  public IPage<Outcome> selectOutcomePage(OutcomePaperQry qry) {
     Page<Outcome> page = new Page<>(qry.getPageNo(), qry.getPageSize());
     QueryWrapper<Outcome> wrapper = new QueryWrapper<Outcome>();
     strategyMap.forEach((k, v) -> v.buildSearchCondition(wrapper, qry));
     return outcomeMapper.selectPageDomain(page, wrapper);
+  }
+
+  @Override
+  public boolean existsByDblpKey(String dblpKey) {
+    return Boolean.TRUE.equals(paperOutcomeMapper.existsByDblpKey(dblpKey));
   }
 
 

@@ -23,7 +23,7 @@ import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
-import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
+import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -91,7 +91,7 @@ class OutcomeControllerTest {
 
   @Test
   void select_outcome_page() throws Exception {
-    OutcomeQry outcomeQry = new OutcomeQry();
+    OutcomePaperQry outcomePaperQry = new OutcomePaperQry();
     PaperOutcome origin = new PaperOutcome();
     origin.setTitle("Title");
     origin.setType(OutcomeType.PAPER);
@@ -100,12 +100,12 @@ class OutcomeControllerTest {
     origin.setPublishTime(LocalDateTime.now());
     origin.setAuthors(List.of(Author.builder().name("old").sort(1).isCorresponding(0).build()));
 
-    outcomeQry.setPageNo(1);
-    outcomeQry.setPageSize(10);
+    outcomePaperQry.setPageNo(1);
+    outcomePaperQry.setPageSize(10);
     IPage<Outcome> page = new Page<>();
     page.setTotal(1);
     page.setRecords(List.of(origin));
-    Mockito.when(outcomeService.selectOutcomePage(outcomeQry)).thenReturn(page);
+    Mockito.when(outcomeService.selectOutcomePage(outcomePaperQry)).thenReturn(page);
 
     mockMvc.perform(get("/api/v1/outcomes")
             .param("pageNo", "1")

@@ -7,7 +7,7 @@ import com.hengyu.lab.system.outcome.application.dto.command.SavePaperOutcomeCmd
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.exception.OutcomeResultCode;
-import com.hengyu.lab.system.outcome.domain.query.OutcomeQry;
+import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class OutcomeService {
     outcomeRepository.delete(outcome);
   }
 
-  public IPage<Outcome> selectOutcomePage(OutcomeQry qry){
+  public IPage<Outcome> selectOutcomePage(OutcomePaperQry qry){
     return outcomeRepository.selectOutcomePage(qry);
   }
 

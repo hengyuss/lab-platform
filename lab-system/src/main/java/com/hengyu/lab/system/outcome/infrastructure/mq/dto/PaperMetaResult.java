@@ -2,7 +2,6 @@ package com.hengyu.lab.system.outcome.infrastructure.mq.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 import lombok.Data;
 
 @Data
@@ -15,9 +14,20 @@ public class PaperMetaResult {
 
   private Boolean status;
 
-  private List<Map<String, Object>> data;
+  private List<PaperItemDTO> data;
 
   private int count;
+
+  @Data
+  public static class PaperItemDTO{
+    private String title;
+    private String dblpKey;
+    private String year;
+    private String ee;
+    private String type;
+    private String venue;
+    private List<String> authors;
+  }
 
 
 }

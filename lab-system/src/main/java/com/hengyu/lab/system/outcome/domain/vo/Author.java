@@ -13,6 +13,5 @@ public class Author {
   private String name;
   private Integer sort;
   private Long userId;
-  private Integer isCorresponding;
-
+  private Integer isCorresponding = 0;
 }

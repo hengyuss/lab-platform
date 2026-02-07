@@ -21,12 +21,12 @@ def process_mq_message(ch, method, _properties, body, rabbitmq):
       for name, pid in settings.TEACHER_PID_JSON.items():
         results = handle_message(name, pid)
         send_message(ch, method, rabbitmq, results)
-        logger.info(f"✅ [完成] {teacher_name} - 抓取 {results["data"]} 篇\n result:{results}")
+        logger.info(f"✅ [完成] {teacher_name} - 抓取 {results["count"]} 篇\n result:{results}")
     else:
       teacher_pid = settings.TEACHER_PID_JSON.get(teacher_name)
       results = handle_message(teacher_name, teacher_pid)
       send_message(ch, method, rabbitmq, results)
-      logger.info(f"✅ [完成] {teacher_name} - 抓取 {results["data"]} 篇\n result:{results}")
+      logger.info(f"✅ [完成] {teacher_name} - 抓取 {results["count"]} 篇\n result:{results}")
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
   except Exception as e:

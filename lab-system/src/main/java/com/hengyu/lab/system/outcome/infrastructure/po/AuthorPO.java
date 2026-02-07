@@ -15,6 +15,6 @@ public class AuthorPO {
   private Long userId;
   private String authorName;
   private Integer sort;
-  private Integer isCorresponding;
+  private Integer isCorresponding = 0;
 
 }

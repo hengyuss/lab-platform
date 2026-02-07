@@ -14,6 +14,9 @@ import lombok.experimental.SuperBuilder;
 public class PaperOutcome extends Outcome {
   private String journalName;
   private String issn;
+  private String paperType;
+  private Integer year;
+  private String dblpKey;
   private LocalDateTime publishTime;
 }
 

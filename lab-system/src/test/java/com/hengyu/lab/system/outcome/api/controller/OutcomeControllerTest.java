@@ -1,10 +1,14 @@
 package com.hengyu.lab.system.outcome.api.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -25,6 +29,7 @@ import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +41,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(value = OutcomeController.class)
@@ -62,28 +68,19 @@ class OutcomeControllerTest {
 
   @Test
   void save_outcome_success() throws Exception {
-    SavePaperOutcomeCmd cmd = SavePaperOutcomeCmd.builder()
-        .title("testTitle")
-        .issn("testIssn")
-        .type(OutcomeType.PAPER)
-        .status(OutcomeStatus.DRAFT)
-        .journalName("testJournal")
-        .publishTime(LocalDateTime.now())
-        .build();
+    SavePaperOutcomeCmd cmd = SavePaperOutcomeCmd.builder().title("testTitle").issn("testIssn")
+        .type(OutcomeType.PAPER).status(OutcomeStatus.DRAFT).journalName("testJournal")
+        .publishTime(LocalDateTime.now()).build();
 
     Mockito.when(outcomeService.saveOutcome(cmd)).thenReturn(123L);
-    mockMvc.perform(post("/api/v1/outcomes/paper")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(cmd)))
-        .andDo(print())
-        .andExpect(status().isOk())
+    mockMvc.perform(post("/api/v1/outcomes/paper").contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(cmd))).andDo(print()).andExpect(status().isOk())
         .andExpect(jsonPath("$.data").value("123"));
   }
 
   @Test
   void delete_outcome() throws Exception {
-    mockMvc.perform(delete("/api/v1/outcomes/paper/{id}", "1"))
-        .andDo(print())
+    mockMvc.perform(delete("/api/v1/outcomes/paper/{id}", "1")).andDo(print())
         .andExpect(status().isOk());
 
     verify(outcomeService).deleteOutcome(1L);
@@ -107,12 +104,8 @@ class OutcomeControllerTest {
     page.setRecords(List.of(origin));
     Mockito.when(outcomeService.selectOutcomePage(outcomePaperQry)).thenReturn(page);
 
-    mockMvc.perform(get("/api/v1/outcomes")
-            .param("pageNo", "1")
-            .param("pageSize", "10"))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.data.total").value(1))
+    mockMvc.perform(get("/api/v1/outcomes").param("pageNo", "1").param("pageSize", "10"))
+        .andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.data.total").value(1))
         .andExpect(jsonPath("$.data.records[0].title").value("Title"))
         .andExpect(jsonPath("$.data.records[0].issn").value("testIssn"));
 
@@ -128,8 +121,8 @@ class OutcomeControllerTest {
     requestDto.setTeacherName("Yong Ding");
 
     // --- 2. 执行请求 (Act) ---
-    mockMvc.perform(post("/api/v1/outcomes/paper/message")
-            .contentType(MediaType.APPLICATION_JSON) // 设置 Header: Content-Type
+    mockMvc.perform(post("/api/v1/outcomes/paper/message").contentType(
+                MediaType.APPLICATION_JSON) // 设置 Header: Content-Type
             .content(objectMapper.writeValueAsString(requestDto))) // 把对象转成 JSON String
 
         // --- 3. 验证 HTTP 响应 (Assert) ---
@@ -160,8 +153,7 @@ class OutcomeControllerTest {
     // 如果你想测试“前端啥也没传，后端默认为 all”，建议直接构造 JSON 字符串：
 
     // --- 2. 执行请求 ---
-    mockMvc.perform(post("/api/v1/outcomes/paper/message")
-            .contentType(MediaType.APPLICATION_JSON)
+    mockMvc.perform(post("/api/v1/outcomes/paper/message").contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(emptyDto))) // 把对象转成 JSON String
 
         // --- 3. 验证 HTTP 状态 ---
@@ -180,5 +172,43 @@ class OutcomeControllerTest {
     // 验证：虽然前端没传，但在 Service 层接收到时，它应该是 "all"
     assertEquals("all", capturedMessage.getTeacherName());
   }
+
+  @Test
+  void uploadFile_success() throws Exception {
+    Long outcomeId = 1L;
+    String fileName = "testFileName";
+    String path = "testPath";
+
+    MockMultipartFile mockMultipartFile = new MockMultipartFile("file", fileName,
+        MediaType.APPLICATION_PDF_VALUE, "fake content".getBytes());
+
+    when(outcomeService.uploadPaperFile(eq(outcomeId), any(InputStream.class), eq(fileName))).thenReturn(path);
+
+    mockMvc.perform(multipart("/api/v1/outcomes/paper/upload/{id}", outcomeId).file(mockMultipartFile))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.data").value(path));
+
+
+  }
+
+  @Test
+  void test_get_oss_file_url() throws Exception {
+    String outComeId = "1L";
+    String testUrl = "http://minio:9000/bucket/...?signature=xyz";
+    when(outcomeService.getOssFileUrl(eq(outComeId))).thenReturn(testUrl);
+
+    mockMvc.perform(get("/api/v1/outcomes/paper/file/url").param("id", outComeId))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.data").value(testUrl));
+  }
+
+  @Test
+  void upload_file_no_file() throws Exception {
+    mockMvc.perform(multipart("/api/v1/outcomes/paper/upload/{id}", 1L))
+        .andExpect(status().isBadRequest());
+
+  }
+
+
 
 }

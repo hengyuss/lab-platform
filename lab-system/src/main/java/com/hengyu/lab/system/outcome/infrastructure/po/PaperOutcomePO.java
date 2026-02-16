@@ -21,8 +21,9 @@ public class PaperOutcomePO {
   private String journalName;
   private String paperType;
   private String issn;
-  @TableField("`year`")
-  private  Integer year;
+  @TableField("publish_year")
+  private  Integer publishYear;
   private String dblpKey;
+  private String ee;
   private LocalDateTime publishTime;
 }

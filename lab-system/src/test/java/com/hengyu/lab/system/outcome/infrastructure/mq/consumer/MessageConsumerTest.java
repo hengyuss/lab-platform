@@ -65,7 +65,7 @@ class MessageConsumerTest {
     dto.setDblpKey("testDblpKey");
     dto.setEe("ee");
     dto.setType("type");
-    dto.setYear("2025");
+    dto.setPublishYear("2025");
     dto.setVenue("venue");
     dto.setAuthors(List.of("author1", "author2"));
     result.setData(List.of(dto));
@@ -91,7 +91,7 @@ class MessageConsumerTest {
     dto.setDblpKey("testDblpKey");
     dto.setEe("ee");
     dto.setType("type");
-    dto.setYear("2025");
+    dto.setPublishYear("2025");
     dto.setVenue("venue");
     dto.setAuthors(List.of("author1", "author2"));
     result.setData(List.of(dto));
@@ -116,14 +116,14 @@ class MessageConsumerTest {
     dto.setDblpKey("testDblpKey");
     dto.setEe("ee");
     dto.setType("type");
-    dto.setYear("2025");
+    dto.setPublishYear("2025");
     dto.setVenue("venue");
     dto.setAuthors(List.of("author1", "author2"));
     PaperItemDTO dto2 = new PaperItemDTO();
     dto2.setDblpKey("testDblpKey2");
     dto2.setEe("ee2");
     dto2.setType("type2");
-    dto2.setYear("2026");
+    dto2.setPublishYear("2026");
     dto2.setVenue("venue2");
     dto2.setAuthors(List.of("author12", "author22"));
     result.setData(List.of(dto, dto2));

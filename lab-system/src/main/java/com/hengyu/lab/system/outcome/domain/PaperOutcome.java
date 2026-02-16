@@ -15,8 +15,9 @@ public class PaperOutcome extends Outcome {
   private String journalName;
   private String issn;
   private String paperType;
-  private Integer year;
+  private Integer publishYear;
   private String dblpKey;
+  private String ee;
   private LocalDateTime publishTime;
 }
 

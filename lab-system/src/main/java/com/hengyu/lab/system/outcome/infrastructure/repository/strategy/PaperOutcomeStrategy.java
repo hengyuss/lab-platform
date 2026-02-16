@@ -8,6 +8,7 @@ import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.infrastructure.convert.PaperOutcomeConverter;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.PaperOutcomeMapper;
 import com.hengyu.lab.system.outcome.infrastructure.po.PaperOutcomePO;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -44,8 +45,10 @@ public class PaperOutcomeStrategy implements OutcomeStrategy {
   @Override
   public void buildSearchCondition(QueryWrapper<Outcome> queryWrapper, OutcomePaperQry query) {
     queryWrapper.eq(StringUtils.hasText(query.getIssn()), "p.issn", query.getIssn())
+        .eq(Objects.nonNull(query.getPublishYear()), "p.publish_year", query.getPublishYear())
         .like(StringUtils.hasText(query.getJournalName()), "p.journal_name",
-            query.getJournalName());
+            query.getJournalName())
+        .like(StringUtils.hasText(query.getTitle()), "o.title", query.getTitle());
   }
 
   private void verifyClass(Outcome outcome) {

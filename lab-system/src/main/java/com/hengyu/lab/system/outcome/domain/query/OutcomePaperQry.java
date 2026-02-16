@@ -7,7 +7,7 @@ import lombok.Data;
 public class OutcomePaperQry extends BasePageQuery {
 
    private String title;
-
+   private Integer publishYear;
 
    private String issn;
    private String journalName;

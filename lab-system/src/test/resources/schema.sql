@@ -162,6 +162,7 @@ CREATE TABLE sys_outcome
     `create_time` TIMESTAMP    DEFAULT NULL COMMENT '创建时间', -- H2 推荐用 TIMESTAMP
     `update_time` TIMESTAMP    DEFAULT NULL COMMENT '更新时间',
     `deleted`     INT          DEFAULT 0,
+    `oss_path`    VARCHAR(500),
     `remark`      VARCHAR(500) DEFAULT NULL COMMENT '备注',
 
     PRIMARY KEY (`id`)
@@ -203,7 +204,7 @@ CREATE TABLE sys_outcome_paper
     `journal_name` VARCHAR(255) DEFAULT NULL COMMENT '期刊名称',
     `issn`         VARCHAR(32)  DEFAULT NULL COMMENT 'ISSN号',
     `dblp_key`     VARCHAR(255),
-    `year`         INT,
+    `publish_year`         INT,
     `ee`           VARCHAR(255),
     `authors`      TEXT,
     `paper_type`   VARCHAR(50),

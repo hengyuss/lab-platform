@@ -11,6 +11,8 @@ import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +22,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController()
 @RequestMapping("/api/v1/outcomes")
@@ -57,9 +61,27 @@ public class OutcomeController {
 
   @GetMapping()
   @Operation(summary = "查询论文成果")
-  public R<IPage<Outcome>> selectOutcomePage(@ParameterObject OutcomePaperQry outcomePaperQry){
+  public R<IPage<Outcome>> selectOutcomePage(@ParameterObject OutcomePaperQry outcomePaperQry) {
     IPage<Outcome> outcomeIPage = outcomeService.selectOutcomePage(outcomePaperQry);
     return R.ok(outcomeIPage);
+  }
+
+  @PostMapping("paper/upload/{id}")
+  @Operation(summary = "上传文件")
+  public R<String> uploadPaperOutcome(@PathVariable("id") String id,
+      @RequestParam("file") MultipartFile file)
+      throws IOException {
+    String originalFileName = file.getOriginalFilename();
+    InputStream inputStream = file.getInputStream();
+    String path = outcomeService.uploadPaperFile(Long.valueOf(id), inputStream, originalFileName);
+    return R.ok(path);
+  }
+
+  @GetMapping("paper/file/url")
+  @Operation(summary = "获取文件下载连接")
+  public R<String> getOssFileUrl(@RequestParam("id") String id) {
+    String url = outcomeService.getOssFileUrl(id);
+    return R.ok(url);
   }
 
 }

@@ -23,3 +23,9 @@ lab:
     expiration: 30 #  (单位分钟)
     token-header: Authorization
     token-prefix: "Bearer "
+
+minio:
+  endpoint: http://localhost:9002
+  access-key: admin
+  secret-key: z15903750100
+  bucket-name: lab-platform

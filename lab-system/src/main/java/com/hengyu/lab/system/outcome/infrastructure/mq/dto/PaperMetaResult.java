@@ -22,7 +22,7 @@ public class PaperMetaResult {
   public static class PaperItemDTO{
     private String title;
     private String dblpKey;
-    private String year;
+    private String publishYear;
     private String ee;
     private String type;
     private String venue;

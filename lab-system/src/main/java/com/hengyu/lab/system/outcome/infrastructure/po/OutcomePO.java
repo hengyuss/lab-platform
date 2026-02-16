@@ -21,4 +21,5 @@ public class OutcomePO extends BasePO {
   private String createBy;
   private String updateBy;
   private String remark;
+  private String ossPath;
 }

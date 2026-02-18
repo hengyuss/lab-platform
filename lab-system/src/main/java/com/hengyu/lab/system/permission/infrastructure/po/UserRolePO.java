@@ -1,4 +1,4 @@
-package com.hengyu.lab.system.user.infrastructure.po;
+package com.hengyu.lab.system.permission.infrastructure.po;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;

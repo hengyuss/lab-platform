@@ -10,7 +10,6 @@ import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.exception.OutcomeResultCode;
 import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
-import java.io.IOException;
 import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,8 +44,7 @@ public class OutcomeService {
         .orElseThrow(() -> new BizException(OutcomeResultCode.OUTCOME_NOT_FOUND));
   }
 
-  public String uploadPaperFile(Long outComeId, InputStream inputStream, String fileName)
-      throws IOException {
+  public String uploadPaperFile(Long outComeId, InputStream inputStream, String fileName) {
 
     String path = ossTemplate.uploadFile(outComeId, inputStream, fileName);
     Outcome outcome = outcomeRepository.findById(outComeId)

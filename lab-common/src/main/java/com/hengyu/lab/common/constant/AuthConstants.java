@@ -17,5 +17,6 @@ public final class AuthConstants {
   // 该用户此次登录生成的唯一id
   public static final String LOGIN_USER_KEY = "login_user_key:";
   public static final String ALL_PERMISSION = "*:*:*";
+  public static final Long ROLE_ADMIN = 1L;
 
 }

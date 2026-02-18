@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     return userRepository.findByUsername(username)
         .map(user -> {
           AuthUser authUser = converter.toAuthUser(user);
-          Set<String> permissions = permissionProvider.getMenuPermission(user.getRoleIds());
+          Set<String> permissions = permissionProvider.getMenuPermission(user.getId());
           authUser.setPermissions(permissions);
           return authUser;
         })

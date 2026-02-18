@@ -5,7 +5,9 @@ import com.hengyu.lab.system.permission.domain.repository.RoleRepository;
 import com.hengyu.lab.system.permission.infrastructure.convert.RoleMenuConverter;
 import com.hengyu.lab.system.permission.infrastructure.mapper.RoleMapper;
 import com.hengyu.lab.system.permission.infrastructure.mapper.RoleMenuMapper;
+import com.hengyu.lab.system.permission.infrastructure.mapper.UserRoleMapper;
 import com.hengyu.lab.system.permission.infrastructure.po.RolePO;
+import com.hengyu.lab.system.permission.infrastructure.po.UserRolePO;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -38,6 +40,10 @@ class RoleRepositoryImplTest {
   @Autowired
   @SpyBean
   private RoleMenuMapper roleMenuMapper;
+
+  @Autowired
+  @SpyBean
+  private UserRoleMapper userRoleMapper;
 
   @Autowired
   @SpyBean
@@ -156,6 +162,24 @@ class RoleRepositoryImplTest {
     Assertions.assertEquals(1, roles.size());
     Assertions.assertEquals("admin", roles.get(0).getRoleKey());
     Assertions.assertEquals("管理员", roles.get(0).getRoleName());
+  }
+
+  @Test
+  void select_roleIds_by_userId(){
+    UserRolePO  po1 = new UserRolePO();
+    UserRolePO  po2 = new UserRolePO();
+    po1.setRoleId(1L);
+    po2.setRoleId(2L);
+    po1.setUserId(1L);
+    po2.setUserId(1L);
+    userRoleMapper.insert(po1);
+    userRoleMapper.insert(po2);
+
+    List<Long> roleIds = userRoleMapper.selectRoleIdsByUserId(1L);
+    Assertions.assertEquals(2, roleIds.size());
+    Assertions.assertTrue(roleIds.contains(1L));
+    Assertions.assertTrue(roleIds.contains(2L));
+
   }
 
 

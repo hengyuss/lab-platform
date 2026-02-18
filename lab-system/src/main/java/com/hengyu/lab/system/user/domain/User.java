@@ -2,7 +2,6 @@ package com.hengyu.lab.system.user.domain;
 
 import com.hengyu.lab.system.user.domain.constant.IdentityType;
 import java.io.Serializable;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +23,6 @@ public class User implements Serializable {
   private String email;
   private String mobile;
   private IdentityType identityType;
-  private List<Long> roleIds;
 
 
   public static User register(String username, String password, String realName, String email,
@@ -33,8 +31,5 @@ public class User implements Serializable {
         .mobile(mobile).identityType(identityType).build();
   }
 
-  public void assignRoles(List<Long> roleIds) {
-    this.roleIds = roleIds;
-  }
 
 }

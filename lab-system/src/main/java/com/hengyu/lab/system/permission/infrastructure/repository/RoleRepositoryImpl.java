@@ -9,6 +9,7 @@ import com.hengyu.lab.system.permission.infrastructure.convert.RoleConverter;
 import com.hengyu.lab.system.permission.infrastructure.convert.RoleMenuConverter;
 import com.hengyu.lab.system.permission.infrastructure.mapper.RoleMapper;
 import com.hengyu.lab.system.permission.infrastructure.mapper.RoleMenuMapper;
+import com.hengyu.lab.system.permission.infrastructure.mapper.UserRoleMapper;
 import com.hengyu.lab.system.permission.infrastructure.po.RoleMenuPO;
 import com.hengyu.lab.system.permission.infrastructure.po.RolePO;
 import java.util.List;
@@ -28,6 +29,7 @@ public class RoleRepositoryImpl implements RoleRepository {
   private final RoleConverter converter;
   private final RoleMenuMapper roleMenuMapper;
   private final RoleMenuConverter roleMenuConverter;
+  private final UserRoleMapper userRoleMapper;
 
 
   @Override
@@ -75,5 +77,10 @@ public class RoleRepositoryImpl implements RoleRepository {
         .filter(Objects::nonNull)
         .map(converter::toDomain)
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<Long> selectRoleIdsByUserId(Long userId) {
+    return userRoleMapper.selectRoleIdsByUserId(userId);
   }
 }

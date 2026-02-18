@@ -2,6 +2,8 @@ package com.hengyu.lab.system.permission.infrastructure.providerimpl;
 
 import com.hengyu.lab.common.api.PermissionProvider;
 import com.hengyu.lab.system.permission.application.PermissionService;
+import com.hengyu.lab.system.permission.domain.repository.RoleRepository;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +16,12 @@ import org.springframework.stereotype.Component;
 public class PermissionProviderImpl implements PermissionProvider {
 
   private final PermissionService permissionService;
+  private final RoleRepository repository;
 
   @Override
-  public Set<String> getMenuPermission(List<Long> roleIds) {
-    return roleIds == null ? Set.of() : permissionService.getPermission(roleIds);
+  public Set<String> getMenuPermission(Long userId) {
+    List<Long> roleIds = repository.selectRoleIdsByUserId(userId);
+    Set<String> permissions = permissionService.getPermission(roleIds);
+    return permissions == null ? Collections.emptySet() : permissions;
   }
 }

@@ -160,7 +160,7 @@ class OutcomeServiceTest {
         .thenThrow(new BizException(OutcomeResultCode.OUTCOME_NOT_FOUND));
     Mockito.when(ossTemplate.uploadFile(1L, inputStream, fileName)).thenReturn(path);
 
-    Assertions.assertThatThrownBy(() -> outcomeService.uploadPaperFile(1L, inputStream, fileName));
+    Assertions.assertThatThrownBy(() -> outcomeService.uploadPaperFile(1L, inputStream, fileName)).isInstanceOf(BizException.class);
     Mockito.verify(outcomeRepository, Mockito.never()).save(any(Outcome.class));
 
 

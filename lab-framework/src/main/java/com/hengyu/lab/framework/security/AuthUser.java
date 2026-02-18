@@ -2,6 +2,7 @@ package com.hengyu.lab.framework.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.hengyu.lab.common.constant.AuthConstants;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -81,5 +82,10 @@ public class AuthUser implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  @JsonIgnore
+  public boolean isAdmin() {
+    return this.roleIds != null && this.roleIds.contains(AuthConstants.ROLE_ADMIN);
   }
 }

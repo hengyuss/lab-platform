@@ -13,4 +13,6 @@ public interface RoleRepository {
   Optional<Role> findById(Long l);
 
   List<Role> listRole(Role role);
+
+  List<Long> selectRoleIdsByUserId(Long userId);
 }

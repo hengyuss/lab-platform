@@ -41,7 +41,6 @@ class UserDetailsServiceImplTest {
     String username = "username";
     User user = User.builder()
         .identityType(IdentityType.STUDENT)
-        .roleIds(List.of(1L, 2L))
         .username(username).build();
     AuthUser authUser = AuthUser.builder()
         .username(username)
@@ -50,7 +49,7 @@ class UserDetailsServiceImplTest {
     Set<String>  expectPermission = Set.of("testpermission");
     when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
     when(userConverter.toAuthUser(user)).thenReturn(authUser);
-    when(permissionProvider.getMenuPermission(List.of(1L, 2L))).thenReturn(expectPermission);
+    //TODO 这里getmenupermission需要验证一下
 
 
     UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);

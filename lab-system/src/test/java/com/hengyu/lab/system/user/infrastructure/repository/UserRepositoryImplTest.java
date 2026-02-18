@@ -6,11 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.hengyu.lab.system.user.domain.User;
 import com.hengyu.lab.system.user.domain.constant.IdentityType;
 import com.hengyu.lab.system.user.domain.repository.UserRepository;
-import com.hengyu.lab.system.user.infrastructure.convert.UserRoleConverter;
 import com.hengyu.lab.system.user.infrastructure.mapper.UserMapper;
-import com.hengyu.lab.system.user.infrastructure.mapper.UserRoleMapper;
 import com.hengyu.lab.system.user.infrastructure.po.UserPO;
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -39,13 +36,6 @@ class UserRepositoryImplTest {
   @SpyBean
   private UserMapper userMapper;
 
-  @Autowired
-  @SpyBean
-  private UserRoleMapper userRoleMapper;
-
-  @Autowired
-  @SpyBean
-  private UserRoleConverter userRoleConverter;
 
   @Test
   void save_success() {
@@ -54,7 +44,6 @@ class UserRepositoryImplTest {
         .password("testPassword")
         .realName("testRealName")
         .username("testUsername")
-        .roleIds(List.of(1L, 2L))
         .identityType(IdentityType.STUDENT)
         .build();
     userRepository.save(user);
@@ -66,7 +55,6 @@ class UserRepositoryImplTest {
     assertEquals("testPassword", findUser.get().getPassword());
     assertEquals("testRealName", findUser.get().getRealName());
     assertEquals("testUsername", findUser.get().getUsername());
-    assertEquals(List.of(1L, 2L), findUser.get().getRoleIds());
     assertEquals(IdentityType.STUDENT, findUser.get().getIdentityType());
   }
 
@@ -104,48 +92,6 @@ class UserRepositoryImplTest {
     Assertions.assertEquals("testEmail1", userOptional2.get().getEmail());
     Assertions.assertEquals("testMobile1", userOptional2.get().getMobile());
     Mockito.verify(userMapper).updateById(Mockito.any(UserPO.class));
-    Mockito.verify(userRoleMapper).delete(Mockito.any());
-  }
-
-  @Test
-  void save_user_when_user_have_no_roleIds() {
-    User user = User.builder().email("testEmail")
-        .mobile("testMobile")
-        .password("testPassword")
-        .realName("testRealName")
-        .username("testUsername")
-        .identityType(IdentityType.STUDENT)
-        .build();
-    userRepository.save(user);
-    Optional<User> findUser = userRepository.findById(user.getId());
-    assertTrue(findUser.isPresent());
-    assertTrue(findUser.get().getRoleIds().isEmpty());
-    assertEquals("testEmail", findUser.get().getEmail());
-    assertEquals("testMobile", findUser.get().getMobile());
-    assertEquals("testPassword", findUser.get().getPassword());
-    assertEquals("testRealName", findUser.get().getRealName());
-    assertEquals("testUsername", findUser.get().getUsername());
-    Mockito.verify(userRoleConverter, Mockito.never()).toPOList(user);
-    Mockito.verify(userRoleMapper, Mockito.never()).insertUserRoleBatch(Mockito.anyList());
-  }
-
-  @Test
-  void save_user_when_user_roleIds_is_empty(){
-    User user = User.builder().email("testEmail")
-        .roleIds(List.of())
-        .mobile("testMobile")
-        .password("testPassword")
-        .realName("testRealName")
-        .username("testUsername")
-        .identityType(IdentityType.STUDENT)
-        .build();
-
-    userRepository.save(user);
-    Optional<User> userOption = userRepository.findById(user.getId());
-    assertTrue(userOption.isPresent());
-    Assertions.assertTrue(userOption.get().getRoleIds().isEmpty());
-    Mockito.verify(userRoleMapper, Mockito.never()).insertUserRoleBatch(Mockito.anyList());
-    Mockito.verify(userRoleConverter, Mockito.never()).toPOList(Mockito.any());
   }
 
 

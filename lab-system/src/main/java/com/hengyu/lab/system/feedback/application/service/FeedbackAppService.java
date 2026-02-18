@@ -74,7 +74,8 @@ public class FeedbackAppService {
 
   private Feedback getFeedback(String feedbackId) {
     Long id = Long.parseLong(feedbackId);
-    return feedbackRepository.find(id).orElseThrow(() -> new FeedbackException(FeedbackResultCode.FEEDBACK_NOT_FOUND));
+    return feedbackRepository.find(id)
+        .orElseThrow(() -> new FeedbackException(FeedbackResultCode.FEEDBACK_NOT_FOUND));
   }
 
 }

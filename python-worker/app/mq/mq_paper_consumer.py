@@ -15,7 +15,8 @@ def process_mq_message(ch, method, _properties, body, rabbitmq):
     task_data = json.loads(msg_str)
     logger.info(f"task_data: {task_data}")
     teacher_name = task_data.get('teacher_name')
-    logger.info(f"处理中， 收到 任务{teacher_name}")
+    teacher_pid = task_data.get('teacher_pid')
+    logger.info(f"处理中， 收到 任务{teacher_name, teacher_pid}")
 
     if teacher_name == "all":
       for name, pid in settings.TEACHER_PID_JSON.items():
@@ -23,7 +24,6 @@ def process_mq_message(ch, method, _properties, body, rabbitmq):
         send_message(ch, method, rabbitmq, results)
         logger.info(f"✅ [完成] {teacher_name} - 抓取 {results["count"]} 篇\n result:{results}")
     else:
-      teacher_pid = settings.TEACHER_PID_JSON.get(teacher_name)
       results = handle_message(teacher_name, teacher_pid)
       send_message(ch, method, rabbitmq, results)
       logger.info(f"✅ [完成] {teacher_name} - 抓取 {results["count"]} 篇\n result:{results}")

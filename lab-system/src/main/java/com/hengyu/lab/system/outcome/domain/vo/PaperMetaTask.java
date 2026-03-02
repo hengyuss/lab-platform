@@ -7,4 +7,6 @@ public class PaperMetaTask {
 
   private String teacherName = "all";
 
+  private String teacherPid;
+
 }

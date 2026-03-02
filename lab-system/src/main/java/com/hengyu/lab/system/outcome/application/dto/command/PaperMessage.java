@@ -10,6 +10,9 @@ public class PaperMessage implements Serializable {
   @JsonProperty("teacher_name")
   private String teacherName = "all";
 
+  @JsonProperty("teacher_pid")
+  private String teacherPid;
+
 
   public String getTeacherName() {
     if (this.teacherName == null || this.teacherName.trim().isEmpty()) {

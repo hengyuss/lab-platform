@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthorDTO {
+    private Integer id;
     private String name;
     private Integer sort;
     private Integer isCorresponding;

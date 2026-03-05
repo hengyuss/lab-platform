@@ -5,7 +5,9 @@ import lombok.Data;
 @Data
 public class PaperMetaTask {
 
-  private String teacherName = "all";
+  public static final String DEFAULT_TEACHER_NAME = "all";
+
+  private String teacherName = DEFAULT_TEACHER_NAME;
 
   private String teacherPid;
 

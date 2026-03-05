@@ -13,6 +13,7 @@
 
 
   <resultMap id="AuthorResultMap" type="com.hengyu.lab.system.outcome.domain.vo.Author">
+    <result property="id" column="id"/>
     <result property="name" column="author_name"/>
     <result property="isCorresponding" column="is_corresponding"/>
     <result property="sort" column="sort"/>

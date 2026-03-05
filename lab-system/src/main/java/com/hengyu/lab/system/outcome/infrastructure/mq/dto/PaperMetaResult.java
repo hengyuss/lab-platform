@@ -22,6 +22,7 @@ public class PaperMetaResult {
   public static class PaperItemDTO{
     private String title;
     private String dblpKey;
+    @JsonProperty("year")
     private String publishYear;
     private String ee;
     private String type;

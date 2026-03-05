@@ -1,14 +1,16 @@
 package com.hengyu.lab.system.outcome.application.dto.command;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hengyu.lab.system.outcome.domain.vo.PaperMetaTask;
 import java.io.Serializable;
 import lombok.Data;
 
 @Data
 public class PaperMessage implements Serializable {
 
+
   @JsonProperty("teacher_name")
-  private String teacherName = "all";
+  private String teacherName = PaperMetaTask.DEFAULT_TEACHER_NAME;
 
   @JsonProperty("teacher_pid")
   private String teacherPid;

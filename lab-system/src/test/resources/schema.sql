@@ -186,6 +186,7 @@ CREATE TABLE sys_outcome_author
 
     `sort`             INT         NOT NULL DEFAULT 1 COMMENT '作者排名',
     `is_corresponding` TINYINT     NOT NULL DEFAULT 0 COMMENT '是否通讯作者', -- H2 也可以用 BOOLEAN
+    `deleted`          INT         DEFAULT 0,
 
     PRIMARY KEY (`id`)
 );
@@ -210,7 +211,19 @@ CREATE TABLE sys_outcome_paper
     `paper_type`   VARCHAR(50),
     -- H2 推荐使用 TIMESTAMP 来对应 Java 的 LocalDateTime
     `publish_time` TIMESTAMP    DEFAULT NULL COMMENT '发表时间',
+    `deleted`      INT          DEFAULT 0,
 
     PRIMARY KEY (`outcome_id`),
     unique key (`dblp_key`)
 );
+
+DROP TABLE IF EXISTS sys_teacher_dblp_pid;
+
+CREATE TABLE sys_teacher_dblp_pid
+(
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `teacher_name` VARCHAR(100) NOT NULL ,
+    `pid` VARCHAR(255) NOT NULL ,
+    PRIMARY KEY (`id`),
+    unique key (`pid`)
+)

@@ -11,4 +11,6 @@ public class OutcomePaperQry extends BasePageQuery {
 
    private String issn;
    private String journalName;
+   private String authorName;
+   private Integer authorSort;
 }

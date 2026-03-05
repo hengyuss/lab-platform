@@ -43,7 +43,7 @@ def handle_message(teacher_name: str, teacher_pid: str) -> Dict[str, Any]:
     logger.warning(f"没有{teacher_name} 的 pid信息 无法处理")
     return results
 
-  wait_time = random.uniform(1.0, 3.0)
+  wait_time = random.uniform(3.0, 5.0)
   logger.info(f"爬取一个老师数据后休息{wait_time}s, 防止ip被封")
   time.sleep(wait_time)
   data = fetcher.fetch(teacher_pid)

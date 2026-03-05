@@ -13,7 +13,8 @@ public interface OutcomeStrategy {
 
   void deleteDetails(Outcome outcome);
 
-  void buildSearchCondition(QueryWrapper<Outcome> queryWrapper, OutcomePaperQry query);
+  QueryWrapper<Outcome> buildSearchCondition(QueryWrapper<Outcome> queryWrapper,
+      OutcomePaperQry query);
 
 
 }

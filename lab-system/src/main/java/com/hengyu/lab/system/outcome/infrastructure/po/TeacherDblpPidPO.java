@@ -2,22 +2,14 @@ package com.hengyu.lab.system.outcome.infrastructure.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-@TableName("sys_outcome_author")
+@TableName("sys_teacher_dblp_pid")
 @Data
-public class AuthorPO {
-
+public class TeacherDblpPidPO {
   @TableId(type = IdType.AUTO)
   private Integer id;
-  private Long outcomeId;
-  private Long userId;
-  private String authorName;
-  private Integer sort;
-  private Integer isCorresponding = 0;
-  @TableLogic
-  private Integer deleted;
-
+  private String teacherName;
+  private String pid;
 }

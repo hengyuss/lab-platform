@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hengyu.lab.common.exception.BizException;
+import com.hengyu.lab.system.outcome.application.dto.command.DblpTeacherDTO;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.TeacherDblpPidMapper;
 import com.hengyu.lab.system.outcome.infrastructure.po.TeacherDblpPidPO;
 import java.util.List;
@@ -17,7 +18,9 @@ public class TeacherDblpPidService {
 
   private final TeacherDblpPidMapper teacherDblpPidMapper;
 
-  public void addTeacher(String teacherName, String pid) {
+  public void addTeacher(DblpTeacherDTO dto) {
+    String teacherName = dto.getTeacherName();
+    String pid = dto.getPid();
     if (!StringUtils.hasText(teacherName) || !StringUtils.hasText(pid)) {
       throw new IllegalArgumentException("老师姓名和pid不能为空");
     }

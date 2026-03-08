@@ -3,7 +3,6 @@ package com.hengyu.lab.system.outcome.infrastructure.po;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -27,6 +26,4 @@ public class PaperOutcomePO {
   private String dblpKey;
   private String ee;
   private LocalDateTime publishTime;
-  @TableLogic
-  private Integer deleted;
 }

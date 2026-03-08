@@ -13,4 +13,5 @@ public class OutcomePaperQry extends BasePageQuery {
    private String journalName;
    private String authorName;
    private Integer authorSort;
+   private Integer isCorrespondingAuthor;
 }

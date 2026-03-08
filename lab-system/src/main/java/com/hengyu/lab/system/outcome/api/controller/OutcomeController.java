@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,7 +56,10 @@ public class OutcomeController {
 
   @PostMapping("/paper/message")
   @Operation(summary = "发送爬取老师dblp元数据的消息")
-  public R<Void> sendPaperMessage(@RequestBody @Valid PaperMessage message) {
+  public R<Void> sendPaperMessage(@RequestBody(required = false) @Valid PaperMessage message) {
+    if (message == null) {
+      message = new PaperMessage();
+    }
     messageService.sendPaperMessage(message);
     return R.ok();
   }
@@ -82,6 +87,14 @@ public class OutcomeController {
   public R<String> getOssFileUrl(@RequestParam("id") String id) {
     String url = outcomeService.getOssFileUrl(id);
     return R.ok(url);
+  }
+
+  @PutMapping("paper/author/{outcomeId}/corresponding-authors")
+  @Operation(summary = "指定通讯作者")
+  public R<Void> assignCorrespondingAuthor(@PathVariable("outcomeId") Long outcomeId,
+      @RequestBody List<Integer> authorIds) {
+    outcomeService.assignCorrespondingAuthor(outcomeId, authorIds);
+    return R.ok();
   }
 
 }

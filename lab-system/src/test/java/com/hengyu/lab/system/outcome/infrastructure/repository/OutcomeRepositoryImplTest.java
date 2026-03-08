@@ -208,7 +208,7 @@ class OutcomeRepositoryTest { // IT = Integration Test
     List<AuthorPO> deletedAuthors = authorMapper.selectList(
         new LambdaQueryWrapper<AuthorPO>().eq(AuthorPO::getOutcomeId, id)
     );
-    assertThat(deletedAuthors).hasSize(0);
+    assertThat(deletedAuthors).hasSize(1);
     PaperOutcomePO deletedPaperOutcomePO = paperMapper.selectById(id);
     assertThat(deletedPaperOutcomePO).isNull();
   }

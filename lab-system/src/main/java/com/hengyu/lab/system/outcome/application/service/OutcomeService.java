@@ -11,6 +11,7 @@ import com.hengyu.lab.system.outcome.domain.exception.OutcomeResultCode;
 import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
 import java.io.InputStream;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -55,10 +56,23 @@ public class OutcomeService {
   }
 
   public String getOssFileUrl(String id) {
-    Outcome outcome = outcomeRepository.findById(Long.valueOf(id)).orElseThrow(() -> new BizException(OutcomeResultCode.OUTCOME_NOT_FOUND));
+    Outcome outcome = outcomeRepository.findById(Long.valueOf(id))
+        .orElseThrow(() -> new BizException(OutcomeResultCode.OUTCOME_NOT_FOUND));
     log.info("outcome ossPath {}", outcome);
     String url = ossTemplate.getPresignedUrl(outcome.getOssPath());
     return url;
+  }
+
+  public void assignCorrespondingAuthor(Long outcomeId, List<Integer> authorIds) {
+    Outcome outcome = outcomeRepository.findById(outcomeId)
+        .orElseThrow(() -> new BizException(OutcomeResultCode.OUTCOME_NOT_FOUND));
+
+    if (!(outcome instanceof PaperOutcome)) {
+      throw new BizException("该成果不是论文类型， 无法设置通讯作者");
+    }
+    PaperOutcome paperOutcome = (PaperOutcome) outcome;
+    paperOutcome.assignCorresponding(authorIds);
+    outcomeRepository.save(paperOutcome);
   }
 
 }

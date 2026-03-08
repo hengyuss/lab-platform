@@ -28,7 +28,7 @@ public class MessageConsumer {
   @RabbitListener(queues = RabbitmqPaperConfig.PAPER_META_RESULT_QUEUE)
   public void handleMessage(PaperMetaResult result, Channel channel,
       @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws IOException {
-
+    count = 0;
     log.info("消息:{}", result);
     if (result.getStatus() && CollectionsUtils.hasItems(result.getData())) {
       result.getData().stream()
@@ -37,7 +37,7 @@ public class MessageConsumer {
             try {
               PaperOutcome outcome = converter.toDomain(item);
               outcomeRepository.save(outcome);
-              count ++;
+              count++;
             } catch (Exception e) {
               log.error("title:{} dblpKey:{}入库失败\n exception: {}", item.getTitle(),
                   item.getDblpKey(), e.getMessage());
@@ -46,7 +46,6 @@ public class MessageConsumer {
     }
     log.info("共有 {} 数据", count);
 
-    channel.basicAck(tag, false);
   }
 
 }

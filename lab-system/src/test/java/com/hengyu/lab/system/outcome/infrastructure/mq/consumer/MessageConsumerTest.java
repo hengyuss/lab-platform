@@ -52,7 +52,7 @@ class MessageConsumerTest {
 
     verify(outcomeRepository, never()).existsByDblpKey(anyString());
     verify(outcomeRepository, never()).save(any(Outcome.class));
-    verify(channel, times(1)).basicAck(deliveryTag, false);
+    verify(channel, times(0)).basicAck(deliveryTag, false);
   }
 
   @Test
@@ -78,7 +78,7 @@ class MessageConsumerTest {
 
     verify(outcomeRepository).existsByDblpKey(anyString());
     verify(outcomeRepository).save(any(Outcome.class));
-    verify(channel, times(1)).basicAck(deliveryTag, false);
+    verify(channel, times(0)).basicAck(deliveryTag, false);
   }
 
   @Test
@@ -102,7 +102,7 @@ class MessageConsumerTest {
 
     verify(outcomeRepository, never()).save(any(Outcome.class));
     verify(paperOutcomeConverter, never()).toDomain(dto);
-    verify(channel, times(1)).basicAck(deliveryTag, false);
+    verify(channel, times(0)).basicAck(deliveryTag, false);
   }
 
   @Test
@@ -140,7 +140,7 @@ class MessageConsumerTest {
 
     verify(outcomeRepository).save(paperOutcome1);
     verify(outcomeRepository).save(paperOutcome2);
-    verify(channel, times(1)).basicAck(deliveryTag, false);
+    verify(channel, times(0)).basicAck(deliveryTag, false);
 
 
   }

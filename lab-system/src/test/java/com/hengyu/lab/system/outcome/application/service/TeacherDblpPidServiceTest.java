@@ -1,5 +1,6 @@
 package com.hengyu.lab.system.outcome.application.service;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -8,17 +9,17 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hengyu.lab.common.exception.BizException;
+import com.hengyu.lab.system.outcome.application.dto.command.DblpTeacherDTO;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.TeacherDblpPidMapper;
 import com.hengyu.lab.system.outcome.infrastructure.po.TeacherDblpPidPO;
 import java.util.Arrays;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -37,64 +38,71 @@ class TeacherDblpPidServiceTest {
   @InjectMocks
   private TeacherDblpPidService teacherDblpPidService;
 
-  /**
-   * 测试分支 1：参数为空时，是否正确抛出 IllegalArgumentException
-   */
+
   @Test
-  void testAddTeacher_WithEmptyParams_ShouldThrowIllegalArgumentException() {
-    // 测试 teacherName 为空
-    assertThrows(IllegalArgumentException.class, () -> {
-      teacherDblpPidService.addTeacher("", "pid-123");
-    });
+  @DisplayName("✅ 成功分支：正常添加全新的老师")
+  void testAddTeacher_Success() {
+    // 1. 准备参数
+    DblpTeacherDTO dto = new DblpTeacherDTO();
+    dto.setTeacherName("Michael Ley");
+    dto.setPid("l/Ley:Michael");
 
-    // 测试 pid 为纯空格
-    assertThrows(IllegalArgumentException.class, () -> {
-      teacherDblpPidService.addTeacher("张三", "   ");
-    });
+    // 2. Mock 行为：告诉 mapper，当调用 exists 时（随便传什么 Wrapper），返回 false（表示数据库里没有）
+    when(teacherDblpPidMapper.exists(any(LambdaQueryWrapper.class))).thenReturn(false);
 
-    // 验证：确保在这种情况下，mapper 的任何方法都没有被调用过
-    verifyNoInteractions(teacherDblpPidMapper);
+    // 3. 执行测试
+    assertDoesNotThrow(() -> teacherDblpPidService.addTeacher(dto));
+
+    // 4. 验证与断言 (🌟 极度重要：验证 mapper.insert 是否真的被调用了，并且拦截传入的对象看看对不对)
+    ArgumentCaptor<TeacherDblpPidPO> captor = ArgumentCaptor.forClass(TeacherDblpPidPO.class);
+    verify(teacherDblpPidMapper, times(1)).insert(captor.capture());
+
+    TeacherDblpPidPO savedPo = captor.getValue();
+    assertEquals("Michael Ley", savedPo.getTeacherName());
+    assertEquals("l/Ley:Michael", savedPo.getPid());
   }
 
-  /**
-   * 测试分支 2：PID 已经存在时，是否正确抛出 BizException
-   */
   @Test
-  void testAddTeacher_WhenPidExists_ShouldThrowBizException() {
-    // Arrange (准备)：模拟数据库查询，告诉 Mapper 当调用 exists 时，强制返回 true
-    when(teacherDblpPidMapper.exists(any())).thenReturn(true);
+  @DisplayName("❌ 失败分支：参数为空时应抛出 IllegalArgumentException")
+  void testAddTeacher_EmptyParams() {
+    // 准备参数 (缺少 PID)
+    DblpTeacherDTO dto = new DblpTeacherDTO();
+    dto.setTeacherName("Michael Ley");
+    dto.setPid("");
 
-    // Act & Assert (执行与断言)：捕获异常并验证错误信息
-    BizException exception = assertThrows(BizException.class, () -> {
-      teacherDblpPidService.addTeacher("李四", "pid-456");
-    });
-    assertEquals("该老师已存在，请勿重复添加", exception.getMessage());
+    // 执行并断言异常
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> teacherDblpPidService.addTeacher(dto)
+    );
+    assertEquals("老师姓名和pid不能为空", exception.getMessage());
 
-    // 验证：确保 insert 方法绝对没有被执行，保护了数据安全
+    // 验证 mapper 绝对没有被调用
+    verify(teacherDblpPidMapper, never()).exists(any());
     verify(teacherDblpPidMapper, never()).insert(any(TeacherDblpPidPO.class));
   }
 
-  /**
-   * 测试分支 3：完美通关，正常插入数据
-   */
   @Test
-  void testAddTeacher_Success() {
-    // Arrange (准备)：模拟数据库里没有这个 PID，返回 false
-    when(teacherDblpPidMapper.exists(any())).thenReturn(false);
+  @DisplayName("❌ 失败分支：PID重复时应抛出 BizException")
+  void testAddTeacher_DuplicatePid() {
+    // 1. 准备参数
+    DblpTeacherDTO dto = new DblpTeacherDTO();
+    dto.setTeacherName("张三");
+    dto.setPid("12/3456");
 
-    // Act (执行)
-    teacherDblpPidService.addTeacher("王五", "pid-789");
+    // 2. Mock 行为：模拟数据库中已经存在该 PID
+    when(teacherDblpPidMapper.exists(any(LambdaQueryWrapper.class))).thenReturn(true);
 
-    // Assert (断言)：使用 ArgumentCaptor 拦截传给 insert 方法的那个 PO 对象
-    ArgumentCaptor<TeacherDblpPidPO> poCaptor = ArgumentCaptor.forClass(TeacherDblpPidPO.class);
+    // 3. 执行并断言异常
+    // 假设你的自定义异常叫 BizException，如果你包名不一样请自行 import
+    RuntimeException exception = assertThrows(
+        RuntimeException.class, // 替换为你实际的 BizException.class
+        () -> teacherDblpPidService.addTeacher(dto)
+    );
+    assertEquals("该老师已存在，请勿重复添加", exception.getMessage());
 
-    // 验证 insert 方法被精准调用了 1 次，并把当时的参数抓取下来
-    verify(teacherDblpPidMapper, times(1)).insert(poCaptor.capture());
-
-    // 拆开抓取到的 PO 盲盒，检查里面的数据有没有被 Service 偷偷改错
-    TeacherDblpPidPO capturedPo = poCaptor.getValue();
-    assertEquals("王五", capturedPo.getTeacherName());
-    assertEquals("pid-789", capturedPo.getPid());
+    // 4. 验证防线：确保抛出异常后，insert 绝对没有被执行！
+    verify(teacherDblpPidMapper, never()).insert(any(TeacherDblpPidPO.class));
   }
 
 

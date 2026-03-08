@@ -1,7 +1,12 @@
 package com.hengyu.lab.system.outcome.application;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -22,16 +27,17 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -78,10 +84,10 @@ class OutcomeServiceTest {
         .journalName("testJournal")
         .publishTime(LocalDateTime.now())
         .build();
-    Mockito.when(assembler.toPaperDomain(cmd)).thenReturn(paperOutcome);
+    when(assembler.toPaperDomain(cmd)).thenReturn(paperOutcome);
     outcomeService.saveOutcome(cmd);
 
-    Mockito.verify(outcomeRepository).save(outcomeArgumentCaptor.capture());
+    verify(outcomeRepository).save(outcomeArgumentCaptor.capture());
     Outcome savedOutcome = outcomeArgumentCaptor.getValue();
     Assertions.assertThat(savedOutcome).isInstanceOf(PaperOutcome.class);
     Assertions.assertThat(savedOutcome.getTitle()).isEqualTo("testTitle");
@@ -100,20 +106,20 @@ class OutcomeServiceTest {
         .publishTime(LocalDateTime.now())
         .build();
 
-    Mockito.when(outcomeRepository.findById(1L)).thenReturn(Optional.of(paperOutcome));
+    when(outcomeRepository.findById(1L)).thenReturn(Optional.of(paperOutcome));
     outcomeService.deleteOutcome(1L);
 
-    Mockito.verify(outcomeRepository).findById(1L);
-    Mockito.verify(outcomeRepository).delete(paperOutcome);
+    verify(outcomeRepository).findById(1L);
+    verify(outcomeRepository).delete(paperOutcome);
   }
 
   @Test
   void test_delete_outcome_fail() {
-    Mockito.when(outcomeRepository.findById(1L))
+    when(outcomeRepository.findById(1L))
         .thenThrow(new BizException(OutcomeResultCode.OUTCOME_NOT_FOUND));
     Assertions.assertThatThrownBy(() -> outcomeService.deleteOutcome(1L))
         .isInstanceOf(BizException.class);
-    Mockito.verify(outcomeRepository, Mockito.never()).delete(any(Outcome.class));
+    verify(outcomeRepository, never()).delete(any(Outcome.class));
   }
 
   @Test
@@ -122,7 +128,7 @@ class OutcomeServiceTest {
     Page<Outcome> page = new Page<>();
     page.setTotal(3);
     page.setPages(3);
-    Mockito.when(outcomeRepository.selectOutcomePage(qry)).thenReturn(page);
+    when(outcomeRepository.selectOutcomePage(qry)).thenReturn(page);
     IPage<Outcome> outcomeIPage = outcomeService.selectOutcomePage(qry);
     Assertions.assertThat(outcomeIPage.getPages()).isEqualTo(page.getPages());
     Assertions.assertThat(outcomeIPage.getTotal()).isEqualTo(page.getTotal());
@@ -138,11 +144,11 @@ class OutcomeServiceTest {
 
     PaperOutcome outcome = PaperOutcome.builder().id(1L).title("testTitle").issn("testIssn")
         .build();
-    Mockito.when(outcomeRepository.findById(1L)).thenReturn(Optional.of(outcome));
-    Mockito.when(ossTemplate.uploadFile(1L, inputStream, fileName)).thenReturn(path);
+    when(outcomeRepository.findById(1L)).thenReturn(Optional.of(outcome));
+    when(ossTemplate.uploadFile(1L, inputStream, fileName)).thenReturn(path);
 
     outcomeService.uploadPaperFile(1L, inputStream, fileName);
-    Mockito.verify(outcomeRepository).save(outcomeArgumentCaptor.capture());
+    verify(outcomeRepository).save(outcomeArgumentCaptor.capture());
     String getPath = outcomeArgumentCaptor.getValue().getOssPath();
     Assertions.assertThat(getPath).isEqualTo(path);
 
@@ -156,12 +162,12 @@ class OutcomeServiceTest {
     String fileName = "testFileName";
     InputStream inputStream = new ByteArrayInputStream(file.getBytes());
 
-    Mockito.when(outcomeRepository.findById(1L))
+    when(outcomeRepository.findById(1L))
         .thenThrow(new BizException(OutcomeResultCode.OUTCOME_NOT_FOUND));
-    Mockito.when(ossTemplate.uploadFile(1L, inputStream, fileName)).thenReturn(path);
+    when(ossTemplate.uploadFile(1L, inputStream, fileName)).thenReturn(path);
 
     Assertions.assertThatThrownBy(() -> outcomeService.uploadPaperFile(1L, inputStream, fileName)).isInstanceOf(BizException.class);
-    Mockito.verify(outcomeRepository, Mockito.never()).save(any(Outcome.class));
+    verify(outcomeRepository, never()).save(any(Outcome.class));
 
 
   }
@@ -178,19 +184,80 @@ class OutcomeServiceTest {
         .publishTime(LocalDateTime.now())
         .build();
 
-    Mockito.when(outcomeRepository.findById(eq(1L))).thenReturn(Optional.of(paperOutcome));
-    Mockito.when(ossTemplate.getPresignedUrl(eq("testPath"))).thenReturn("testUrl");
+    when(outcomeRepository.findById(eq(1L))).thenReturn(Optional.of(paperOutcome));
+    when(ossTemplate.getPresignedUrl(eq("testPath"))).thenReturn("testUrl");
 
     outcomeService.getOssFileUrl("1");
 
-    Mockito.verify(ossTemplate).getPresignedUrl(eq("testPath"));
-    Mockito.verify(outcomeRepository).findById(eq(1L));
+    verify(ossTemplate).getPresignedUrl(eq("testPath"));
+    verify(outcomeRepository).findById(eq(1L));
   }
 
   @Test
   void test_get_oss_file_url_fail() throws IOException {
-    Mockito.when(outcomeRepository.findById(eq(1L))).thenReturn(Optional.empty());
+    when(outcomeRepository.findById(eq(1L))).thenReturn(Optional.empty());
     Assertions.assertThatThrownBy(() -> outcomeService.getOssFileUrl("1")).isInstanceOf(BizException.class);
+  }
+
+
+
+
+  @Test
+  @DisplayName("正常情况：成功找到论文，设置通讯作者并保存")
+  void shouldAssignCorrespondingAuthorSuccessfully() {
+    // [准备阶段]
+    Long outcomeId = 1L;
+    List<Integer> authorIds = Arrays.asList(1, 2);
+    PaperOutcome mockPaper = new PaperOutcome();
+    // 告诉假仓库：当有人拿着 ID 1 来找你时，你就把这篇假论文给他！
+    when(outcomeRepository.findById(outcomeId)).thenReturn(Optional.of(mockPaper));
+
+    // [执行阶段]
+    outcomeService.assignCorrespondingAuthor(outcomeId, authorIds);
+
+    // [验证阶段] (极其关键)
+    // 1. 验证假仓库的 save 方法确实被调用了 1 次，并且存进去的是我们那篇论文
+    verify(outcomeRepository, times(1)).save(mockPaper);
+    // (注：至于 assignCorresponding 内部逻辑对不对，那是上一个领域层测试负责的，这里不测)
+  }
+
+  @Test
+  @DisplayName("异常情况：数据库里根本找不到这篇成果，抛出业务异常")
+  void shouldThrowExceptionWhenOutcomeNotFound() {
+    // [准备阶段]
+    Long outcomeId = 99L;
+    List<Integer> authorIds = Arrays.asList(1, 2);
+    // 告诉假仓库：查无此文！返回空
+    when(outcomeRepository.findById(outcomeId)).thenReturn(Optional.empty());
+
+    // [执行与验证阶段]
+    // 期待 Service 抛出 BizException 异常
+    assertThatThrownBy(() -> outcomeService.assignCorrespondingAuthor(outcomeId, authorIds))
+        .isInstanceOf(BizException.class);
+    // 如果你想校验错误码，可以接着写：.hasMessageContaining("OUTCOME_NOT_FOUND")
+
+    // 🌟 防御性验证：确保存储动作绝对没有被执行！
+    verify(outcomeRepository, never()).save(any());
+  }
+
+  @Test
+  @DisplayName("异常情况：成果存在，但它是专利而不是论文，抛出类型异常")
+  void shouldThrowExceptionWhenOutcomeIsNotPaper() {
+    // [准备阶段]
+    Long outcomeId = 2L;
+    List<Integer> authorIds = Arrays.asList(1, 2);
+
+    // 我们 new 一个普通的 Outcome（或者 PatentOutcome），反正不是 PaperOutcome
+    Outcome mockNotPaper = new Outcome() {}; // 假设 Outcome 可以被实例化，或者用子类
+    when(outcomeRepository.findById(outcomeId)).thenReturn(Optional.of(mockNotPaper));
+
+    // [执行与验证阶段]
+    assertThatThrownBy(() -> outcomeService.assignCorrespondingAuthor(outcomeId, authorIds))
+        .isInstanceOf(BizException.class)
+        .hasMessage("该成果不是论文类型， 无法设置通讯作者");
+
+    // 🌟 同样，确保存储动作绝对没有被执行！
+    verify(outcomeRepository, never()).save(any());
   }
 
 

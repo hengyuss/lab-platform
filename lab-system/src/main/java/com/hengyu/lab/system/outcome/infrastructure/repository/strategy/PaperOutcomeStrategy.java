@@ -61,10 +61,11 @@ public class PaperOutcomeStrategy implements OutcomeStrategy {
   private QueryWrapper<Outcome> buildAuthorCondition(QueryWrapper<Outcome> queryWrapper,
       OutcomePaperQry query) {
     boolean hasAuthorCondition =
-        StringUtils.hasText(query.getAuthorName()) || query.getAuthorSort() != null;
+        StringUtils.hasText(query.getAuthorName()) || query.getAuthorSort() != null
+            || query.getIsCorrespondingAuthor() != null;
     if (hasAuthorCondition) {
       List<Long> outcomeIds = authorMapper.selectOutcomeIdByAuthorNameAndSort(
-          query.getAuthorName(), query.getAuthorSort());
+          query.getAuthorName(), query.getAuthorSort(), query.getIsCorrespondingAuthor());
       if (CollectionUtils.isEmpty(outcomeIds)) {
         queryWrapper.apply("1 = 0");
       } else {

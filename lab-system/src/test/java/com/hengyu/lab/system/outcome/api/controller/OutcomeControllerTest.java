@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,6 +32,7 @@ import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -207,6 +209,28 @@ class OutcomeControllerTest {
     mockMvc.perform(multipart("/api/v1/outcomes/paper/upload/{id}", 1L))
         .andExpect(status().isBadRequest());
 
+  }
+
+  @Test
+  @DisplayName("正常情况：成功接收 HTTP PUT 请求，并正确反序列化 JSON 调用 Service")
+  void shouldAssignCorrespondingAuthorViaHttp() throws Exception {
+    // [准备阶段] 准备测试数据
+    Long outcomeId = 1024L;
+    List<Integer> authorIds = Arrays.asList(1, 2, 3);
+
+    // [执行与验证阶段] 发起模拟的 HTTP 请求
+    mockMvc.perform(put("/api/v1/outcomes/paper/author/{outcomeId}/corresponding-authors", outcomeId)
+            .contentType(MediaType.APPLICATION_JSON) // 告诉接口，我传的是 JSON
+            .content(objectMapper.writeValueAsString(authorIds))) // 把 List 变成 "[1,2,3]"
+
+        // 1. 断言 HTTP 状态码必须是 200 OK
+        .andExpect(status().isOk());
+
+    // (可选) 如果你的 R.ok() 返回了类似 {"code": 200, "msg": "success"}，你可以继续断言：
+    // .andExpect(jsonPath("$.code").value(200))
+
+    // [验证联动] 极其关键：验证 Controller 是否老老实实地把参数交给了 Service！
+    verify(outcomeService).assignCorrespondingAuthor(outcomeId, authorIds);
   }
 
 

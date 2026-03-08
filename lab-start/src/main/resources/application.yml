@@ -37,8 +37,8 @@ springdoc:
   api-docs:
     path: /v3/api-docs
   group-configs:
-    - group: 'default'
-      paths-to-match: '/**'
+    - group: "default"
+      paths-to-match: "/**"
       packages-to-scan: com.hengyu.lab # ????????????????
 knife4j:
   enable: true
@@ -66,7 +66,7 @@ lab:
     token-prefix: "Bearer "
 
 minio:
-  endpoint: http://localhost:9002
+  endpoint: http://10.33.9.41:9002
   access-key: admin
   secret-key: z15903750100
   bucket-name: lab-platform

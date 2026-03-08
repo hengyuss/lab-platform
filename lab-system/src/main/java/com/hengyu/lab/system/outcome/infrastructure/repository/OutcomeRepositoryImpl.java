@@ -71,7 +71,6 @@ public class OutcomeRepositoryImpl implements OutcomeRepository {
     OutcomePO outcomePO = outcomeConverter.toPO(outcome);
     OutcomeStrategy strategy = getOutcomeStrategy(outcome.getType());
     strategy.deleteDetails(outcome);
-    authorMapper.deleteByOutcomeId(outcome.getId());
     outcomeMapper.deleteById(outcomePO);
   }
 

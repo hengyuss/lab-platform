@@ -5,6 +5,7 @@ import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +22,7 @@ public abstract class Outcome {
   private String title;
   private OutcomeType type;
   private OutcomeStatus status;
-  private List<Author> authors;
+  private List<Author> authors = new ArrayList<>();
   private String ossPath;
 
   public void setOssPath(String ossPath) {

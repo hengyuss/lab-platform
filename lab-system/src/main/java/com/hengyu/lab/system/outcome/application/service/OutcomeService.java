@@ -67,12 +67,9 @@ public class OutcomeService {
     Outcome outcome = outcomeRepository.findById(outcomeId)
         .orElseThrow(() -> new BizException(OutcomeResultCode.OUTCOME_NOT_FOUND));
 
-    if (!(outcome instanceof PaperOutcome)) {
-      throw new BizException("该成果不是论文类型， 无法设置通讯作者");
-    }
-    PaperOutcome paperOutcome = (PaperOutcome) outcome;
-    paperOutcome.assignCorresponding(authorIds);
-    outcomeRepository.save(paperOutcome);
+    outcome.assignCorresponding(authorIds);
+    outcomeRepository.save(outcome);
+
   }
 
 }

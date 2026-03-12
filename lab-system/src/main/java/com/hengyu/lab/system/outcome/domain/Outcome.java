@@ -31,4 +31,9 @@ public abstract class Outcome {
     }
     this.ossPath = ossPath;
   }
+
+  public void assignCorresponding(List<Integer> authorIds) {
+    throw new BizException("该成果不是论文类型， 无法设置通讯作者");
+  }
+
 }

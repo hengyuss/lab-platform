@@ -14,7 +14,7 @@ pipeline {
 
 
         // SonarQube 配置
-        SONAR_URL = 'http://10.33.9.41:9000'
+        SONAR_URL = 'http://10.33.82.145:9000'
         SONAR_PROJECT_KEY = 'lab-platform'
         SONAR_PROJECT_NAME = 'lab-platform'
         SONAR_PROJECT_VERSION = "0.0.1-build-${BUILD_NUMBER}" // 使用双引号解析变量

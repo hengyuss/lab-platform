@@ -23,6 +23,7 @@ public class PaperOutcome extends Outcome {
   private String ee;
   private LocalDateTime publishTime;
 
+  @Override
   public void assignCorresponding(List<Integer> authorIds) {
     this.getAuthors().forEach(author -> {
       if (authorIds.contains(author.getId())) {

@@ -54,6 +54,11 @@ class DblpXmlFetcher:
         ee_node = paper_node.find("ee")
         ee_link = ee_node.text if ee_node is not None else ""
 
+        # --- 4. 提取卷号 (Volume) 和 页码 (Pages) ---
+      # 新增解析逻辑
+        volume = self._get_text(paper_node, "volume", "")
+        pages = self._get_text(paper_node, "pages", "")
+
         # --- 4. 提取作者列表 ---
         # XML 的好处：作者永远是多个 <author> 标签，不用像 JSON 那样判断类型
         authors = [
@@ -67,6 +72,8 @@ class DblpXmlFetcher:
           "dblp_key": dblp_key,
           "year": year,
           "venue": venue,
+          "volume": volume,
+          "pages": pages,
           "ee": ee_link,
           "authors": authors,
           "type": paper_node.tag  # 记录是 article 还是 inproceedings
@@ -90,7 +97,7 @@ class DblpXmlFetcher:
 
 if __name__ == "__main__":
   fetcher = DblpXmlFetcher()
-  pid = "45/4509-5"
+  pid = "195/3356"
   results = fetcher.fetch(pid)
   print(results)
 

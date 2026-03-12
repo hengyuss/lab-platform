@@ -66,7 +66,7 @@ lab:
     token-prefix: "Bearer "
 
 minio:
-  endpoint: http://10.33.9.41:9002
+  endpoint: http://10.33.82.145:9002
   access-key: admin
   secret-key: z15903750100
   bucket-name: lab-platform

@@ -7,7 +7,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 支持环境变量注入，方便 Docker 部署
-    url: "jdbc:mysql://${DB_HOST:10.33.9.41}:${DB_PORT:3306}/${DB_NAME:lab_platform_dev}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true"
+    url: "jdbc:mysql://${DB_HOST:10.33.82.145}:${DB_PORT:3306}/${DB_NAME:lab_platform_dev}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true"
     username: ${DB_USER:root}
     password: ${DB_PASS:zZ15903750100.}
 

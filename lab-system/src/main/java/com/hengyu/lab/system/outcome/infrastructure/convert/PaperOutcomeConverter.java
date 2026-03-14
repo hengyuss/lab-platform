@@ -5,6 +5,7 @@ import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
 import com.hengyu.lab.system.outcome.infrastructure.mq.dto.PaperMetaResult.PaperItemDTO;
+import com.hengyu.lab.system.outcome.infrastructure.po.OutcomePO;
 import com.hengyu.lab.system.outcome.infrastructure.po.PaperOutcomePO;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,11 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", imports = {OutcomeType.class, OutcomeStatus.class})
 public interface PaperOutcomeConverter {
 
+  @Mapping(source = "id", target = "outcomeId")
   PaperOutcomePO toPO(PaperOutcome paperOutcome);
+
+  @Mapping(source = "outcomePO.id", target = "id")
+  PaperOutcome toDomain(OutcomePO outcomePO, PaperOutcomePO paperOutcomePO);
 
   @Mapping(source = "venue", target = "journalName")
   @Mapping(source = "title", target = "title")

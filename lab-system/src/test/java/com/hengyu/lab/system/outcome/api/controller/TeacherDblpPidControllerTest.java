@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hengyu.lab.framework.security.TokenService;
 import com.hengyu.lab.framework.utils.JwtUtils;
-import com.hengyu.lab.system.outcome.application.dto.command.DblpTeacherDTO;
+import com.hengyu.lab.system.outcome.application.dto.DblpTeacherDTO;
 import com.hengyu.lab.system.outcome.application.service.TeacherDblpPidService;
 import com.hengyu.lab.system.outcome.infrastructure.po.TeacherDblpPidPO;
 import java.util.Collections;

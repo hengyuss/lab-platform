@@ -1,4 +1,4 @@
-package com.hengyu.lab.system.outcome.application.dto.command;
+package com.hengyu.lab.system.outcome.application.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

@@ -2,7 +2,7 @@ package com.hengyu.lab.system.outcome.infrastructure.mq.consumer;
 
 
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
-import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
+import com.hengyu.lab.system.outcome.domain.repository.PaperOutcomeRepository;
 import com.hengyu.lab.system.outcome.infrastructure.config.RabbitmqPaperConfig;
 import com.hengyu.lab.system.outcome.infrastructure.convert.PaperOutcomeConverter;
 import com.hengyu.lab.system.outcome.infrastructure.mq.dto.PaperMetaResult;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MessageConsumer {
 
-  private final OutcomeRepository outcomeRepository;
+  private final PaperOutcomeRepository paperOutcomeRepository;
   private final PaperOutcomeConverter converter;
   public static int count = 0;
 
@@ -32,11 +32,12 @@ public class MessageConsumer {
     log.info("消息:{}", result);
     if (result.getStatus() && CollectionsUtils.hasItems(result.getData())) {
       result.getData().stream()
-          .filter(paperItemDTO -> !outcomeRepository.existsByDblpKey(paperItemDTO.getDblpKey()))
+          .filter(
+              paperItemDTO -> !paperOutcomeRepository.existsByDblpKey(paperItemDTO.getDblpKey()))
           .forEach(item -> {
             try {
               PaperOutcome outcome = converter.toDomain(item);
-              outcomeRepository.save(outcome);
+              paperOutcomeRepository.save(outcome);
               count++;
             } catch (Exception e) {
               log.error("title:{} dblpKey:{}入库失败\n exception: {}", item.getTitle(),

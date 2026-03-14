@@ -2,7 +2,7 @@ package com.hengyu.lab.system.outcome.api.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hengyu.lab.common.api.R;
-import com.hengyu.lab.system.outcome.application.dto.command.DblpTeacherDTO;
+import com.hengyu.lab.system.outcome.application.dto.DblpTeacherDTO;
 import com.hengyu.lab.system.outcome.application.service.TeacherDblpPidService;
 import com.hengyu.lab.system.outcome.infrastructure.po.TeacherDblpPidPO;
 import io.swagger.v3.oas.annotations.tags.Tag;

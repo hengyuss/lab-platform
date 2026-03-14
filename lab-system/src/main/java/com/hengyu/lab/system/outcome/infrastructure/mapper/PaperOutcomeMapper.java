@@ -11,4 +11,5 @@ public interface PaperOutcomeMapper extends BaseMapper<PaperOutcomePO> {
 
   @Select("select 1 from sys_outcome_paper where dblp_key = #{dblpKey} limit 1")
   Boolean existsByDblpKey(@Param("dblpKey") String dblpKey);
+
 }

@@ -1,4 +1,4 @@
-package com.hengyu.lab.system.outcome.application.dto.command;
+package com.hengyu.lab.system.outcome.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hengyu.lab.system.outcome.domain.vo.PaperMetaTask;

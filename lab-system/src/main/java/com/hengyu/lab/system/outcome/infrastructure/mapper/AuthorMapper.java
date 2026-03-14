@@ -1,6 +1,7 @@
 package com.hengyu.lab.system.outcome.infrastructure.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hengyu.lab.system.outcome.application.dto.AuthorDTO;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
 import com.hengyu.lab.system.outcome.infrastructure.po.AuthorPO;
 import java.util.List;
@@ -22,6 +23,23 @@ public interface AuthorMapper extends BaseMapper<AuthorPO> {
   @Select("select * from sys_outcome_author WHERE outcome_id = #{outcomeId}")
   @ResultMap("AuthorResultMap")
   List<Author> selectByOutcomeId(@Param("outcomeId") Long outcomeId);
+
+  @Select("select * from sys_outcome_author WHERE outcome_id = #{outcomeId}")
+  List<AuthorPO> selectAllByOutcomeId(@Param("outcomeId") Long outcomeId);
+
+
+  @Select({
+      "<script>",
+      "SELECT * ",
+      "FROM sys_outcome_author ",
+      "WHERE outcome_id IN ",
+      "<foreach item='id' collection='outcomeIds' open='(' separator=',' close=')'>",
+      "#{id}",
+      "</foreach>",
+      "ORDER BY id ASC",
+      "</script>"
+  })
+  List<AuthorDTO> selectAuthorsByOutcomeIds(@Param("outcomeIds") List<Long> outcomeIds);
 
   @Select("<script>" +
       "select outcome_id from sys_outcome_author " +

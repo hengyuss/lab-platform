@@ -11,7 +11,7 @@ import static org.mockito.Mockito.when;
 
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
-import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
+import com.hengyu.lab.system.outcome.domain.repository.PaperOutcomeRepository;
 import com.hengyu.lab.system.outcome.infrastructure.convert.PaperOutcomeConverter;
 import com.hengyu.lab.system.outcome.infrastructure.mq.dto.PaperMetaResult;
 import com.hengyu.lab.system.outcome.infrastructure.mq.dto.PaperMetaResult.PaperItemDTO;
@@ -30,7 +30,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class MessageConsumerTest {
 
   @Mock
-  OutcomeRepository outcomeRepository;
+  PaperOutcomeRepository outcomeRepository;
   @Mock
   PaperOutcomeConverter paperOutcomeConverter;
   @Mock
@@ -47,11 +47,10 @@ class MessageConsumerTest {
     long deliveryTag = 1l;
     result.setData(Collections.EMPTY_LIST);
 
-
     messageConsumer.handleMessage(result, channel, deliveryTag);
 
     verify(outcomeRepository, never()).existsByDblpKey(anyString());
-    verify(outcomeRepository, never()).save(any(Outcome.class));
+    verify(outcomeRepository, never()).save(any(PaperOutcome.class));
     verify(channel, times(0)).basicAck(deliveryTag, false);
   }
 
@@ -70,14 +69,13 @@ class MessageConsumerTest {
     dto.setAuthors(List.of("author1", "author2"));
     result.setData(List.of(dto));
     long deliveryTag = 1l;
-    PaperOutcome paperOutcome =  new PaperOutcome();
+    PaperOutcome paperOutcome = new PaperOutcome();
     when(paperOutcomeConverter.toDomain(dto)).thenReturn(paperOutcome);
     when(outcomeRepository.existsByDblpKey(dto.getDblpKey())).thenReturn(false);
     messageConsumer.handleMessage(result, channel, deliveryTag);
 
-
     verify(outcomeRepository).existsByDblpKey(anyString());
-    verify(outcomeRepository).save(any(Outcome.class));
+    verify(outcomeRepository).save(any(PaperOutcome.class));
     verify(channel, times(0)).basicAck(deliveryTag, false);
   }
 
@@ -99,8 +97,7 @@ class MessageConsumerTest {
     when(outcomeRepository.existsByDblpKey(dto.getDblpKey())).thenReturn(true);
     messageConsumer.handleMessage(result, channel, deliveryTag);
 
-
-    verify(outcomeRepository, never()).save(any(Outcome.class));
+    verify(outcomeRepository, never()).save(any(PaperOutcome.class));
     verify(paperOutcomeConverter, never()).toDomain(dto);
     verify(channel, times(0)).basicAck(deliveryTag, false);
   }
@@ -128,9 +125,9 @@ class MessageConsumerTest {
     dto2.setAuthors(List.of("author12", "author22"));
     result.setData(List.of(dto, dto2));
     long deliveryTag = 1l;
-    PaperOutcome paperOutcome1 =  new PaperOutcome();
+    PaperOutcome paperOutcome1 = new PaperOutcome();
     paperOutcome1.setDblpKey("testDblpKey");
-    PaperOutcome paperOutcome2 =  new PaperOutcome();
+    PaperOutcome paperOutcome2 = new PaperOutcome();
     paperOutcome2.setDblpKey("testDblpKey2");
     when(paperOutcomeConverter.toDomain(dto)).thenReturn(paperOutcome1);
     when(paperOutcomeConverter.toDomain(dto2)).thenReturn(paperOutcome2);
@@ -144,7 +141,6 @@ class MessageConsumerTest {
 
 
   }
-
 
 
 }

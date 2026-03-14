@@ -20,16 +20,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hengyu.lab.framework.security.TokenService;
 import com.hengyu.lab.framework.utils.JwtUtils;
-import com.hengyu.lab.system.outcome.application.dto.command.PaperMessage;
-import com.hengyu.lab.system.outcome.application.dto.command.SavePaperOutcomeCmd;
+import com.hengyu.lab.system.outcome.application.command.SavePaperOutcomeCmd;
+import com.hengyu.lab.system.outcome.application.dto.AuthorDTO;
+import com.hengyu.lab.system.outcome.application.dto.PaperMessage;
+import com.hengyu.lab.system.outcome.application.dto.PaperOutcomeDTO;
 import com.hengyu.lab.system.outcome.application.service.MessageService;
-import com.hengyu.lab.system.outcome.application.service.OutcomeService;
-import com.hengyu.lab.system.outcome.domain.Outcome;
-import com.hengyu.lab.system.outcome.domain.PaperOutcome;
+import com.hengyu.lab.system.outcome.application.service.PaperOutcomeQryService;
+import com.hengyu.lab.system.outcome.application.service.PaperOutcomeService;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
-import com.hengyu.lab.system.outcome.domain.vo.Author;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -66,7 +66,10 @@ class OutcomeControllerTest {
   private ObjectMapper objectMapper;
 
   @MockBean
-  private OutcomeService outcomeService;
+  private PaperOutcomeService outcomeService;
+
+  @MockBean
+  private PaperOutcomeQryService paperOutcomeQryService;
 
   @Test
   void save_outcome_success() throws Exception {
@@ -91,20 +94,20 @@ class OutcomeControllerTest {
   @Test
   void select_outcome_page() throws Exception {
     OutcomePaperQry outcomePaperQry = new OutcomePaperQry();
-    PaperOutcome origin = new PaperOutcome();
+    PaperOutcomeDTO origin = new PaperOutcomeDTO();
     origin.setTitle("Title");
     origin.setType(OutcomeType.PAPER);
     origin.setStatus(OutcomeStatus.DRAFT);
     origin.setIssn("testIssn");
     origin.setPublishTime(LocalDateTime.now());
-    origin.setAuthors(List.of(Author.builder().name("old").sort(1).isCorresponding(0).build()));
+    origin.setAuthors(List.of(AuthorDTO.builder().name("old").sort(1).isCorresponding(0).build()));
 
     outcomePaperQry.setPageNo(1);
     outcomePaperQry.setPageSize(10);
-    IPage<Outcome> page = new Page<>();
+    IPage<PaperOutcomeDTO> page = new Page<>();
     page.setTotal(1);
     page.setRecords(List.of(origin));
-    Mockito.when(outcomeService.selectOutcomePage(outcomePaperQry)).thenReturn(page);
+    Mockito.when(paperOutcomeQryService.selectOutcomePage(outcomePaperQry)).thenReturn(page);
 
     mockMvc.perform(get("/api/v1/outcomes").param("pageNo", "1").param("pageSize", "10"))
         .andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.data.total").value(1))
@@ -184,9 +187,11 @@ class OutcomeControllerTest {
     MockMultipartFile mockMultipartFile = new MockMultipartFile("file", fileName,
         MediaType.APPLICATION_PDF_VALUE, "fake content".getBytes());
 
-    when(outcomeService.uploadPaperFile(eq(outcomeId), any(InputStream.class), eq(fileName))).thenReturn(path);
+    when(outcomeService.uploadPaperFile(eq(outcomeId), any(InputStream.class),
+        eq(fileName))).thenReturn(path);
 
-    mockMvc.perform(multipart("/api/v1/outcomes/paper/upload/{id}", outcomeId).file(mockMultipartFile))
+    mockMvc.perform(
+            multipart("/api/v1/outcomes/paper/upload/{id}", outcomeId).file(mockMultipartFile))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data").value(path));
 
@@ -219,9 +224,10 @@ class OutcomeControllerTest {
     List<Integer> authorIds = Arrays.asList(1, 2, 3);
 
     // [执行与验证阶段] 发起模拟的 HTTP 请求
-    mockMvc.perform(put("/api/v1/outcomes/paper/author/{outcomeId}/corresponding-authors", outcomeId)
-            .contentType(MediaType.APPLICATION_JSON) // 告诉接口，我传的是 JSON
-            .content(objectMapper.writeValueAsString(authorIds))) // 把 List 变成 "[1,2,3]"
+    mockMvc.perform(
+            put("/api/v1/outcomes/paper/author/{outcomeId}/corresponding-authors", outcomeId)
+                .contentType(MediaType.APPLICATION_JSON) // 告诉接口，我传的是 JSON
+                .content(objectMapper.writeValueAsString(authorIds))) // 把 List 变成 "[1,2,3]"
 
         // 1. 断言 HTTP 状态码必须是 200 OK
         .andExpect(status().isOk());
@@ -232,7 +238,6 @@ class OutcomeControllerTest {
     // [验证联动] 极其关键：验证 Controller 是否老老实实地把参数交给了 Service！
     verify(outcomeService).assignCorrespondingAuthor(outcomeId, authorIds);
   }
-
 
 
 }

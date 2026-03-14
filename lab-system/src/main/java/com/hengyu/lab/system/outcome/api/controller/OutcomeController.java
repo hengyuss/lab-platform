@@ -2,11 +2,12 @@ package com.hengyu.lab.system.outcome.api.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hengyu.lab.common.api.R;
-import com.hengyu.lab.system.outcome.application.dto.command.PaperMessage;
-import com.hengyu.lab.system.outcome.application.dto.command.SavePaperOutcomeCmd;
+import com.hengyu.lab.system.outcome.application.command.SavePaperOutcomeCmd;
+import com.hengyu.lab.system.outcome.application.dto.PaperMessage;
+import com.hengyu.lab.system.outcome.application.dto.PaperOutcomeDTO;
 import com.hengyu.lab.system.outcome.application.service.MessageService;
-import com.hengyu.lab.system.outcome.application.service.OutcomeService;
-import com.hengyu.lab.system.outcome.domain.Outcome;
+import com.hengyu.lab.system.outcome.application.service.PaperOutcomeQryService;
+import com.hengyu.lab.system.outcome.application.service.PaperOutcomeService;
 import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,14 +36,15 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class OutcomeController {
 
-  private final OutcomeService outcomeService;
   private final MessageService messageService;
+  private final PaperOutcomeQryService paperOutcomeQryService;
+  private final PaperOutcomeService paperOutcomeService;
 
 
   @PostMapping("/paper")
   @Operation(summary = "添加论文") // 对应接口的描述
   public R<String> saveOutcome(@RequestBody @Valid SavePaperOutcomeCmd cmd) {
-    Long id = outcomeService.saveOutcome(cmd);
+    Long id = paperOutcomeService.saveOutcome(cmd);
     return R.ok(String.valueOf(id));
   }
 
@@ -50,7 +52,7 @@ public class OutcomeController {
   @Operation(summary = "删除论文")
   public R<Void> deletePaperOutcome(@PathVariable("id") String id) {
     Long outcomeId = Long.valueOf(id);
-    outcomeService.deleteOutcome(outcomeId);
+    paperOutcomeService.deleteOutcome(outcomeId);
     return R.ok();
   }
 
@@ -66,8 +68,9 @@ public class OutcomeController {
 
   @GetMapping()
   @Operation(summary = "查询论文成果")
-  public R<IPage<Outcome>> selectOutcomePage(@ParameterObject OutcomePaperQry outcomePaperQry) {
-    IPage<Outcome> outcomeIPage = outcomeService.selectOutcomePage(outcomePaperQry);
+  public R<IPage<PaperOutcomeDTO>> selectOutcomePage(
+      @ParameterObject OutcomePaperQry outcomePaperQry) {
+    IPage<PaperOutcomeDTO> outcomeIPage = paperOutcomeQryService.selectOutcomePage(outcomePaperQry);
     return R.ok(outcomeIPage);
   }
 
@@ -78,14 +81,15 @@ public class OutcomeController {
       throws IOException {
     String originalFileName = file.getOriginalFilename();
     InputStream inputStream = file.getInputStream();
-    String path = outcomeService.uploadPaperFile(Long.valueOf(id), inputStream, originalFileName);
+    String path = paperOutcomeService.uploadPaperFile(Long.valueOf(id), inputStream,
+        originalFileName);
     return R.ok(path);
   }
 
   @GetMapping("paper/file/url")
   @Operation(summary = "获取文件下载连接")
   public R<String> getOssFileUrl(@RequestParam("id") String id) {
-    String url = outcomeService.getOssFileUrl(id);
+    String url = paperOutcomeService.getOssFileUrl(id);
     return R.ok(url);
   }
 
@@ -93,7 +97,7 @@ public class OutcomeController {
   @Operation(summary = "指定通讯作者")
   public R<Void> assignCorrespondingAuthor(@PathVariable("outcomeId") Long outcomeId,
       @RequestBody List<Integer> authorIds) {
-    outcomeService.assignCorrespondingAuthor(outcomeId, authorIds);
+    paperOutcomeService.assignCorrespondingAuthor(outcomeId, authorIds);
     return R.ok();
   }
 

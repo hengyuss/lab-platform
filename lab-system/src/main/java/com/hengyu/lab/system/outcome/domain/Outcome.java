@@ -8,9 +8,11 @@ import com.hengyu.lab.system.outcome.domain.vo.Author;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 @Data
@@ -18,10 +20,12 @@ import org.springframework.util.StringUtils;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class Outcome {
+
   private Long id;
   private String title;
   private OutcomeType type;
   private OutcomeStatus status;
+  @Builder.Default
   private List<Author> authors = new ArrayList<>();
   private String ossPath;
 
@@ -34,6 +38,10 @@ public abstract class Outcome {
 
   public void assignCorresponding(List<Integer> authorIds) {
     throw new BizException("该成果不是论文类型， 无法设置通讯作者");
+  }
+
+  public void assignAuthors(List<Author> authors) {
+    this.authors = authors;
   }
 
 }

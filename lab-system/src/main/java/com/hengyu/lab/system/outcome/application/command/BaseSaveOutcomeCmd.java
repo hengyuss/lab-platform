@@ -1,5 +1,6 @@
-package com.hengyu.lab.system.outcome.application.dto.command;
+package com.hengyu.lab.system.outcome.application.command;
 
+import com.hengyu.lab.system.outcome.application.dto.AuthorDTO;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import io.swagger.v3.oas.annotations.media.Schema;

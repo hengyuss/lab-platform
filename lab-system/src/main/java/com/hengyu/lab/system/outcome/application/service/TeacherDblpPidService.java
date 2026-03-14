@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hengyu.lab.common.exception.BizException;
-import com.hengyu.lab.system.outcome.application.dto.command.DblpTeacherDTO;
+import com.hengyu.lab.system.outcome.application.dto.DblpTeacherDTO;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.TeacherDblpPidMapper;
 import com.hengyu.lab.system.outcome.infrastructure.po.TeacherDblpPidPO;
 import java.util.List;

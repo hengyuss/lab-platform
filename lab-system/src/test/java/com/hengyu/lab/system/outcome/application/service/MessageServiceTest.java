@@ -7,7 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.hengyu.lab.system.outcome.application.dto.command.PaperMessage;
+import com.hengyu.lab.system.outcome.application.dto.PaperMessage;
 import com.hengyu.lab.system.outcome.domain.service.PaperMQGateway;
 import com.hengyu.lab.system.outcome.domain.vo.PaperMetaTask;
 import com.hengyu.lab.system.outcome.infrastructure.po.TeacherDblpPidPO;

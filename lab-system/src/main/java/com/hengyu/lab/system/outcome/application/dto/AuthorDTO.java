@@ -1,4 +1,4 @@
-package com.hengyu.lab.system.outcome.application.dto.command;
+package com.hengyu.lab.system.outcome.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuthorDTO {
     private Integer id;
+    private Long outcomeId;
     private String name;
     private Integer sort;
     private Integer isCorresponding;

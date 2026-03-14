@@ -1,6 +1,6 @@
 package com.hengyu.lab.system.outcome.application.service;
 
-import com.hengyu.lab.system.outcome.application.dto.command.PaperMessage;
+import com.hengyu.lab.system.outcome.application.dto.PaperMessage;
 import com.hengyu.lab.system.outcome.domain.service.PaperMQGateway;
 import com.hengyu.lab.system.outcome.domain.vo.PaperMetaTask;
 import com.hengyu.lab.system.outcome.infrastructure.po.TeacherDblpPidPO;

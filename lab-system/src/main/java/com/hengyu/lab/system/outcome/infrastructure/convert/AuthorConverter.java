@@ -13,5 +13,9 @@ public interface AuthorConverter {
 
   @Mapping(source = "name", target = "authorName")
   AuthorPO toPO(Author author);
+
+  @Mapping(source = "authorName", target = "name")
+  Author toEntity(AuthorPO authorPO);
+
   List<AuthorPO> toPOList(List<Author> authorList);
 }

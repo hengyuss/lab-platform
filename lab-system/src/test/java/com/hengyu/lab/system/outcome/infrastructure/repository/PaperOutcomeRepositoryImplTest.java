@@ -1,16 +1,16 @@
 package com.hengyu.lab.system.outcome.infrastructure.repository;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
-import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
-import com.hengyu.lab.system.outcome.domain.repository.OutcomeRepository;
+import com.hengyu.lab.system.outcome.domain.repository.PaperOutcomeRepository;
 import com.hengyu.lab.system.outcome.domain.vo.Author;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.AuthorMapper;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.OutcomeMapper;
@@ -31,16 +31,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.WebContentGenerator;
 
 @SpringBootTest // 1. 启动完整的 Spring 上下文
 @ActiveProfiles("test") // 2. 使用 application-test.yml 配置
 @Transactional // 3. 测试结束后自动回滚数据，保持环境干净
-class OutcomeRepositoryTest { // IT = Integration Test
+class PaperOutcomeRepositoryImplTest {
 
   @Autowired
-  private OutcomeRepository outcomeRepository; // 被测对象
+  private PaperOutcomeRepository paperOutcomeRepository;
 
-  // 注入 Mapper 为了验证数据库里的数据 (Verification)
   @Autowired
   private OutcomeMapper outcomeMapper;
   @Autowired
@@ -48,11 +48,15 @@ class OutcomeRepositoryTest { // IT = Integration Test
   @Autowired
   private PaperOutcomeMapper paperMapper;
   @Autowired
-  private JdbcTemplate jdbcTemplate; // 用于直接写 SQL 准备测试数据
-
+  private JdbcTemplate jdbcTemplate;
 
   @MockBean
   private ConnectionFactory connectionFactory;
+  @Autowired
+  private WebContentGenerator webContentGenerator;
+  @Autowired
+  private PaperOutcomeMapper paperOutcomeMapper;
+
 
   @Test
   @DisplayName("集成测试：完整保存一篇论文(主表+作者+详情)")
@@ -83,7 +87,7 @@ class OutcomeRepositoryTest { // IT = Integration Test
 
     // --- 2. 执行操作 (Act) ---
     // 这一步会触发 Repository -> Converter -> Mapper -> H2 DB
-    outcomeRepository.save(paper);
+    paperOutcomeRepository.save(paper);
 
     // --- 3. 验证结果 (Assert) ---
 
@@ -123,7 +127,7 @@ class OutcomeRepositoryTest { // IT = Integration Test
     origin.setIssn("testIssn");
     origin.setPublishTime(LocalDateTime.now());
     origin.setAuthors(List.of(Author.builder().name("old").sort(1).isCorresponding(0).build()));
-    outcomeRepository.save(origin);
+    paperOutcomeRepository.save(origin);
 
     Long id = origin.getId();
 
@@ -155,7 +159,7 @@ class OutcomeRepositoryTest { // IT = Integration Test
     ));
 
     // --- 3. 执行更新 (Act) ---
-    outcomeRepository.save(updateCmd);
+    paperOutcomeRepository.save(updateCmd);
 
     // --- 4. 验证 (Assert) ---
     // 验证主表更新
@@ -178,7 +182,6 @@ class OutcomeRepositoryTest { // IT = Integration Test
         .doesNotContain("old");
   }
 
-
   @Test
   void delete() {
     // --- 1. 先存一条数据 (Setup) ---
@@ -189,7 +192,7 @@ class OutcomeRepositoryTest { // IT = Integration Test
     origin.setIssn("testIssn");
     origin.setPublishTime(LocalDateTime.now());
     origin.setAuthors(List.of(Author.builder().name("old").sort(1).isCorresponding(0).build()));
-    outcomeRepository.save(origin);
+    paperOutcomeRepository.save(origin);
 
     Long id = origin.getId();
 
@@ -202,7 +205,7 @@ class OutcomeRepositoryTest { // IT = Integration Test
     PaperOutcomePO paperOutcomePO = paperMapper.selectById(id);
     assertThat(paperOutcomePO.getIssn()).isEqualTo("testIssn");
 
-    outcomeRepository.delete(origin);
+    paperOutcomeRepository.delete(origin);
     OutcomePO deletedOutcome = outcomeMapper.selectById(id);
     assertThat(deletedOutcome).isNull();
     List<AuthorPO> deletedAuthors = authorMapper.selectList(
@@ -212,6 +215,7 @@ class OutcomeRepositoryTest { // IT = Integration Test
     PaperOutcomePO deletedPaperOutcomePO = paperMapper.selectById(id);
     assertThat(deletedPaperOutcomePO).isNull();
   }
+
 
   @Test
   void findById_exist() {
@@ -224,11 +228,11 @@ class OutcomeRepositoryTest { // IT = Integration Test
     origin.setIssn("testIssn");
     origin.setPublishTime(LocalDateTime.now());
     origin.setAuthors(List.of(author));
-    outcomeRepository.save(origin);
+    paperOutcomeRepository.save(origin);
 
     Long id = origin.getId();
 
-    Optional<Outcome> findOutcome = outcomeRepository.findById(id);
+    Optional<PaperOutcome> findOutcome = paperOutcomeRepository.findById(id);
     assertThat(findOutcome.isPresent()).isTrue();
     assertThat(findOutcome.get().getTitle()).isEqualTo("Old Title");
     assertThat(findOutcome.get().getType()).isEqualTo(OutcomeType.PAPER);
@@ -236,59 +240,50 @@ class OutcomeRepositoryTest { // IT = Integration Test
     assertThat(findOutcome.get().getAuthors()).hasSize(1);
   }
 
-
   @Test
-  @DisplayName("测试：策略模式+多态映射 查询论文")
-  void testSelectOutcomePage_ShouldReturnPaperOutcome() {
-    // === 1. Arrange (准备数据) ===
-    // 我们直接用 SQL 插入数据，模拟数据库里已有的状态
-    // 插入主表 (注意：type 必须是 'PAPER' 才能触发鉴别器)
-    jdbcTemplate.update("INSERT INTO sys_outcome (id, title, status, type, create_time) " +
-        "VALUES (1001, 'Deep Learning Research', 'PUBLISHED', 'PAPER', NOW())");
-
-    // 插入论文扩展表
-    jdbcTemplate.update(
-        "INSERT INTO sys_outcome_paper (outcome_id, journal_name, issn, publish_time) " +
-            "VALUES (1001, 'Nature Intelligence', 'ISSN-8888', '2023-01-01')");
-
-    jdbcTemplate.update(
-        "INSERT INTO sys_outcome_author (outcome_id, author_name, sort, is_corresponding) " +
-            "VALUES (1001, 'sk', 1, 0)");
-    // 构造查询参数
-    OutcomePaperQry qry = new OutcomePaperQry();
-    qry.setPageNo(1);
-    qry.setPageSize(10);
-    qry.setIssn("ISSN-8888"); // 触发具体的查询条件
-    qry.setTitle("Deep"); // 触发通用查询条件
-
-    // === 2. Act (执行查询) ===
-    IPage<Outcome> resultPage = outcomeRepository.selectOutcomePage(qry);
-
-    // === 3. Assert (验证结果) ===
-
-    // 验证分页信息
-    assertThat(resultPage.getTotal()).isEqualTo(1);
-    assertThat(resultPage.getRecords()).hasSize(1);
-
-    // 获取第一条记录
-    Outcome outcome = resultPage.getRecords().get(0);
-
-    // 🔥 核心验证：多态是否生效？
-    // 验证 XML 的 <discriminator> 是否成功把行映射成了 PaperOutcome 子类
-    assertThat(outcome).isInstanceOf(PaperOutcome.class);
-
-    // 验证字段映射
-    PaperOutcome paper = (PaperOutcome) outcome;
-    assertThat(paper.getId()).isEqualTo(1001L);
-    assertThat(paper.getTitle()).isEqualTo("Deep Learning Research");
-
-    // 验证 JOIN 扩展表字段是否查出来了
-    assertThat(paper.getJournalName()).isEqualTo("Nature Intelligence");
-    assertThat(paper.getIssn()).isEqualTo("ISSN-8888");
-    assertThat(paper.getAuthors()).hasSize(1);
+  void findById_paperOutcomeNotExist() {
+    Optional<PaperOutcome> byId = paperOutcomeRepository.findById(1L);
+    assertThat(byId.isPresent()).isFalse();
   }
 
 
+  @Test
+  void findById_outcomeNotExist() {
+    Long id = 1L;
+    PaperOutcomePO po = new PaperOutcomePO();
+    po.setOutcomeId(id);
+    paperOutcomeMapper.insert(po);
+    assertThrows(BizException.class, () -> paperOutcomeRepository.findById(id));
+  }
+
+  @Test
+  void findById_authorNotExist() {
+    // 1. 造数据：只插入主表和扩展表，【不插入作者】
+    Long id = 1L;
+    OutcomePO outcomePO = new OutcomePO();
+    outcomePO.setTitle("Title");
+    outcomePO.setType(OutcomeType.PAPER);
+    outcomePO.setStatus(OutcomeStatus.DRAFT);
+    outcomePO.setId(id);
+    outcomeMapper.insert(outcomePO);
+    Long generatedId = outcomePO.getId();
+
+    PaperOutcomePO paperOutcomePO = new PaperOutcomePO();
+    paperOutcomePO.setOutcomeId(generatedId);
+    paperOutcomeMapper.insert(paperOutcomePO);
+
+    // 2. 执行测试
+    Optional<PaperOutcome> result = paperOutcomeRepository.findById(generatedId);
+
+    // 3. 断言
+    assertTrue(result.isPresent());
+    PaperOutcome paper = result.get();
+    assertEquals(generatedId, paper.getId());
+
+    // 核心验证：即使没有作者，实体里的 authors 也应该是安全的空列表，而不是 null
+    assertNotNull(paper.getAuthors());
+    assertTrue(paper.getAuthors().isEmpty());
+  }
   @Test
   void testExistDblpKey(){
 
@@ -303,10 +298,9 @@ class OutcomeRepositoryTest { // IT = Integration Test
         "INSERT INTO sys_outcome_author (outcome_id, author_name, sort, is_corresponding) " +
             "VALUES (1001, 'sk', 1, 0)");
 
-    boolean result = outcomeRepository.existsByDblpKey("testKey");
+    boolean result = paperOutcomeMapper.existsByDblpKey("testKey");
     Assertions.assertTrue(result);
 
   }
-
 
 }

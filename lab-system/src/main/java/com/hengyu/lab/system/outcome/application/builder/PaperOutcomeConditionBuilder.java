@@ -1,7 +1,7 @@
 package com.hengyu.lab.system.outcome.application.builder;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
+import com.hengyu.lab.system.outcome.application.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.AuthorMapper;
 import java.util.List;
 import java.util.Objects;

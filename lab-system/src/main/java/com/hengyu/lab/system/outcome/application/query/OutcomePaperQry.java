@@ -1,4 +1,4 @@
-package com.hengyu.lab.system.outcome.domain.query;
+package com.hengyu.lab.system.outcome.application.query;
 
 import com.hengyu.lab.framework.domain.BasePageQuery;
 import lombok.Data;

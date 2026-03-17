@@ -17,7 +17,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hengyu.lab.system.outcome.application.builder.PaperOutcomeConditionBuilder;
 import com.hengyu.lab.system.outcome.application.dto.AuthorDTO;
 import com.hengyu.lab.system.outcome.application.dto.PaperOutcomeDTO;
-import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
+import com.hengyu.lab.system.outcome.application.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.AuthorMapper;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.PaperOutcomeQryMapper;
 import java.util.Collections;

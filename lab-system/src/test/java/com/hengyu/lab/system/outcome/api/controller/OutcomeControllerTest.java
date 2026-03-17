@@ -29,7 +29,7 @@ import com.hengyu.lab.system.outcome.application.service.PaperOutcomeQryService;
 import com.hengyu.lab.system.outcome.application.service.PaperOutcomeService;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
-import com.hengyu.lab.system.outcome.domain.query.OutcomePaperQry;
+import com.hengyu.lab.system.outcome.application.query.OutcomePaperQry;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Arrays;

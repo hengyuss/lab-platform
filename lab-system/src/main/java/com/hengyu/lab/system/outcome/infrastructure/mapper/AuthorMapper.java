@@ -30,7 +30,7 @@ public interface AuthorMapper extends BaseMapper<AuthorPO> {
 
   @Select({
       "<script>",
-      "SELECT * ",
+      "SELECT *, author_name AS name",
       "FROM sys_outcome_author ",
       "WHERE outcome_id IN ",
       "<foreach item='id' collection='outcomeIds' open='(' separator=',' close=')'>",

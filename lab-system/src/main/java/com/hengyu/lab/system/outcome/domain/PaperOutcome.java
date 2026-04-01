@@ -1,6 +1,9 @@
 package com.hengyu.lab.system.outcome.domain;
 
-import com.hengyu.lab.system.outcome.domain.vo.Author;
+import com.hengyu.lab.common.exception.BizException;
+import com.hengyu.lab.system.outcome.domain.exception.OutcomeResultCode;
+import com.hengyu.lab.system.outcome.domain.valobj.Author;
+import com.hengyu.lab.system.outcome.domain.valobj.Partition;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -22,6 +25,8 @@ public class PaperOutcome extends Outcome {
   private String dblpKey;
   private String ee;
   private LocalDateTime publishTime;
+  private List<String> fund;
+  private Partition partition;
 
   @Override
   public void assignCorresponding(List<Integer> authorIds) {
@@ -31,5 +36,22 @@ public class PaperOutcome extends Outcome {
       }
     });
   }
+
+  public PaperOutcome assignFund(List<String> fund) {
+    if (fund == null) {
+      throw new BizException(OutcomeResultCode.OUTCOME_FUND_IS_NULL);
+    }
+    this.fund = fund;
+    return this;
+  }
+
+  public PaperOutcome assignPartition(Partition partition) {
+    if (partition == null) {
+      throw new BizException(OutcomeResultCode.OUTCOME_FUND_IS_NULL);
+    }
+    this.partition = partition;
+    return this;
+  }
+
 }
 

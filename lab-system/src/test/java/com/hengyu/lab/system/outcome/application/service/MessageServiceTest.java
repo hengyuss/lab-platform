@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 
 import com.hengyu.lab.system.outcome.application.dto.PaperMessage;
 import com.hengyu.lab.system.outcome.domain.service.PaperMQGateway;
-import com.hengyu.lab.system.outcome.domain.vo.PaperMetaTask;
+import com.hengyu.lab.system.outcome.domain.valobj.PaperMetaTask;
 import com.hengyu.lab.system.outcome.infrastructure.po.TeacherDblpPidPO;
 import java.util.Arrays;
 import java.util.Collections;

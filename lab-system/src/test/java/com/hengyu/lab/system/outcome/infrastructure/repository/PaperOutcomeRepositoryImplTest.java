@@ -2,16 +2,14 @@ package com.hengyu.lab.system.outcome.infrastructure.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.hengyu.lab.common.exception.BizException;
-import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import com.hengyu.lab.system.outcome.domain.repository.PaperOutcomeRepository;
-import com.hengyu.lab.system.outcome.domain.vo.Author;
+import com.hengyu.lab.system.outcome.domain.valobj.Author;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.AuthorMapper;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.OutcomeMapper;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.PaperOutcomeMapper;

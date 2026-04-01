@@ -8,11 +8,14 @@ import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.exception.OutcomeResultCode;
 import com.hengyu.lab.system.outcome.domain.repository.PaperOutcomeRepository;
+import com.hengyu.lab.system.outcome.domain.valobj.Partition;
 import java.io.InputStream;
 import java.util.List;
+import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -57,14 +60,26 @@ public class PaperOutcomeService {
     return url;
   }
 
+  @Transactional(rollbackFor = Exception.class)
   public void assignCorrespondingAuthor(Long outcomeId, List<Integer> authorIds) {
-    PaperOutcome outcome = paperOutcomeRepository.findById(outcomeId)
-        .orElseThrow(() -> new BizException(OutcomeResultCode.OUTCOME_NOT_FOUND));
-
-    outcome.assignCorresponding(authorIds);
-    paperOutcomeRepository.save(outcome);
-
+    updatePaperOutcome(outcomeId, outcome -> outcome.assignCorresponding(authorIds));
   }
 
+  @Transactional(rollbackFor = Exception.class)
+  public void assignFund(Long outcomeId, List<String> fund) {
+    updatePaperOutcome(outcomeId, outcome -> outcome.assignFund(fund));
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  public void assignPartition(Long outcomeId, Partition partition) {
+    updatePaperOutcome(outcomeId, outcome -> outcome.assignPartition(partition));
+  }
+
+  private void updatePaperOutcome(Long outcomeId, Consumer<PaperOutcome> action) {
+    PaperOutcome outcome = paperOutcomeRepository.findById(outcomeId)
+        .orElseThrow(() -> new BizException(OutcomeResultCode.OUTCOME_NOT_FOUND));
+    action.accept(outcome);
+    paperOutcomeRepository.save(outcome);
+  }
 
 }

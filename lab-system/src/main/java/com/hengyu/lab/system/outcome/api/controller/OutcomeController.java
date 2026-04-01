@@ -9,6 +9,7 @@ import com.hengyu.lab.system.outcome.application.service.MessageService;
 import com.hengyu.lab.system.outcome.application.service.PaperOutcomeQryService;
 import com.hengyu.lab.system.outcome.application.service.PaperOutcomeService;
 import com.hengyu.lab.system.outcome.application.query.OutcomePaperQry;
+import com.hengyu.lab.system.outcome.domain.valobj.Partition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -98,6 +99,20 @@ public class OutcomeController {
   public R<Void> assignCorrespondingAuthor(@PathVariable("outcomeId") Long outcomeId,
       @RequestBody List<Integer> authorIds) {
     paperOutcomeService.assignCorrespondingAuthor(outcomeId, authorIds);
+    return R.ok();
+  }
+
+  @PutMapping("paper/fund/{id}")
+  @Operation(summary = "更改基金")
+  public R<Void> assignFund(@PathVariable("id") Long outcomeId, @RequestBody List<String> fund) {
+    paperOutcomeService.assignFund(outcomeId, fund);
+    return R.ok();
+  }
+
+  @PutMapping("paper/partition/{id}")
+  @Operation(summary = "更改论文分区")
+  public R<Void> assignPartition(@PathVariable("id") Long outcomeId, Partition partition) {
+    paperOutcomeService.assignPartition(outcomeId, partition);
     return R.ok();
   }
 

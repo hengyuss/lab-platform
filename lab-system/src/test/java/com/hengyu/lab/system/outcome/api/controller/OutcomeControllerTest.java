@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hengyu.lab.framework.security.TokenService;
 import com.hengyu.lab.framework.utils.JwtUtils;
@@ -45,6 +46,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @WebMvcTest(value = OutcomeController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -232,11 +235,27 @@ class OutcomeControllerTest {
         // 1. 断言 HTTP 状态码必须是 200 OK
         .andExpect(status().isOk());
 
-    // (可选) 如果你的 R.ok() 返回了类似 {"code": 200, "msg": "success"}，你可以继续断言：
-    // .andExpect(jsonPath("$.code").value(200))
-
-    // [验证联动] 极其关键：验证 Controller 是否老老实实地把参数交给了 Service！
     verify(outcomeService).assignCorrespondingAuthor(outcomeId, authorIds);
+  }
+
+  @Test
+  void test_assignFund() throws Exception {
+    Long outcomeId = 101L;
+    List<String> funds = Arrays.asList("国家自然科学基金", "杰青基金");
+
+    String jsonBody = objectMapper.writeValueAsString(funds);
+
+    Mockito.doNothing().when(outcomeService).assignFund(outcomeId, funds);
+
+    mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/outcomes/paper/fund/{id}", outcomeId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(jsonBody))
+
+        .andExpect(MockMvcResultMatchers.status().isOk())
+
+        .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200));
+
+    Mockito.verify(outcomeService, Mockito.times(1)).assignFund(outcomeId, funds);
   }
 
 

@@ -5,7 +5,7 @@ import com.hengyu.lab.framework.utils.DomainUtil;
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.repository.PaperOutcomeRepository;
-import com.hengyu.lab.system.outcome.domain.vo.Author;
+import com.hengyu.lab.system.outcome.domain.valobj.Author;
 import com.hengyu.lab.system.outcome.infrastructure.convert.AuthorConverter;
 import com.hengyu.lab.system.outcome.infrastructure.convert.OutcomeConverter;
 import com.hengyu.lab.system.outcome.infrastructure.convert.PaperOutcomeConverter;

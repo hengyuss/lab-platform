@@ -1,6 +1,6 @@
 package com.hengyu.lab.system.outcome.infrastructure.mq;
 
-import com.hengyu.lab.system.outcome.domain.vo.PaperMetaTask;
+import com.hengyu.lab.system.outcome.domain.valobj.PaperMetaTask;
 import com.hengyu.lab.system.outcome.infrastructure.config.RabbitmqPaperConfig;
 import com.hengyu.lab.system.outcome.infrastructure.mq.producer.RabbitMQPaperGateway;
 import org.junit.jupiter.api.Test;

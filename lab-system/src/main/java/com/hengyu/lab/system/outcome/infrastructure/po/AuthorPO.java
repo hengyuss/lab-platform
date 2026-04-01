@@ -3,7 +3,7 @@ package com.hengyu.lab.system.outcome.infrastructure.po;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.hengyu.lab.system.outcome.domain.vo.Author;
+import com.hengyu.lab.system.outcome.domain.valobj.Author;
 import lombok.Data;
 
 @TableName("sys_outcome_author")

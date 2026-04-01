@@ -1,7 +1,7 @@
 package com.hengyu.lab.system.outcome.infrastructure.mq.producer;
 
 import com.hengyu.lab.system.outcome.domain.service.PaperMQGateway;
-import com.hengyu.lab.system.outcome.domain.vo.PaperMetaTask;
+import com.hengyu.lab.system.outcome.domain.valobj.PaperMetaTask;
 import com.hengyu.lab.system.outcome.infrastructure.config.RabbitmqPaperConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

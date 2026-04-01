@@ -10,8 +10,6 @@ import static org.mockito.Mockito.when;
 
 import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.framework.oss.OssTemplate;
-import com.hengyu.lab.system.outcome.application.assembler.OutcomeAssembler;
-import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
@@ -182,6 +180,50 @@ class PaperOutcomeServiceTest {
     // 如果你想校验错误码，可以接着写：.hasMessageContaining("OUTCOME_NOT_FOUND")
 
     // 🌟 防御性验证：确保存储动作绝对没有被执行！
+    verify(outcomeRepository, never()).save(any());
+  }
+
+  @Test
+  void test_assignFund_success() {
+    PaperOutcome paperOutcome = PaperOutcome.builder()
+        .title("testTitle")
+        .issn("testIssn")
+        .type(OutcomeType.PAPER)
+        .status(OutcomeStatus.DRAFT)
+        .journalName("testJournal")
+        .ossPath("testPath")
+        .publishTime(LocalDateTime.now())
+        .build();
+    List<String> fund = List.of("testFund");
+
+    when(outcomeRepository.findById(eq(1L))).thenReturn(Optional.of(paperOutcome));
+    outcomeService.assignFund(1L, fund);
+    verify(outcomeRepository, times(1)).save(paperOutcome);
+  }
+
+  @Test
+  void test_assignFund_fund_is_null() {
+    PaperOutcome paperOutcome = PaperOutcome.builder()
+        .title("testTitle")
+        .issn("testIssn")
+        .type(OutcomeType.PAPER)
+        .status(OutcomeStatus.DRAFT)
+        .journalName("testJournal")
+        .ossPath("testPath")
+        .publishTime(LocalDateTime.now())
+        .build();
+
+    when(outcomeRepository.findById(eq(1L))).thenReturn(Optional.of(paperOutcome));
+    assertThatThrownBy(() -> outcomeService.assignFund(1L, null));
+  }
+
+  @Test
+  void test_assignFund_outcome_not_found() {
+    Long outcomeId = 99L;
+    when(outcomeRepository.findById(outcomeId)).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> outcomeService.assignFund(outcomeId, List.of("testFund")))
+        .isInstanceOf(BizException.class);
     verify(outcomeRepository, never()).save(any());
   }
 

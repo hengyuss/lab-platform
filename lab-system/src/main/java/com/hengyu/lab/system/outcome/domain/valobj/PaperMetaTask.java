@@ -1,4 +1,4 @@
-package com.hengyu.lab.system.outcome.domain.vo;
+package com.hengyu.lab.system.outcome.domain.valobj;
 
 import lombok.Data;
 

@@ -12,7 +12,7 @@
    </insert>
 
 
-  <resultMap id="AuthorResultMap" type="com.hengyu.lab.system.outcome.domain.vo.Author">
+  <resultMap id="AuthorResultMap" type="com.hengyu.lab.system.outcome.domain.valobj.Author">
     <result property="id" column="id"/>
     <result property="name" column="author_name"/>
     <result property="isCorresponding" column="is_corresponding"/>

@@ -3,7 +3,8 @@ package com.hengyu.lab.system.outcome.domain;
 import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.system.outcome.domain.exception.OutcomeResultCode;
 import com.hengyu.lab.system.outcome.domain.valobj.Author;
-import com.hengyu.lab.system.outcome.domain.valobj.Partition;
+import com.hengyu.lab.system.outcome.domain.valobj.JournalPartition;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,8 @@ public class PaperOutcome extends Outcome {
   private String ee;
   private LocalDateTime publishTime;
   private List<String> fund;
-  private Partition partition;
+  private JournalPartition journalPartition;
+  private BigDecimal factor;
 
   @Override
   public void assignCorresponding(List<Integer> authorIds) {
@@ -45,11 +47,19 @@ public class PaperOutcome extends Outcome {
     return this;
   }
 
-  public PaperOutcome assignPartition(Partition partition) {
-    if (partition == null) {
+  public PaperOutcome assignPartition(JournalPartition journalPartition) {
+    if (journalPartition == null) {
       throw new BizException(OutcomeResultCode.OUTCOME_FUND_IS_NULL);
     }
-    this.partition = partition;
+    this.journalPartition = journalPartition;
+    return this;
+  }
+
+  public PaperOutcome assignFactor(BigDecimal factor) {
+    if (factor == null) {
+      throw new BizException(OutcomeResultCode.OUTCOME_FUND_IS_NULL);
+    }
+    this.factor = factor;
     return this;
   }
 

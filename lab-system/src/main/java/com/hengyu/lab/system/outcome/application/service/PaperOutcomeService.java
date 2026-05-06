@@ -4,12 +4,14 @@ import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.framework.oss.OssTemplate;
 import com.hengyu.lab.system.outcome.application.assembler.OutcomeAssembler;
 import com.hengyu.lab.system.outcome.application.command.SavePaperOutcomeCmd;
+import com.hengyu.lab.system.outcome.application.dto.PaperDetailsDTO;
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.exception.OutcomeResultCode;
 import com.hengyu.lab.system.outcome.domain.repository.PaperOutcomeRepository;
-import com.hengyu.lab.system.outcome.domain.valobj.Partition;
+import com.hengyu.lab.system.outcome.domain.valobj.JournalPartition;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
@@ -71,8 +73,13 @@ public class PaperOutcomeService {
   }
 
   @Transactional(rollbackFor = Exception.class)
-  public void assignPartition(Long outcomeId, Partition partition) {
-    updatePaperOutcome(outcomeId, outcome -> outcome.assignPartition(partition));
+  public void assignPartition(Long outcomeId, JournalPartition journalPartition) {
+    updatePaperOutcome(outcomeId, outcome -> outcome.assignPartition(journalPartition));
+  }
+
+  @Transactional(rollbackFor = Exception.class)
+  public void assignFactor(Long outcomeId, BigDecimal factor) {
+    updatePaperOutcome(outcomeId, outcome -> outcome.assignFactor(factor));
   }
 
   private void updatePaperOutcome(Long outcomeId, Consumer<PaperOutcome> action) {
@@ -82,4 +89,12 @@ public class PaperOutcomeService {
     paperOutcomeRepository.save(outcome);
   }
 
+  @Transactional(rollbackFor = Exception.class)
+  public void updateDetails(PaperDetailsDTO detailsDTO) {
+    Long outcomeId = detailsDTO.getOutcomeId();
+    updatePaperOutcome(outcomeId, outcome -> outcome.assignFactor(detailsDTO.getFactor()));
+    updatePaperOutcome(outcomeId, outcome -> outcome.assignFund(detailsDTO.getFund()));
+    updatePaperOutcome(outcomeId,
+        outcome -> outcome.assignPartition(detailsDTO.getJournalPartition()));
+  }
 }

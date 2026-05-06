@@ -5,7 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import com.hengyu.lab.system.outcome.domain.valobj.Partition;
+import com.hengyu.lab.system.outcome.domain.valobj.JournalPartition;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -32,5 +33,6 @@ public class PaperOutcomePO {
   private LocalDateTime publishTime;
   @TableField(typeHandler = JacksonTypeHandler.class)
   private List<String> fund;
-  private Partition partition;
+  private JournalPartition journalPartition;
+  private BigDecimal factor;
 }

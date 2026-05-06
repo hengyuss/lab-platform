@@ -212,8 +212,9 @@ CREATE TABLE sys_outcome_paper
     -- H2 推荐使用 TIMESTAMP 来对应 Java 的 LocalDateTime
     `publish_time` TIMESTAMP    DEFAULT NULL COMMENT '发表时间',
     `deleted`      INT          DEFAULT 0,
-    `partition`    INT,
+    `journalPartition`    INT,
     `fund`         JSON,
+    `journal_partition` INT,
     `factor`       decimal(8, 3),
 
     PRIMARY KEY (`outcome_id`),

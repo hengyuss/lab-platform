@@ -61,7 +61,7 @@ mybatis-plus:
 lab:
   jwt:
     secret: ${LAB_JWT_SECRET}
-    expiration: 30 #  (单位分钟)
+    expiration: 180 #  (单位分钟)
     token-header: Authorization
     token-prefix: "Bearer "
 

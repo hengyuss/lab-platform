@@ -3,13 +3,14 @@ package com.hengyu.lab.system.outcome.api.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.hengyu.lab.common.api.R;
 import com.hengyu.lab.system.outcome.application.command.SavePaperOutcomeCmd;
+import com.hengyu.lab.system.outcome.application.dto.PaperDetailsDTO;
 import com.hengyu.lab.system.outcome.application.dto.PaperMessage;
 import com.hengyu.lab.system.outcome.application.dto.PaperOutcomeDTO;
+import com.hengyu.lab.system.outcome.application.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.application.service.MessageService;
 import com.hengyu.lab.system.outcome.application.service.PaperOutcomeQryService;
 import com.hengyu.lab.system.outcome.application.service.PaperOutcomeService;
-import com.hengyu.lab.system.outcome.application.query.OutcomePaperQry;
-import com.hengyu.lab.system.outcome.domain.valobj.Partition;
+import com.hengyu.lab.system.outcome.domain.valobj.JournalPartition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -111,8 +112,16 @@ public class OutcomeController {
 
   @PutMapping("paper/partition/{id}")
   @Operation(summary = "更改论文分区")
-  public R<Void> assignPartition(@PathVariable("id") Long outcomeId, Partition partition) {
-    paperOutcomeService.assignPartition(outcomeId, partition);
+  public R<Void> assignPartition(@PathVariable("id") Long outcomeId,
+      JournalPartition journalPartition) {
+    paperOutcomeService.assignPartition(outcomeId, journalPartition);
+    return R.ok();
+  }
+
+  @PutMapping("paper/updateDetails")
+  @Operation(summary = "更改论文详情")
+  public R<Void> updateDetails(@RequestBody @Validated PaperDetailsDTO detailsDTO) {
+    paperOutcomeService.updateDetails(detailsDTO);
     return R.ok();
   }
 

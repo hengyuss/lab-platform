@@ -1,11 +1,13 @@
 package com.hengyu.lab.system.outcome.domain.valobj;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
-public enum Partition {
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+public enum JournalPartition {
 
   JOURNAL_FIRST_PARTITION(1001, "1区"),
   JOURNAL_SECOND_PARTITION(1002, "2区"),
@@ -17,7 +19,7 @@ public enum Partition {
   CONFERENCE_CCF_C(2003, "CCF C"),
   ;
 
-  Partition(Integer code, String msg) {
+  JournalPartition(Integer code, String msg) {
     this.code = code;
     this.msg = msg;
   }

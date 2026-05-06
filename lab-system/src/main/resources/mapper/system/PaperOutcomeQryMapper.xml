@@ -20,6 +20,8 @@
     <result property="issn" column="issn"/>
     <result property="publishTime" column="publish_time"/>
     <result property="publishYear" column="publish_year"/>
+    <result column="fund" property="fund"
+      typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
   </resultMap>
 
 
@@ -35,6 +37,9 @@
     p.publish_year,
     p.dblp_key,
     p.paper_type,
+    p.fund,
+    p.journal_partition,
+    p.factor,
     p.ee
     FROM sys_outcome as o
     LEFT JOIN sys_outcome_paper as p ON o.id = p.outcome_id

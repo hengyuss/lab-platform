@@ -45,7 +45,6 @@ public class PaperOutcomeQryService {
 
     List<AuthorDTO> authorDTOS = authorMapper.selectAuthorsByOutcomeIds(
         records.stream().map(PaperOutcomeDTO::getId).toList());
-    log.info("authorDTOS = {}", authorDTOS);
     Map<Long, List<AuthorDTO>> authorsMap = authorDTOS.stream()
         .collect(Collectors.groupingBy(AuthorDTO::getOutcomeId));
     records.forEach(paperOutcomeDTO -> {

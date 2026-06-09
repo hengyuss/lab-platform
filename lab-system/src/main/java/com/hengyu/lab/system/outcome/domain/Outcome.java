@@ -4,7 +4,7 @@ import com.hengyu.lab.common.api.ResultCode;
 import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
-import com.hengyu.lab.system.outcome.domain.valobj.Author;
+import com.hengyu.lab.system.outcome.domain.entity.Author;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;

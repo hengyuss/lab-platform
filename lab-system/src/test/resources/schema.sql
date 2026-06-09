@@ -230,4 +230,19 @@ CREATE TABLE sys_teacher_dblp_pid
     `pid` VARCHAR(255) NOT NULL ,
     PRIMARY KEY (`id`),
     unique key (`pid`)
-)
+);
+DROP TABLE IF EXISTS sys_outcome_project;
+CREATE TABLE sys_outcome_project
+(
+    outcome_id          BIGINT NOT NULL COMMENT '成果ID，主键（与主表 outcome 的 ID 保持一致）',
+    fund                VARCHAR(2000)        DEFAULT NULL COMMENT '基金列表（JSON 格式存储）',
+    responsible_persons VARCHAR(2000)        DEFAULT NULL COMMENT '负责人列表（JSON 格式存储）',
+    project_type        VARCHAR(50) DEFAULT NULL COMMENT '项目类型',
+    start_time          TIMESTAMP   DEFAULT NULL COMMENT '开始时间',
+    end_time            TIMESTAMP   DEFAULT NULL COMMENT '结束时间',
+    project_indicator   VARCHAR(50) DEFAULT NULL COMMENT '项目指标',
+    PRIMARY KEY (outcome_id)
+);
+-- H2 需要单独使用 COMMENT ON 语法来为表添加注释
+COMMENT ON TABLE sys_outcome_project IS '项目成果扩展表';
+

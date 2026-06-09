@@ -5,7 +5,7 @@ import com.hengyu.lab.framework.utils.DomainUtil;
 import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.repository.PaperOutcomeRepository;
-import com.hengyu.lab.system.outcome.domain.valobj.Author;
+import com.hengyu.lab.system.outcome.domain.entity.Author;
 import com.hengyu.lab.system.outcome.infrastructure.convert.AuthorConverter;
 import com.hengyu.lab.system.outcome.infrastructure.convert.OutcomeConverter;
 import com.hengyu.lab.system.outcome.infrastructure.convert.PaperOutcomeConverter;
@@ -36,23 +36,41 @@ public class PaperOutcomeRepositoryImpl implements PaperOutcomeRepository {
   private final PaperOutcomeConverter paperOutcomeConverter;
   private final AuthorMapper authorMapper;
   private final AuthorConverter authorConverter;
+  private final OutcomeSaveHelper outcomeSaveHelper;
+
+//  @Override
+//  public void save(PaperOutcome paperOutcome) {
+//    OutcomePO outcomePO = outcomeConverter.toPO(paperOutcome);
+//    PaperOutcomePO paperOutcomePO = paperOutcomeConverter.toPO(paperOutcome);
+//    if (outcomePO.getId() == null) {
+//      outcomeMapper.insert(outcomePO);
+//      paperOutcomePO.setOutcomeId(outcomePO.getId());
+//      paperOutcomeMapper.insert(paperOutcomePO);
+//      DomainUtil.setIdToEntity(paperOutcome, outcomePO.getId());
+//    } else {
+//      log.info("paperOutcomePO {}", paperOutcomePO);
+//      outcomeMapper.updateById(outcomePO);
+//      paperOutcomeMapper.updateById(paperOutcomePO);
+//      authorMapper.deleteByOutcomeId(outcomePO.getId());
+//    }
+//    saveAuthor(paperOutcome);
+//  }
 
   @Override
   public void save(PaperOutcome paperOutcome) {
-    OutcomePO outcomePO = outcomeConverter.toPO(paperOutcome);
-    PaperOutcomePO paperOutcomePO = paperOutcomeConverter.toPO(paperOutcome);
-    if (outcomePO.getId() == null) {
-      outcomeMapper.insert(outcomePO);
-      paperOutcomePO.setOutcomeId(outcomePO.getId());
-      paperOutcomeMapper.insert(paperOutcomePO);
-      DomainUtil.setIdToEntity(paperOutcome, outcomePO.getId());
-    } else {
-      log.info("paperOutcomePO {}", paperOutcomePO);
-      outcomeMapper.updateById(outcomePO);
-      paperOutcomeMapper.updateById(paperOutcomePO);
-      authorMapper.deleteByOutcomeId(outcomePO.getId());
-    }
-    saveAuthor(paperOutcome);
+    PaperOutcomePO po = paperOutcomeConverter.toPO(paperOutcome);
+    outcomeSaveHelper.executeSave(
+        paperOutcome,
+        (outcomeId) -> {
+          po.setOutcomeId(outcomeId);
+          paperOutcomeMapper.insert(po);
+        },
+        () -> {
+          paperOutcomeMapper.updateById(po);
+          authorMapper.deleteByOutcomeId(po.getOutcomeId());
+        },
+        () -> saveAuthor(paperOutcome)
+    );
   }
 
   @Override

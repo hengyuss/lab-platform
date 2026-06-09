@@ -10,7 +10,7 @@ import com.hengyu.lab.system.outcome.application.query.OutcomePaperQry;
 import com.hengyu.lab.system.outcome.application.service.MessageService;
 import com.hengyu.lab.system.outcome.application.service.PaperOutcomeQryService;
 import com.hengyu.lab.system.outcome.application.service.PaperOutcomeService;
-import com.hengyu.lab.system.outcome.domain.valobj.JournalPartition;
+import com.hengyu.lab.system.outcome.domain.constant.JournalPartition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

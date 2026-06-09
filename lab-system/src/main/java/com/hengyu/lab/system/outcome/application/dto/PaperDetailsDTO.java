@@ -1,6 +1,6 @@
 package com.hengyu.lab.system.outcome.application.dto;
 
-import com.hengyu.lab.system.outcome.domain.valobj.JournalPartition;
+import com.hengyu.lab.system.outcome.domain.constant.JournalPartition;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;

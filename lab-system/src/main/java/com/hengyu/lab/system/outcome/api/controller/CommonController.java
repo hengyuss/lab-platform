@@ -1,7 +1,7 @@
 package com.hengyu.lab.system.outcome.api.controller;
 
 import com.hengyu.lab.common.api.R;
-import com.hengyu.lab.system.outcome.domain.valobj.JournalPartition;
+import com.hengyu.lab.system.outcome.domain.constant.JournalPartition;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.HashMap;

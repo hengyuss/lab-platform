@@ -2,7 +2,7 @@ package com.hengyu.lab.system.outcome.infrastructure.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.hengyu.lab.system.outcome.application.dto.AuthorDTO;
-import com.hengyu.lab.system.outcome.domain.valobj.Author;
+import com.hengyu.lab.system.outcome.domain.entity.Author;
 import com.hengyu.lab.system.outcome.infrastructure.po.AuthorPO;
 import java.util.List;
 import org.apache.ibatis.annotations.Delete;

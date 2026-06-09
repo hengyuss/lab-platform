@@ -9,7 +9,7 @@ import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeStatus;
 import com.hengyu.lab.system.outcome.domain.constant.OutcomeType;
 import com.hengyu.lab.system.outcome.domain.repository.PaperOutcomeRepository;
-import com.hengyu.lab.system.outcome.domain.valobj.Author;
+import com.hengyu.lab.system.outcome.domain.entity.Author;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.AuthorMapper;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.OutcomeMapper;
 import com.hengyu.lab.system.outcome.infrastructure.mapper.PaperOutcomeMapper;

@@ -1,4 +1,4 @@
-package com.hengyu.lab.system.outcome.domain.valobj;
+package com.hengyu.lab.system.outcome.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

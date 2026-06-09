@@ -1,4 +1,4 @@
-package com.hengyu.lab.system.outcome.domain.valobj;
+package com.hengyu.lab.system.outcome.domain.constant;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonFormat;

@@ -9,7 +9,7 @@ import com.hengyu.lab.system.outcome.domain.Outcome;
 import com.hengyu.lab.system.outcome.domain.PaperOutcome;
 import com.hengyu.lab.system.outcome.domain.exception.OutcomeResultCode;
 import com.hengyu.lab.system.outcome.domain.repository.PaperOutcomeRepository;
-import com.hengyu.lab.system.outcome.domain.valobj.JournalPartition;
+import com.hengyu.lab.system.outcome.domain.constant.JournalPartition;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;

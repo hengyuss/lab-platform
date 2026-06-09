@@ -2,8 +2,8 @@ package com.hengyu.lab.system.outcome.domain;
 
 import com.hengyu.lab.common.exception.BizException;
 import com.hengyu.lab.system.outcome.domain.exception.OutcomeResultCode;
-import com.hengyu.lab.system.outcome.domain.valobj.Author;
-import com.hengyu.lab.system.outcome.domain.valobj.JournalPartition;
+import com.hengyu.lab.system.outcome.domain.entity.Author;
+import com.hengyu.lab.system.outcome.domain.constant.JournalPartition;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
